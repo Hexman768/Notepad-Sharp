@@ -148,7 +148,11 @@ namespace Essay_Analysis_Tool
         {
             IS_FILE_DIRTY = true;
             undoToolStripMenuItem.Enabled = true;
-            if (richTextBox1.Text.Equals(EMPTY_STRING))
+            if (!richTextBox1.Text.Equals(EMPTY_STRING))
+            {
+                findToolStripMenuItem.Enabled = true;
+            }
+            else
             {
                 findToolStripMenuItem.Enabled = false;
             }

@@ -2,7 +2,8 @@
 <Changes>
 	<body>
 		<release date="${buildTimestamp}" description="" version="1.0.0">
-			<action dev="Zachary Pedigo" issue="FUNCTION-0125191" type="add">Adding find function and Enhancing save functions.</action>
+			<action dev="Zachary Pedigo" issue="ISSUE-0001" date="01-26-2019" type="fix">Resolved #1.</action>
+			<action dev="Zachary Pedigo" issue="FUNCTION-0001" date="01-26-2019" type="add">Adding find function and Enhancing save functions.</action>
 		</release>
 	</body>
 </Changes>
