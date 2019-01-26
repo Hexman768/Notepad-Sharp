@@ -10,18 +10,25 @@ using System.Windows.Forms;
 
 namespace Essay_Analysis_Tool
 {
-    public partial class Form1 : Form
+    public partial class mainForm : Form
     {
         // Declaring and Initializing useful variables
         OpenFileDialog file_open = new OpenFileDialog();
 
         public bool UNDO_AVAIALBE = false;
+        public bool FIND_FORM_CLOSED = true;
         public bool IS_FILE_DIRTY = false;
+        public bool NEW_FILE = true;
+        public String EMPTY_STRING = "";
+
+        private String FILE_NAME;
+        private RichTextBoxStreamType FILE_TYPE;
+        private findFunctionForm findFunctionForm;
 
         /*
          * Initialzes the Form.
          */
-        public Form1()
+        public mainForm()
         {
             InitializeComponent();
         }
@@ -32,21 +39,24 @@ namespace Essay_Analysis_Tool
          */
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            NEW_FILE = false;
+
             file_open.Title = "Open File";
             file_open.Filter = "Rich Text File (*.rtf)|*.rtf| Plain Text File (*.txt)|*.txt";
             file_open.FilterIndex = 1;
             file_open.Title = "Open text or RTF file";
 
-            RichTextBoxStreamType stream_type = RichTextBoxStreamType.RichText;
+            FILE_TYPE = RichTextBoxStreamType.RichText;
             if (DialogResult.OK == file_open.ShowDialog())
             {
                 if (string.IsNullOrEmpty(file_open.FileName))
                     return;
                 if (file_open.FilterIndex == 2)
                 {
-                    stream_type = RichTextBoxStreamType.PlainText;
+                    FILE_TYPE = RichTextBoxStreamType.PlainText;
                 }
-                richTextBox1.LoadFile(file_open.FileName, stream_type);
+                FILE_NAME = file_open.FileName;
+                richTextBox1.LoadFile(file_open.FileName, FILE_TYPE);
             }
         }
 
@@ -56,7 +66,7 @@ namespace Essay_Analysis_Tool
          */
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (richTextBox1.Text != "")
+            if (!richTextBox1.Text.Equals(EMPTY_STRING))
             {
                 MessageBox.Show("These changes will be overridden!");
             }
@@ -68,25 +78,14 @@ namespace Essay_Analysis_Tool
          */
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveDlg = new SaveFileDialog();
-            string filename = "";
-
-            // To filter files from SaveFileDialog
-            saveDlg.Filter = "Rich Text File (*.rtf)|*.rtf|Plain Text File (*.txt)|*.txt";
-            saveDlg.DefaultExt = "*.rtf";
-            saveDlg.FilterIndex = 1;
-            saveDlg.Title = "Save the contents";
-
-            filename = file_open.FileName;
-
-            RichTextBoxStreamType stream_type;
-            // Checks the extension of the file to save
-            if (filename.Contains(".txt"))
-                stream_type = RichTextBoxStreamType.PlainText;
-            else
-                stream_type = RichTextBoxStreamType.RichText;
-
-            richTextBox1.SaveFile(filename, stream_type);
+            if (NEW_FILE)
+            {
+                saveAsToolStripMenuItem_Click(sender, e);
+                return;
+            }
+            
+            richTextBox1.SaveFile(FILE_NAME, FILE_TYPE);
+            MessageBox.Show("File Saved");
         }
 
         /*
@@ -96,7 +95,7 @@ namespace Essay_Analysis_Tool
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveDlg = new SaveFileDialog();
-            string filename = "";
+            FILE_NAME = saveDlg.FileName;
 
             // To filter files from SaveFileDialog
             saveDlg.Filter = "Rich Text File (*.rtf)|*.rtf|Plain Text File (*.txt)|*.txt";
@@ -105,18 +104,22 @@ namespace Essay_Analysis_Tool
             saveDlg.Title = "Save the contents";
 
             DialogResult retval = saveDlg.ShowDialog();
-            if (retval == DialogResult.OK)
-                filename = saveDlg.FileName;
-            else
+
+            if (retval != DialogResult.OK)
+            {
                 return;
+            }
 
-            RichTextBoxStreamType stream_type;
             if (saveDlg.FilterIndex == 2)
-                stream_type = RichTextBoxStreamType.PlainText;
+            {
+                FILE_TYPE = RichTextBoxStreamType.PlainText;
+            }
             else
-                stream_type = RichTextBoxStreamType.RichText;
+            {
+                FILE_TYPE = RichTextBoxStreamType.RichText;
+            }
 
-            richTextBox1.SaveFile(filename, stream_type);
+            richTextBox1.SaveFile(FILE_NAME, FILE_TYPE);
             MessageBox.Show("File Saved");
         }
 
@@ -145,6 +148,24 @@ namespace Essay_Analysis_Tool
         {
             IS_FILE_DIRTY = true;
             undoToolStripMenuItem.Enabled = true;
+            if (richTextBox1.Text.Equals(EMPTY_STRING))
+            {
+                findToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        /*
+         * Creates a new instance of {findFunctionForm} if {FIND_FORM_CLOSED}
+         * or the local variable {findFunctionForm} is null. Thus allowing the user
+         * to search for certain words within the file that is currently open.
+         */
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (FIND_FORM_CLOSED || findFunctionForm == null)
+            {
+                findFunctionForm = new findFunctionForm(this);
+                findFunctionForm.Visible = true;
+            }
         }
     }
 }
