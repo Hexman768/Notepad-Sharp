@@ -50,14 +50,14 @@ namespace Essay_Analysis_Tool
          */
         private void findFormFindButton_Click(object sender, EventArgs e)
         {
-            if (!containsText(callingForm.richTextBox1.Text, findFormTextBox.Text))
+            if (!containsText(callingForm.mainEditor.Text, findFormTextBox.Text))
             {
                 MessageBox.Show(RESULTS_NOT_FOUND_ERROR);
                 return;
             }
             charArray = findFormTextBox.Text.ToCharArray();
-            callingForm.richTextBox1.SelectionStart = callingForm.richTextBox1.Text.IndexOf(charArray[0]);
-            callingForm.richTextBox1.SelectionLength = charArray.Length;
+            callingForm.mainEditor.SelectionStart = callingForm.mainEditor.Text.IndexOf(charArray[0]);
+            callingForm.mainEditor.SelectionLength = charArray.Length;
             callingForm.Focus();
         }
     }
