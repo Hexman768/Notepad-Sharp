@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,19 +29,21 @@ namespace Essay_Analysis_Tool
         private RichTextBoxStreamType FILE_TYPE;
         private findFunctionForm findFunctionForm;
         private Encoding currentFileEncoding;
-
-        /*
-         * Initialzes the Form.
-         */
+        
+        /// <summary>
+        /// Initialzes the Form.
+        /// </summary>
         public mainForm()
         {
             InitializeComponent();
         }
-
-        /*
-         * Opens an open file dialogue upon clicking the "Open" Option
-         * available in the "Edit" drop-down menu.
-         */
+        
+        /// <summary>
+        /// Opens an open file dialogue upon clicking the "Open" Option
+        /// available in the "Edit" drop-down menu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NEW_FILE = false;
@@ -60,57 +63,54 @@ namespace Essay_Analysis_Tool
                 mainEditor.OpenFile(FILE_NAME);
             }
         }
-
-        /*
-         * Creates a new blank file file while effectively erradicating any unsaved
-         * changes to the previously open document.
-         */
+        
+        /// <summary>
+        /// Creates a new blank file file while effectively erradicating any unsaved
+        /// changes to the previously open document.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!mainEditor.Text.Equals(EMPTY_STRING))
             {
-                MessageBox.Show("These changes will be overridden!");
+                MessageBox.Show("Unsaved changes will be overridden!");
             }
+            NEW_FILE = true;
         }
-
-        /*
-         * Opens a save file dialogue upon clicking the "Save" Option
-         * available in the "Edit" drop-down menu.
-         */
+        
+        /// <summary>
+        /// Opens a save file dialogue upon clicking the "Save" Option
+        /// available in the "Edit" drop-down menu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (NEW_FILE)
             {
                 doSaveAs();
-                return;
             }
-
-            if (doSave())
+            else
             {
-                MessageBox.Show("File Saved");
+                doSave();
             }
         }
-
-        /*
-         * Calls the doSaveAs() function.
-         */
+        
+        /// <summary>
+        /// Calls the doSaveAs() function.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (doSaveAs())
-            {
-                MessageBox.Show("File Saved");
-            }
+            doSaveAs();
         }
 
-        /*
-         * Opens a save as file dialogue upon clicking the "Save As" Option
-         * available in the "Edit" drop-down menu.
-         * 
-         * @returns
-         *    1.) True if the save operation completes successfully.
-         *    2.) False if the save operation fails in which case a messageBox
-         *        containing the error is displayed.
-         */
+        /// <summary>
+        /// Opens a save as file dialogue upon clicking the "Save As" Option
+        /// available in the "Edit" drop-down menu.
+        /// </summary>
         public bool doSaveAs()
         {
             SaveFileDialog saveDlg = new SaveFileDialog();
@@ -122,40 +122,41 @@ namespace Essay_Analysis_Tool
             saveDlg.Title = "Save the contents";
 
             DialogResult retval = saveDlg.ShowDialog();
-            FILE_NAME = saveDlg.FileName;
-            currentFileEncoding = EncodingDetector.DetectTextFileEncoding(FILE_NAME); // FILE_NAME is null
 
-            if (retval != DialogResult.OK)
-            {
-                return false;
-            }
-            
             try
             {
-                mainEditor.SaveToFile(FILE_NAME, currentFileEncoding);
-                return true;
-            }
-            catch (Exception e)
-            {
+                StreamWriter streamWriter = new StreamWriter(saveDlg.FileName);
+                streamWriter.Write("");
+                currentFileEncoding = streamWriter.Encoding;
+                streamWriter.Close();
+            } catch (Exception e) {
                 MessageBox.Show(e.Message, e.GetType().Name);
-                return false;
             }
+            
+            if (retval == DialogResult.OK)
+            {
+                try {
+                    mainEditor.SaveToFile(saveDlg.FileName, currentFileEncoding);
+                    MessageBox.Show("File Saved");
+                    return true;
+                } catch (Exception e) {
+                    MessageBox.Show(e.Message, e.GetType().Name);
+                    return false;
+                }
+            }
+            return false;
         }
 
-        /*
-         * Attempts to save the current file upon clicking the "Save" Option
-         * available in the "Edit" drop-down menu.
-         * 
-         * @returns
-         *    1.) True if the save operation completes successfully.
-         *    2.) False if the save operation fails in which case a messageBox
-         *        containing the error is displayed.
-         */
+        /// <summary>
+        /// Attempts to save the current file upon clicking the "Save" Option
+        /// available in the "Edit" drop-down menu.
+        /// </summary>
         private bool doSave()
         {
             try
             {
                 mainEditor.SaveToFile(FILE_NAME, currentFileEncoding);
+                MessageBox.Show("File Saved");
                 return true;
             }
             catch (Exception e)
@@ -164,29 +165,35 @@ namespace Essay_Analysis_Tool
                 return false;
             }
         }
-
-        /*
-         * Closes the Application
-         */
+        
+        /// <summary>
+        /// Closes the application.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        /*
-         * Undoes the last change to the currently open file.
-         */
+        /// <summary>
+        /// Undoes the last change to the currently open file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Undo();
             redoToolStripMenuItem.Enabled = true;
         }
         
-        /*
-         * Creates a new instance of {findFunctionForm} if {FIND_FORM_CLOSED}
-         * or the local variable {findFunctionForm} is null. Thus allowing the user
-         * to search for certain words within the file that is currently open.
-         */
+        /// <summary>
+        /// Creates a new instance of {findFunctionForm} if {FIND_FORM_CLOSED}
+        /// or the local variable { findFunctionForm } is null. Thus allowing the user
+        /// to search for certain words within the file that is currently open.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (FIND_FORM_CLOSED || findFunctionForm == null)
@@ -195,11 +202,13 @@ namespace Essay_Analysis_Tool
                 findFunctionForm.Visible = true;
             }
         }
-        
-        /*
-         * This method is used to determine if the currently open file is dirty.
-         * If the file is dirty then the {#textEditorControl1.Undo()} function is performed.
-         */
+
+        /// <summary>
+        /// This method is used to determine if the currently open file is dirty.
+        /// If the file is dirty then the {#textEditorControl1.Undo()} function is performed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mainEditor_TextChanging(object sender, TextChangingEventArgs e)
         {
             IS_FILE_DIRTY = true;
