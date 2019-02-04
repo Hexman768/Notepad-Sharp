@@ -2,6 +2,8 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="1.0.0">
+      <action dev="Zachary Pedigo" issue="ISSUE-0010" date="02-03-2019" type="fix">Resolved #10.</action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0006" date="02-03-2019" type="fix">Resolves #6 and Reformatting all some documentation.</action>
       <action dev="Zachary Pedigo" issue="FUNCTION-0002" date="02-01-2019" type="fix">Adding syntax highlighting using FastColoredTextBox and Resolving #4.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0002" date="01-28-2019" type="fix">Resolved #2.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0001" date="01-26-2019" type="fix">Resolved #1.</action>

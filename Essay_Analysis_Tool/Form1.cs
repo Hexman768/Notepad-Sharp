@@ -275,5 +275,10 @@ namespace Essay_Analysis_Tool
         {
             mainEditor.Language = Language.Custom;
         }
+
+        private void statusBarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            statusStrip1.Visible = statusBarToolStripMenuItem.Checked ? true : false;
+        }
     }
 }
