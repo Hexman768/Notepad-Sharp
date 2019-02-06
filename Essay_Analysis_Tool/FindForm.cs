@@ -10,55 +10,79 @@ using System.Windows.Forms;
 
 namespace Essay_Analysis_Tool
 {
-    public partial class findFunctionForm : Form
+    public partial class FindDialog : Form
     {
-        public mainForm callingForm;
+        private readonly mainForm callingForm;
 
-        private char[] charArray;
-
-        private string RESULTS_NOT_FOUND_ERROR = "No results found...";
-
-        /*
-         * Initialzes the Form.
-         */
-        public findFunctionForm(Form callingForm)
+        public FindDialog(mainForm pMain)
         {
             InitializeComponent();
-            this.callingForm = callingForm as mainForm;
+            callingForm = pMain;
         }
 
-        /*
-         * Executes initial startup commands.
-         */
-        private void findFunctionForm_Load(object sender, EventArgs e)
+        private void buttonCancel_Click(object sender, EventArgs e)
         {
-            findFormRadioButtonUp.Checked = true;
+            Hide();
         }
 
-        /*
-         * Determines whether or not a piece of source text contains
-         * the text given in the second argument.
-         */
-        private bool containsText(string source, string text)
+        private void FindDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
-            return (source.Contains(findFormTextBox.Text)) ? true : false;
+            e.Cancel = true;
+            Hide();
         }
 
-        /*
-         * Determines if the form contains the text specified in the {findFunctionForm}
-         * and based on the results of that query, selects the discovered text.
-         */
-        private void findFormFindButton_Click(object sender, EventArgs e)
+        private void controlTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (!containsText(callingForm.mainEditor.Text, findFormTextBox.Text))
+            UpdateFindNextButton();
+        }
+
+        private void UpdateFindNextButton()
+        {
+            buttonFindNext.Enabled = callingForm.mainEditor.Text.Length > 0;
+        }
+
+        private void FindDialog_Load(object sender, EventArgs e)
+        {
+            UpdateFindNextButton();
+        }
+
+        private void buttonFindNext_Click(object sender, EventArgs e)
+        {
+            var SearchText = findFormTextBox.Text;
+            var MatchCase = checkBox1.Checked;
+            var bSearchDown = findFormRadioButtonDown.Checked;
+
+            if (!callingForm.FindAndSelect(SearchText, MatchCase, bSearchDown))
             {
-                MessageBox.Show(RESULTS_NOT_FOUND_ERROR);
-                return;
+                MessageBox.Show(this, "No Results Found...", "Warning");
             }
-            charArray = findFormTextBox.Text.ToCharArray();
-            callingForm.mainEditor.SelectionStart = callingForm.mainEditor.Text.IndexOf(charArray[0]);
-            callingForm.mainEditor.SelectionLength = charArray.Length;
+            callingForm.mainEditor.Focus();
+        }
+
+        public void Triggered()
+        {
             callingForm.Focus();
+        }
+
+        private void controlTextBox_Enter(object sender, EventArgs e)
+        {
+            var Sender = (TextBox)sender;
+            Sender.SelectAll();
+        }
+
+        public new void Show(IWin32Window window = null)
+        {
+            callingForm.Focus();
+            callingForm.mainEditor.SelectAll();
+
+            if (window == null)
+            {
+                base.Show();
+            }
+            else
+            {
+                base.Show(window);
+            }
         }
     }
 }
