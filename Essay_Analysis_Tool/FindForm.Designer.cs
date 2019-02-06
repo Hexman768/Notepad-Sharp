@@ -1,6 +1,6 @@
 ﻿namespace Essay_Analysis_Tool
 {
-    partial class findFunctionForm
+    partial class FindDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -30,11 +30,11 @@
         {
             this.findFormLabel1 = new System.Windows.Forms.Label();
             this.findFormTextBox = new System.Windows.Forms.TextBox();
-            this.findFormFindButton = new System.Windows.Forms.Button();
+            this.buttonFindNext = new System.Windows.Forms.Button();
             this.findFormCancelButton = new System.Windows.Forms.Button();
             this.findFormDirectGroupBox = new System.Windows.Forms.GroupBox();
-            this.findFormRadioButtonUp = new System.Windows.Forms.RadioButton();
             this.findFormRadioButtonDown = new System.Windows.Forms.RadioButton();
+            this.findFormRadioButtonUp = new System.Windows.Forms.RadioButton();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.findFormDirectGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -55,15 +55,15 @@
             this.findFormTextBox.Size = new System.Drawing.Size(300, 20);
             this.findFormTextBox.TabIndex = 1;
             // 
-            // findFormFindButton
+            // buttonFindNext
             // 
-            this.findFormFindButton.Location = new System.Drawing.Point(374, 9);
-            this.findFormFindButton.Name = "findFormFindButton";
-            this.findFormFindButton.Size = new System.Drawing.Size(75, 23);
-            this.findFormFindButton.TabIndex = 2;
-            this.findFormFindButton.Text = "Find Next";
-            this.findFormFindButton.UseVisualStyleBackColor = true;
-            this.findFormFindButton.Click += new System.EventHandler(this.findFormFindButton_Click);
+            this.buttonFindNext.Location = new System.Drawing.Point(374, 9);
+            this.buttonFindNext.Name = "buttonFindNext";
+            this.buttonFindNext.Size = new System.Drawing.Size(75, 23);
+            this.buttonFindNext.TabIndex = 2;
+            this.buttonFindNext.Text = "Find Next";
+            this.buttonFindNext.UseVisualStyleBackColor = true;
+            this.buttonFindNext.Click += new System.EventHandler(this.buttonFindNext_Click);
             // 
             // findFormCancelButton
             // 
@@ -85,17 +85,6 @@
             this.findFormDirectGroupBox.TabStop = false;
             this.findFormDirectGroupBox.Text = "Direction";
             // 
-            // findFormRadioButtonUp
-            // 
-            this.findFormRadioButtonUp.AutoSize = true;
-            this.findFormRadioButtonUp.Location = new System.Drawing.Point(6, 19);
-            this.findFormRadioButtonUp.Name = "findFormRadioButtonUp";
-            this.findFormRadioButtonUp.Size = new System.Drawing.Size(39, 17);
-            this.findFormRadioButtonUp.TabIndex = 0;
-            this.findFormRadioButtonUp.TabStop = true;
-            this.findFormRadioButtonUp.Text = "Up";
-            this.findFormRadioButtonUp.UseVisualStyleBackColor = true;
-            // 
             // findFormRadioButtonDown
             // 
             this.findFormRadioButtonDown.AutoSize = true;
@@ -107,6 +96,17 @@
             this.findFormRadioButtonDown.Text = "Down";
             this.findFormRadioButtonDown.UseVisualStyleBackColor = true;
             // 
+            // findFormRadioButtonUp
+            // 
+            this.findFormRadioButtonUp.AutoSize = true;
+            this.findFormRadioButtonUp.Location = new System.Drawing.Point(6, 19);
+            this.findFormRadioButtonUp.Name = "findFormRadioButtonUp";
+            this.findFormRadioButtonUp.Size = new System.Drawing.Size(39, 17);
+            this.findFormRadioButtonUp.TabIndex = 0;
+            this.findFormRadioButtonUp.TabStop = true;
+            this.findFormRadioButtonUp.Text = "Up";
+            this.findFormRadioButtonUp.UseVisualStyleBackColor = true;
+            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -117,7 +117,7 @@
             this.checkBox1.Text = "Match Case";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // findFunctionForm
+            // FindDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -125,12 +125,13 @@
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.findFormDirectGroupBox);
             this.Controls.Add(this.findFormCancelButton);
-            this.Controls.Add(this.findFormFindButton);
+            this.Controls.Add(this.buttonFindNext);
             this.Controls.Add(this.findFormTextBox);
             this.Controls.Add(this.findFormLabel1);
-            this.Name = "findFunctionForm";
+            this.Name = "FindDialog";
             this.Text = "Find";
-            this.Load += new System.EventHandler(this.findFunctionForm_Load);
+            this.TopMost = true;
+            this.Load += new System.EventHandler(this.FindDialog_Load);
             this.findFormDirectGroupBox.ResumeLayout(false);
             this.findFormDirectGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -142,7 +143,7 @@
 
         private System.Windows.Forms.Label findFormLabel1;
         private System.Windows.Forms.TextBox findFormTextBox;
-        private System.Windows.Forms.Button findFormFindButton;
+        private System.Windows.Forms.Button buttonFindNext;
         private System.Windows.Forms.Button findFormCancelButton;
         private System.Windows.Forms.GroupBox findFormDirectGroupBox;
         private System.Windows.Forms.RadioButton findFormRadioButtonDown;

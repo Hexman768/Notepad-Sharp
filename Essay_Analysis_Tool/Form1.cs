@@ -27,7 +27,7 @@ namespace Essay_Analysis_Tool
 
         private String FILE_NAME;
         private RichTextBoxStreamType FILE_TYPE;
-        private findFunctionForm findFunctionForm;
+        private FindDialog findFunctionForm;
         private Encoding currentFileEncoding;
         
         /// <summary>
@@ -47,6 +47,7 @@ namespace Essay_Analysis_Tool
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NEW_FILE = false;
+            SelectionStart = 0;
 
             file_open.Title = "Open File";
             file_open.Filter = "All Files (*.*)|*.*|Rich Text File (*.rtf)|*.rtf|Text Documents (*.txt)|*.txt";
@@ -147,6 +148,90 @@ namespace Essay_Analysis_Tool
             return false;
         }
 
+        private string searchTextCache;
+        private bool lastMatchCaseCache;
+        private bool lastSearchDownCache;
+
+        public bool FindAndSelect(string searchText, bool matchCase, bool searchDown)
+        {
+            int Index;
+
+            var eStringComparison = matchCase ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
+
+            if (searchDown)
+            {
+                Index = mainEditor.Text.IndexOf(searchText, SelectionEnd, eStringComparison);
+            }
+            else
+            {
+                Index = mainEditor.Text.LastIndexOf(searchText, SelectionStart, SelectionStart, eStringComparison);
+            }
+
+            if (Index == -1) return false;
+
+            searchTextCache = searchText;
+            lastMatchCaseCache = matchCase;
+            lastSearchDownCache = searchDown;
+
+            SelectionStart = Index;
+            SelectionLength = searchText.Length;
+
+            return true;
+        }
+
+        private FindDialog _FindDialog;
+
+        private void menuitemEditFind_Click(object sender, EventArgs e)
+        {
+            Find();
+        }
+
+        private void Find()
+        {
+            if (mainEditor.Text.Length == 0) return;
+
+            if (_FindDialog == null)
+            {
+                _FindDialog = new FindDialog(this);
+            }
+
+            _FindDialog.Left = this.Left + 56;
+            _FindDialog.Top = this.Top + 160;
+
+            if (!_FindDialog.Visible)
+            {
+                _FindDialog.Show(this);
+            }
+            else
+            {
+                _FindDialog.Show();
+            }
+
+            _FindDialog.Triggered();
+        }
+
+        public int SelectionEnd
+        {
+            get { return SelectionStart + SelectionLength; }
+        }
+
+
+        public int SelectionStart
+        {
+            get { return mainEditor.SelectionStart; }
+            set
+            {
+                mainEditor.SelectionStart = value;
+            }
+        }
+
+        public int SelectionLength
+        {
+            get { return mainEditor.SelectionLength; }
+            set { mainEditor.SelectionLength = value; }
+        }
+
+
         /// <summary>
         /// Attempts to save the current file upon clicking the "Save" Option
         /// available in the "Edit" drop-down menu.
@@ -198,7 +283,7 @@ namespace Essay_Analysis_Tool
         {
             if (FIND_FORM_CLOSED || findFunctionForm == null)
             {
-                findFunctionForm = new findFunctionForm(this);
+                findFunctionForm = new FindDialog(this);
                 findFunctionForm.Visible = true;
             }
         }
@@ -213,7 +298,7 @@ namespace Essay_Analysis_Tool
         {
             IS_FILE_DIRTY = true;
             undoToolStripMenuItem.Enabled = true;
-            findToolStripMenuItem.Enabled = !mainEditor.Text.Equals(EMPTY_STRING) ? true : false;
+            findButton.Enabled = !mainEditor.Text.Equals(EMPTY_STRING) ? true : false;
         }
 
         private void cToolStripMenuItem_Click(object sender, EventArgs e)
@@ -279,6 +364,15 @@ namespace Essay_Analysis_Tool
         private void statusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             statusStrip1.Visible = statusBarToolStripMenuItem.Checked ? true : false;
+        }
+
+        private void findNextButton_Click(object sender, EventArgs e)
+        {
+            if (!FindAndSelect(searchTextCache, lastMatchCaseCache, lastSearchDownCache))
+            {
+                MessageBox.Show(this, "No Results Found...", "Warning");
+            }
+            mainEditor.Focus();
         }
     }
 }
