@@ -36,9 +36,6 @@
     <Reference Include="FastColoredTextBox">
       <HintPath>..\..\..\..\Desktop\Important\Zeep\FastColoredTextBox-master\Binary\FastColoredTextBox.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.TextEditor">
-      <HintPath>..\..\..\..\Desktop\Important\Zeep\TextEditor\Lib\ICSharpCode.TextEditor.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -102,6 +99,9 @@
     <Content Include="changes.xml">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -239,7 +239,7 @@
             // 
             this.statusBarToolStripMenuItem.CheckOnClick = true;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.statusBarToolStripMenuItem.Text = "Status Bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.statusBarToolStripMenuItem_Click);
             // 
@@ -256,7 +256,7 @@
             this.visualBasicToolStripMenuItem,
             this.xMLToolStripMenuItem});
             this.syntaxHighlightingToolStripMenuItem.Name = "syntaxHighlightingToolStripMenuItem";
-            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.syntaxHighlightingToolStripMenuItem.Text = "Syntax Highlighting";
             // 
             // noneToolStripMenuItem
@@ -355,6 +355,7 @@
             this.mainEditor.CharWidth = 8;
             this.mainEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.mainEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.mainEditor.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.mainEditor.IsReplaceMode = false;
             this.mainEditor.Location = new System.Drawing.Point(12, 27);
             this.mainEditor.Name = "mainEditor";
