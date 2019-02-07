@@ -2,7 +2,12 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="1.0.0">
-      <action dev="Zachary Pedigo" issue="ISSUE-0010" date="02-03-2019" type="fix">Resolved #10.</action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0020" date="02-07-2019" type="fix">Resolved #20.</action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0009" date="02-06-2019" type="fix">Resolved #9.</action>
+      <action dev="Zachary Pedigo" issue="REVERT-ISSUE-0009" date="02-06-2019" type="fix">REVERT: Resolves #11.</action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0009" date="02-06-2019" type="fix">Resolves #11.</action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0003-0013" date="02-07-2019" type="fix">Resolves #3 and #13.</action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0010" date="02-04-2019" type="fix">Resolves #10.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0006" date="02-03-2019" type="fix">Resolves #6 and Reformatting all some documentation.</action>
       <action dev="Zachary Pedigo" issue="FUNCTION-0002" date="02-01-2019" type="fix">Adding syntax highlighting using FastColoredTextBox and Resolving #4.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0002" date="01-28-2019" type="fix">Resolved #2.</action>
