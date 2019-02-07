@@ -304,61 +304,55 @@ namespace Essay_Analysis_Tool
         private void cToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Language = Language.CSharp;
+            syntaxLabel.Text = "C#";
         }
 
         private void sQLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Language = Language.SQL;
+            syntaxLabel.Text = "SQL";
         }
 
         private void hTMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Language = Language.HTML;
+            syntaxLabel.Text = "HTML";
         }
-
-        private void cToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.CSharp;
-        }
-
-        private void sQLToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.SQL;
-        }
-
-        private void hTMLToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.HTML;
-        }
-
+        
         private void javaScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Language = Language.JS;
+            syntaxLabel.Text = "JavaScript";
         }
 
         private void xMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Language = Language.XML;
+            syntaxLabel.Text = "XML";
         }
 
         private void pHPToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Language = Language.PHP;
+            syntaxLabel.Text = "PHP";
         }
 
         private void luaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Language = Language.Lua;
+            syntaxLabel.Text = "Lua";
         }
 
         private void visualBasicToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Language = Language.VB;
+            syntaxLabel.Text = "Visual Basic";
         }
 
         private void noneToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainEditor.Language = Language.Custom;
+            syntaxLabel.Text = "None";
         }
 
         private void statusBarToolStripMenuItem_Click(object sender, EventArgs e)
