@@ -2,6 +2,7 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="1.0.0">
+      <action dev="Zachary Pedigo" issue="ISSUE-0011" date="02-15-2019" type="fix">Fixing syntax detection upon opening a file.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0020" date="02-07-2019" type="fix">Resolved #20.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0009" date="02-06-2019" type="fix">Resolved #9.</action>
       <action dev="Zachary Pedigo" issue="REVERT-ISSUE-0009" date="02-06-2019" type="fix">REVERT: Resolves #11.</action>
