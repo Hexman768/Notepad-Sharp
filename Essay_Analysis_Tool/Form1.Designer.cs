@@ -338,6 +338,9 @@
             // 
             // mainEditor
             // 
+            this.mainEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.mainEditor.AutoCompleteBracketsList = new char[] {
         '(',
         ')',
@@ -350,6 +353,7 @@
         '\'',
         '\''};
             this.mainEditor.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.mainEditor.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.mainEditor.BackBrush = null;
             this.mainEditor.CharHeight = 14;
             this.mainEditor.CharWidth = 8;
