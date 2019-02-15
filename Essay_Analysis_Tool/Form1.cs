@@ -22,6 +22,13 @@ namespace Essay_Analysis_Tool
         private RichTextBoxStreamType FILE_TYPE;
         private FindDialog findFunctionForm;
         private Encoding currentFileEncoding;
+
+        private const string _HTML_EXT = "html";
+        private const string _XML_EXT = "xml";
+        private const string _JAVASCRIPT_EXT = "js";
+        private const string _CSHARP_EXT = "cs";
+        private const string _LUA_EXT = "lua";
+        private const string _SQL_EXT = "sql";
         
         /// <summary>
         /// Initialzes the Form.
@@ -53,6 +60,7 @@ namespace Essay_Analysis_Tool
                 if (string.IsNullOrEmpty(file_open.FileName))
                     return;
                 FILE_NAME = file_open.FileName;
+                setCurrentEditorSyntaxHighlight(FILE_NAME);
                 currentFileEncoding = EncodingDetector.DetectTextFileEncoding(FILE_NAME);
                 mainEditor.OpenFile(FILE_NAME);
             }
@@ -71,6 +79,64 @@ namespace Essay_Analysis_Tool
                 MessageBox.Show("Unsaved changes will be overridden!");
             }
             NEW_FILE = true;
+        }
+
+        /// <summary>
+        /// Detects the current syntax via the string argument that gets passed in.
+        /// </summary>
+        /// <param name="fName">Name of the file currently open in the editor</param>
+        private void setCurrentEditorSyntaxHighlight(string fName)
+        {
+            char[] name = fName.ToCharArray();
+            string ext = "";
+            int token = fName.Length-1;
+
+            while (name[token] != '.')
+            {
+                ext += name[token].ToString();
+                token -= 1;
+            }
+            name = ext.ToCharArray();
+            Array.Reverse(name);
+            token = 0;
+            ext = "";
+            while (token < name.Length)
+            {
+                ext += name[token].ToString();
+                token += 1;
+            }
+
+            switch(ext)
+            {
+                case _HTML_EXT:
+                    mainEditor.Language = Language.HTML;
+                    syntaxLabel.Text = "HTML";
+                    break;
+                case _XML_EXT:
+                    mainEditor.Language = Language.XML;
+                    syntaxLabel.Text = "XML";
+                    break;
+                case _JAVASCRIPT_EXT:
+                    mainEditor.Language = Language.JS;
+                    syntaxLabel.Text = "JavaScript";
+                    break;
+                case _LUA_EXT:
+                    mainEditor.Language = Language.Lua;
+                    syntaxLabel.Text = "Lua";
+                    break;
+                case _CSHARP_EXT:
+                    mainEditor.Language = Language.CSharp;
+                    syntaxLabel.Text = "C#";
+                    break;
+                case _SQL_EXT:
+                    mainEditor.Language = Language.SQL;
+                    syntaxLabel.Text = "SQL";
+                    break;
+                default:
+                    mainEditor.Language = Language.Custom;
+                    syntaxLabel.Text = "None";
+                    break;
+            }
         }
         
         /// <summary>
