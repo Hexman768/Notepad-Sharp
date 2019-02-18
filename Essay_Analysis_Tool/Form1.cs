@@ -10,6 +10,7 @@ namespace Essay_Analysis_Tool
     {
         // Declaring and Initializing useful variables
         OpenFileDialog file_open = new OpenFileDialog();
+        FontDialog fontDialog = new FontDialog();
 
         public bool UNDO_AVAIALBE = false;
         public bool FIND_FORM_CLOSED = true;
@@ -426,6 +427,25 @@ namespace Essay_Analysis_Tool
                 MessageBox.Show(this, "No Results Found...", "Warning");
             }
             mainEditor.Focus();
+        }
+
+        /// <summary>
+        /// Opens a windows font dialog which allows the user to change or modify
+        /// the current font. However, the FastColoredTextBox only supports monospaced fonts
+        /// so not all fonts will work correctly.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event arguments</param>
+        private void fontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fontDialog.ShowColor = true;
+            fontDialog.ShowApply = true;
+            fontDialog.ShowEffects = true;
+            fontDialog.ShowHelp = true;
+            if (fontDialog.ShowDialog() != DialogResult.Cancel)
+            {
+                mainEditor.Font = fontDialog.Font;
+            }
         }
     }
 }
