@@ -223,8 +223,9 @@
             // fontToolStripMenuItem
             // 
             this.fontToolStripMenuItem.Name = "fontToolStripMenuItem";
-            this.fontToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.fontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fontToolStripMenuItem.Text = "Font";
+            this.fontToolStripMenuItem.Click += new System.EventHandler(this.fontToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -359,7 +360,6 @@
             this.mainEditor.CharWidth = 8;
             this.mainEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.mainEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.mainEditor.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.mainEditor.IsReplaceMode = false;
             this.mainEditor.Location = new System.Drawing.Point(12, 27);
             this.mainEditor.Name = "mainEditor";
