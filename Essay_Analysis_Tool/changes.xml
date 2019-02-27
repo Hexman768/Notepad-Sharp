@@ -2,6 +2,7 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="1.0.0">
+      <action dev="Zachary Pedigo" issue="ISSUE-0015" date="02-26-2019" type="add">Implemented code and removed unneeded code to implement existing features.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0028" date="02-18-2019" type="add">Added font dialog (only supports monospaced fonts).</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0022" date="02-15-2019" type="fix">Fixing automatic resizing of editor.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0011" date="02-15-2019" type="fix">Fixing syntax detection upon opening a file.</action>

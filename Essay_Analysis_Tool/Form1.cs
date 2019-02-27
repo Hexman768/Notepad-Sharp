@@ -1,5 +1,7 @@
-﻿using FastColoredTextBoxNS;
+using FarsiLibrary.Win;
+using FastColoredTextBoxNS;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -10,20 +12,23 @@ namespace Essay_Analysis_Tool
     {
         // Declaring and Initializing useful variables
         OpenFileDialog file_open = new OpenFileDialog();
+        SaveFileDialog sfdMain = new SaveFileDialog();
         FontDialog fontDialog = new FontDialog();
+        FindForm findForm;
+        ContextMenuStrip cmMain;
+        Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
+        Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
+        private readonly Range selection;
 
         public bool UNDO_AVAIALBE = false;
         public bool FIND_FORM_CLOSED = true;
         public bool IS_FILE_DIRTY = false;
         public bool NEW_FILE = true;
         public bool SYNTAX_HIGHLIGHTING = false;
+        public bool WRAP_SEARCH = false;
         public String EMPTY_STRING = "";
-
-        private String FILE_NAME;
-        private RichTextBoxStreamType FILE_TYPE;
-        private FindDialog findFunctionForm;
-        private Encoding currentFileEncoding;
-
+        public int tabCount;
+        
         private const string _HTML_EXT = "html";
         private const string _XML_EXT = "xml";
         private const string _JAVASCRIPT_EXT = "js";
@@ -47,26 +52,55 @@ namespace Essay_Analysis_Tool
         /// <param name="e"></param>
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NEW_FILE = false;
-            SelectionStart = 0;
+            if (file_open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                CreateTab(file_open.FileName);
+        }
 
-            file_open.Title = "Open File";
-            file_open.Filter = "All Files (*.*)|*.*|Rich Text File (*.rtf)|*.rtf|Text Documents (*.txt)|*.txt";
-            file_open.FilterIndex = 1;
-            file_open.Title = "Open text or RTF file";
+        private Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
 
-            FILE_TYPE = RichTextBoxStreamType.RichText;
-            if (DialogResult.OK == file_open.ShowDialog())
+        /// <summary>
+        /// Creates a new tab as well as a new instance of FastColoredTextBox for
+        /// the given filename.
+        /// </summary>
+        /// <param name="fileName">File Name</param>
+        private void CreateTab(string fileName)
+        {
+            try
             {
-                if (string.IsNullOrEmpty(file_open.FileName))
-                    return;
-                FILE_NAME = file_open.FileName;
-                setCurrentEditorSyntaxHighlight(FILE_NAME);
-                currentFileEncoding = EncodingDetector.DetectTextFileEncoding(FILE_NAME);
-                mainEditor.OpenFile(FILE_NAME);
+                var tb = new FastColoredTextBox();
+                tb.Font = new Font("Consolas", 9.75f);
+                tb.ContextMenuStrip = cmMain;
+                tb.Dock = DockStyle.Fill;
+                tb.BorderStyle = BorderStyle.Fixed3D;
+                tb.LeftPadding = 17;
+                tb.Language = Language.CSharp;
+                tb.AddStyle(sameWordsStyle);//same words style
+                var tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb);
+                tab.Tag = fileName;
+                if (fileName != null)
+                {
+                    setCurrentEditorSyntaxHighlight(fileName, tb);
+                    tb.OpenFile(fileName);
+                }
+                tsFiles.AddTab(tab);
+                tsFiles.SelectedItem = tab;
+                tb.Focus();
+                tb.DelayedTextChangedInterval = 1000;
+                tb.DelayedEventsInterval = 500;
+                tb.ChangedLineColor = changedLineColor;
+                tb.HighlightingRangeType = HighlightingRangeType.VisibleRange;
+                AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
+                tabCount++;
+            }
+            catch (Exception ex)
+            {
+                if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
+                {
+                    CreateTab(fileName);
+                }
             }
         }
-        
+
         /// <summary>
         /// Creates a new blank file file while effectively erradicating any unsaved
         /// changes to the previously open document.
@@ -75,10 +109,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e"></param>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!mainEditor.Text.Equals(EMPTY_STRING))
-            {
-                MessageBox.Show("Unsaved changes will be overridden!");
-            }
+            CreateTab(null);
             NEW_FILE = true;
         }
 
@@ -86,7 +117,7 @@ namespace Essay_Analysis_Tool
         /// Detects the current syntax via the string argument that gets passed in.
         /// </summary>
         /// <param name="fName">Name of the file currently open in the editor</param>
-        private void setCurrentEditorSyntaxHighlight(string fName)
+        private void setCurrentEditorSyntaxHighlight(string fName, FastColoredTextBox mainEditor)
         {
             char[] name = fName.ToCharArray();
             string ext = "";
@@ -148,169 +179,134 @@ namespace Essay_Analysis_Tool
         /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (NEW_FILE)
+            if (tsFiles.SelectedItem != null)
             {
-                doSaveAs();
-            }
-            else
-            {
-                doSave();
+                Save(tsFiles.SelectedItem);
             }
         }
         
         /// <summary>
-        /// Calls the doSaveAs() function.
+        /// Takes the current file and saves it as a new one.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            doSaveAs();
+            if (tsFiles.SelectedItem != null)
+            {
+                string oldFile = tsFiles.SelectedItem.Tag as string;
+                tsFiles.SelectedItem.Tag = null;
+                if (!Save(tsFiles.SelectedItem))
+                {
+                    if (oldFile != null)
+                    {
+                        tsFiles.SelectedItem.Tag = oldFile;
+                        tsFiles.SelectedItem.Title = Path.GetFileName(oldFile);
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Shows find dialog
+        /// </summary>
+        public virtual void ShowFindDialog()
+        {
+            ShowFindDialog(null);
         }
 
         /// <summary>
-        /// Opens a save as file dialogue upon clicking the "Save As" Option
-        /// available in the "Edit" drop-down menu.
+        /// Shows find dialog
         /// </summary>
-        public bool doSaveAs()
+        public virtual void ShowFindDialog(string findText)
         {
-            SaveFileDialog saveDlg = new SaveFileDialog();
-
-            // To filter files from SaveFileDialog
-            saveDlg.Filter = "All Files (*.*)|*.*|Rich Text File (*.rtf)|*.rtf|Text Documents (*.txt)|*.txt";
-            saveDlg.DefaultExt = "*.rtf";
-            saveDlg.FilterIndex = 1;
-            saveDlg.Title = "Save the contents";
-
-            DialogResult retval = saveDlg.ShowDialog();
-
-            try
+            if (findForm == null)
             {
-                StreamWriter streamWriter = new StreamWriter(saveDlg.FileName);
-                streamWriter.Write("");
-                currentFileEncoding = streamWriter.Encoding;
-                streamWriter.Close();
-            } catch (Exception e) {
-                MessageBox.Show(e.Message, e.GetType().Name);
+                findForm = new FindForm(CurrentTB);
+                findForm.Show();
             }
             
-            if (retval == DialogResult.OK)
+            findForm.tbFind.SelectAll();
+            findForm.Show();
+            findForm.Focus();
+        }
+        
+        FastColoredTextBox CurrentTB
+        {
+            get
             {
-                try {
-                    mainEditor.SaveToFile(saveDlg.FileName, currentFileEncoding);
-                    MessageBox.Show("File Saved");
-                    return true;
-                } catch (Exception e) {
-                    MessageBox.Show(e.Message, e.GetType().Name);
-                    return false;
+                if (tsFiles.SelectedItem == null)
+                {
+                    return null;
                 }
-            }
-            return false;
-        }
-
-        private string searchTextCache;
-        private bool lastMatchCaseCache;
-        private bool lastSearchDownCache;
-
-        public bool FindAndSelect(string searchText, bool matchCase, bool searchDown)
-        {
-            int Index;
-
-            var eStringComparison = matchCase ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
-
-            if (searchDown)
-            {
-                Index = mainEditor.Text.IndexOf(searchText, SelectionEnd, eStringComparison);
-            }
-            else
-            {
-                Index = mainEditor.Text.LastIndexOf(searchText, SelectionStart, SelectionStart, eStringComparison);
+                return (tsFiles.SelectedItem.Controls[0] as FastColoredTextBox);
             }
 
-            if (Index == -1) return false;
-
-            searchTextCache = searchText;
-            lastMatchCaseCache = matchCase;
-            lastSearchDownCache = searchDown;
-
-            SelectionStart = Index;
-            SelectionLength = searchText.Length;
-
-            return true;
-        }
-
-        private FindDialog _FindDialog;
-
-        private void menuitemEditFind_Click(object sender, EventArgs e)
-        {
-            Find();
-        }
-
-        private void Find()
-        {
-            if (mainEditor.Text.Length == 0) return;
-
-            if (_FindDialog == null)
-            {
-                _FindDialog = new FindDialog(this);
-            }
-
-            _FindDialog.Left = this.Left + 56;
-            _FindDialog.Top = this.Top + 160;
-
-            if (!_FindDialog.Visible)
-            {
-                _FindDialog.Show(this);
-            }
-            else
-            {
-                _FindDialog.Show();
-            }
-
-            _FindDialog.Triggered();
-        }
-
-        public int SelectionEnd
-        {
-            get { return SelectionStart + SelectionLength; }
-        }
-
-
-        public int SelectionStart
-        {
-            get { return mainEditor.SelectionStart; }
             set
             {
-                mainEditor.SelectionStart = value;
+                tsFiles.SelectedItem = (value.Parent as FATabStripItem);
+                value.Focus();
             }
         }
-
-        public int SelectionLength
+        
+        /// <summary>
+        /// Current selection range
+        /// </summary>
+        public Range Selection
         {
-            get { return mainEditor.SelectionLength; }
-            set { mainEditor.SelectionLength = value; }
+            get { return selection; }
+            set
+            {
+                if (value == selection)
+                {
+                    return;
+                }
+
+                selection.BeginUpdate();
+                selection.Start = value.Start;
+                selection.End = value.End;
+                selection.EndUpdate();
+                Invalidate();
+            }
         }
-
-
+        
         /// <summary>
         /// Attempts to save the current file upon clicking the "Save" Option
         /// available in the "Edit" drop-down menu.
         /// </summary>
-        private bool doSave()
+        private bool Save(FATabStripItem tab)
         {
+            var tb = (tab.Controls[0] as FastColoredTextBox);
+            if (tab.Tag == null)
+            {
+                if (sfdMain.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                {
+                    return false;
+                }
+                tab.Title = Path.GetFileName(sfdMain.FileName);
+                tab.Tag = sfdMain.FileName;
+            }
+
             try
             {
-                mainEditor.SaveToFile(FILE_NAME, currentFileEncoding);
-                MessageBox.Show("File Saved");
-                return true;
+                File.WriteAllText(tab.Tag as string, tb.Text);
+                tb.IsChanged = false;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                MessageBox.Show(e.Message, e.GetType().Name);
-                return false;
+                if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
+                {
+                    return Save(tab);
+                }
+                else
+                {
+                    return false;
+                }
             }
+            
+            return true;
         }
-        
+
         /// <summary>
         /// Closes the application.
         /// </summary>
@@ -328,123 +324,205 @@ namespace Essay_Analysis_Tool
         /// <param name="e"></param>
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mainEditor.Undo();
-            redoToolStripMenuItem.Enabled = true;
+            CurrentTB.Undo();
         }
         
         /// <summary>
-        /// Creates a new instance of {findFunctionForm} if {FIND_FORM_CLOSED}
-        /// or the local variable { findFunctionForm } is null. Thus allowing the user
-        /// to search for certain words within the file that is currently open.
+        /// Calls the create tab method.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        private void newToolStripButton_Click(object sender, EventArgs e)
         {
-            if (FIND_FORM_CLOSED || findFunctionForm == null)
+            CreateTab(null);
+        }
+
+        /// <summary>
+        /// Calls the method to show the built-in find dialog.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void findButton_Click(object sender, EventArgs e)
+        {
+            ShowFindDialog();
+        }
+
+        /// <summary>
+        /// Checks if the user clicks ok on the open file dialog, if so
+        /// this method calls the method to create a new tab with the file
+        /// name pulled from the open file dialog.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (file_open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                findFunctionForm = new FindDialog(this);
-                findFunctionForm.Visible = true;
+                CreateTab(file_open.FileName);
             }
         }
 
         /// <summary>
-        /// This method is used to determine if the currently open file is dirty.
-        /// If the file is dirty then the {#textEditorControl1.Undo()} function is performed.
+        /// Removes the tab that is currently selected by the user then
+        /// decreases the tab count by 1.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void mainEditor_TextChanging(object sender, TextChangingEventArgs e)
+        private void closeToolStripButton_Click(object sender, EventArgs e)
         {
-            IS_FILE_DIRTY = true;
-            undoToolStripMenuItem.Enabled = true;
-            findButton.Enabled = !mainEditor.Text.Equals(EMPTY_STRING) ? true : false;
-        }
-
-        private void cToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.CSharp;
-            syntaxLabel.Text = "C#";
-        }
-
-        private void sQLToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.SQL;
-            syntaxLabel.Text = "SQL";
-        }
-
-        private void hTMLToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.HTML;
-            syntaxLabel.Text = "HTML";
-        }
-        
-        private void javaScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.JS;
-            syntaxLabel.Text = "JavaScript";
-        }
-
-        private void xMLToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.XML;
-            syntaxLabel.Text = "XML";
-        }
-
-        private void pHPToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.PHP;
-            syntaxLabel.Text = "PHP";
-        }
-
-        private void luaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.Lua;
-            syntaxLabel.Text = "Lua";
-        }
-
-        private void visualBasicToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.VB;
-            syntaxLabel.Text = "Visual Basic";
-        }
-
-        private void noneToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mainEditor.Language = Language.Custom;
-            syntaxLabel.Text = "None";
-        }
-
-        private void statusBarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            statusStrip1.Visible = statusBarToolStripMenuItem.Checked ? true : false;
-        }
-
-        private void findNextButton_Click(object sender, EventArgs e)
-        {
-            if (!FindAndSelect(searchTextCache, lastMatchCaseCache, lastSearchDownCache))
-            {
-                MessageBox.Show(this, "No Results Found...", "Warning");
-            }
-            mainEditor.Focus();
+            tsFiles.RemoveTab(tsFiles.SelectedItem);
+            tabCount--;
         }
 
         /// <summary>
-        /// Opens a windows font dialog which allows the user to change or modify
-        /// the current font. However, the FastColoredTextBox only supports monospaced fonts
-        /// so not all fonts will work correctly.
+        /// Displays the font dialog which allows the user to change the editor font.
         /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">Event arguments</param>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fontDialog.ShowColor = true;
-            fontDialog.ShowApply = true;
-            fontDialog.ShowEffects = true;
-            fontDialog.ShowHelp = true;
-            if (fontDialog.ShowDialog() != DialogResult.Cancel)
+            if (fontDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                mainEditor.Font = fontDialog.Font;
+                CurrentTB.Font = fontDialog.Font;
+            }
+        }
+
+        /// <summary>
+        /// Saves the current file if the current tab is not null.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (tsFiles.SelectedItem != null)
+            {
+                Save(tsFiles.SelectedItem);
+            }
+        }
+
+        /// <summary>
+        /// Calls the close all tabs function.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void closeAllToolStripButton_Click(object sender, EventArgs e)
+        {
+            CloseAllTabs();
+        }
+
+        /// <summary>
+        /// Closes all tabs until the running count of tabs is 0.
+        /// </summary>
+        private void CloseAllTabs()
+        {            
+            while (tabCount > 0)
+            {
+                tsFiles.RemoveTab(tsFiles.SelectedItem);
+                tabCount--;
+            }
+        }
+
+        /// <summary>
+        /// Calls the cut function on the current instance of FastColoredTextBox assuming it is not null.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cutToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Cut();
+            }
+        }
+
+        /// <summary>
+        /// Calls the paste function on the current instance of FastColoredTextBox assuming it is not null.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pasteToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Paste();
+            }
+        }
+
+        /// <summary>
+        /// Calls the copy function on the current instance of FastColoredTextBox assuming it is not null.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void copyToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Copy();
+            }
+        }
+
+        /// <summary>
+        /// Calls the undo function on the current instance of FastColoredTextBox assuming it is not null.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void undoToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Undo();
+            }
+        }
+
+        /// <summary>
+        /// Calls the redo function on the current instance of FastColoredTextBox assuming it is not null.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void redoToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Redo();
+            }
+        }
+
+        /// <summary>
+        /// Increases the text size by 2.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void zoomInToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.ChangeFontSize(2);
+            }
+        }
+
+        /// <summary>
+        /// Reduces the text size by 2.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void zoomOutToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.ChangeFontSize(-2);
+            }
+        }
+
+        /// <summary>
+        /// Opens the find dialog if the current instance of FastColoredTextBox is not null.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void findToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                ShowFindDialog();
             }
         }
     }
