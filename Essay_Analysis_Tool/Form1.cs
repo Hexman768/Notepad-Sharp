@@ -36,6 +36,8 @@ namespace Essay_Analysis_Tool
         private const string _LUA_EXT = "lua";
         private const string _SQL_EXT = "sql";
         
+        
+        
         /// <summary>
         /// Initialzes the Form.
         /// </summary>
@@ -523,6 +525,58 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 ShowFindDialog();
+            }
+        }
+
+        /// <summary>
+        /// Checks for hotkeys by checking which keycodes have been sent to 
+        /// this method.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.F)
+            {
+                if (CurrentTB != null)
+                {
+                    ShowFindDialog();
+                }
+            }
+            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.C)
+            {
+                if (CurrentTB != null)
+                {
+                    CurrentTB.Copy();
+                }
+            }
+            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.V)
+            {
+                if (CurrentTB != null)
+                {
+                    CurrentTB.Paste();
+                }
+            }
+            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.X)
+            {
+                if (CurrentTB != null)
+                {
+                    CurrentTB.Cut();
+                }
+            }
+            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.Z)
+            {
+                if (CurrentTB != null)
+                {
+                    CurrentTB.Undo();
+                }
+            }
+            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.R)
+            {
+                if (CurrentTB != null)
+                {
+                    CurrentTB.Redo();
+                }
             }
         }
     }
