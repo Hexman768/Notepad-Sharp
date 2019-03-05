@@ -92,6 +92,7 @@ namespace Essay_Analysis_Tool
                 tb.ChangedLineColor = changedLineColor;
                 tb.HighlightingRangeType = HighlightingRangeType.VisibleRange;
                 AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
+                documentMap.Target = CurrentTB;
                 tabCount++;
             }
             catch (Exception ex)
@@ -577,6 +578,31 @@ namespace Essay_Analysis_Tool
                 {
                     CurrentTB.Redo();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sets the document map target to the current instance of FastColoredTextBox if
+        /// the document map option under "view" is selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void documentMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            documentMap.Target = documentMapToolStripMenuItem.Checked ? CurrentTB : null;
+        }
+
+        /// <summary>
+        /// Sets the document map target to the current instance of FastColoredTextBox if
+        /// the current instance of FastColoredTextBox is not null and the document map
+        /// option under "view" is selected.
+        /// </summary>
+        /// <param name="e"></param>
+        private void tsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
+        {
+            if (CurrentTB != null && documentMapToolStripMenuItem.Checked)
+            {
+                documentMap.Target = CurrentTB;
             }
         }
     }
