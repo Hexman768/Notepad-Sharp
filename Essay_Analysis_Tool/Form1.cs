@@ -79,6 +79,7 @@ namespace Essay_Analysis_Tool
                 tb.AddStyle(sameWordsStyle);//same words style
                 var tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb);
                 tab.Tag = fileName;
+                tb.Language = Language.Custom;
                 if (fileName != null)
                 {
                     setCurrentEditorSyntaxHighlight(fileName, tb);
