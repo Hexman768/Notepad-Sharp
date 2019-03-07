@@ -35,6 +35,7 @@ namespace Essay_Analysis_Tool
         private const string _CSHARP_EXT = "cs";
         private const string _LUA_EXT = "lua";
         private const string _SQL_EXT = "sql";
+        private const string _JAVA_EXT = "java";
         
         
         
@@ -55,7 +56,9 @@ namespace Essay_Analysis_Tool
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (file_open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
                 CreateTab(file_open.FileName);
+            }
         }
 
         private Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
@@ -82,7 +85,7 @@ namespace Essay_Analysis_Tool
                 tb.Language = Language.Custom;
                 if (fileName != null)
                 {
-                    setCurrentEditorSyntaxHighlight(fileName, tb);
+                    setSyntaxWithExtension(fileName, tb);
                     tb.OpenFile(fileName);
                 }
                 tsFiles.AddTab(tab);
@@ -121,7 +124,7 @@ namespace Essay_Analysis_Tool
         /// Detects the current syntax via the string argument that gets passed in.
         /// </summary>
         /// <param name="fName">Name of the file currently open in the editor</param>
-        private void setCurrentEditorSyntaxHighlight(string fName, FastColoredTextBox mainEditor)
+        private void setSyntaxWithExtension(string fName, FastColoredTextBox mainEditor)
         {
             char[] name = fName.ToCharArray();
             string ext = "";
@@ -168,10 +171,30 @@ namespace Essay_Analysis_Tool
                     mainEditor.Language = Language.SQL;
                     syntaxLabel.Text = "SQL";
                     break;
+                case _JAVA_EXT:
+                    mainEditor.Language = Language.CSharp;
+                    syntaxLabel.Text = "Java";
+                    break;
                 default:
                     mainEditor.Language = Language.Custom;
                     syntaxLabel.Text = "None";
                     break;
+            }
+        }
+
+        public void changeSyntax(FastColoredTextBox tb, Language language)
+        {
+            try
+            {
+                tb.Language = language;
+                tb.OpenFile(file_open.FileName);
+            }
+            catch (Exception e)
+            {
+                if (MessageBox.Show(e.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
+                {
+                    changeSyntax(tb, language);
+                }
             }
         }
         
@@ -366,6 +389,11 @@ namespace Essay_Analysis_Tool
             }
         }
 
+        private void updateDocumentMap()
+        {
+            documentMap.Target = tabCount > 0 ? CurrentTB : null;
+        }
+
         /// <summary>
         /// Removes the tab that is currently selected by the user then
         /// decreases the tab count by 1.
@@ -376,6 +404,7 @@ namespace Essay_Analysis_Tool
         {
             tsFiles.RemoveTab(tsFiles.SelectedItem);
             tabCount--;
+            updateDocumentMap();
         }
 
         /// <summary>
@@ -412,6 +441,7 @@ namespace Essay_Analysis_Tool
         private void closeAllToolStripButton_Click(object sender, EventArgs e)
         {
             CloseAllTabs();
+            updateDocumentMap();
         }
 
         /// <summary>
@@ -590,7 +620,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e"></param>
         private void documentMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            documentMap.Target = documentMapToolStripMenuItem.Checked ? CurrentTB : null;
+            documentMap.Visible = documentMapToolStripMenuItem.Checked ? true : false;
         }
 
         /// <summary>
@@ -601,9 +631,99 @@ namespace Essay_Analysis_Tool
         /// <param name="e"></param>
         private void tsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
         {
-            if (CurrentTB != null && documentMapToolStripMenuItem.Checked)
+            updateDocumentMap();
+        }
+
+        private void cToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
             {
-                documentMap.Target = CurrentTB;
+                syntaxLabel.Text = "C#";
+                changeSyntax(CurrentTB, Language.CSharp);
+            }
+        }
+
+        private void noneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "None";
+                changeSyntax(CurrentTB, Language.Custom);
+            }
+        }
+
+        private void hTMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "HTML";
+                changeSyntax(CurrentTB, Language.HTML);
+            }
+        }
+
+        private void javaScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "JavaScript";
+                changeSyntax(CurrentTB, Language.JS);
+            }
+        }
+
+        private void luaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "Lua";
+                changeSyntax(CurrentTB, Language.Lua);
+            }
+        }
+
+        private void pHPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "PHP";
+                changeSyntax(CurrentTB, Language.PHP);
+            }
+        }
+
+        private void sQLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "SQL";
+                changeSyntax(CurrentTB, Language.SQL);
+            }
+        }
+
+        private void visualBasicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "Visual Basic";
+                changeSyntax(CurrentTB, Language.VB);
+            }
+        }
+
+        private void xMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "XML";
+                changeSyntax(CurrentTB, Language.XML);
+            }
+        }
+
+        private void statusBarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (statusBarToolStripMenuItem.Checked)
+            {
+                statusStrip1.Show();
+            }
+            else
+            {
+                statusStrip1.Hide();
             }
         }
     }
