@@ -4,6 +4,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Essay_Analysis_Tool
@@ -24,7 +25,7 @@ namespace Essay_Analysis_Tool
         public bool FIND_FORM_CLOSED = true;
         public bool IS_FILE_DIRTY = false;
         public bool NEW_FILE = true;
-        public bool SYNTAX_HIGHLIGHTING = false;
+        public bool BATCH_HIGHLIGHTING = false;
         public bool WRAP_SEARCH = false;
         public String EMPTY_STRING = "";
         public int tabCount;
@@ -36,9 +37,21 @@ namespace Essay_Analysis_Tool
         private const string _LUA_EXT = "lua";
         private const string _SQL_EXT = "sql";
         private const string _JAVA_EXT = "java";
-        
-        
-        
+        private const string _BAT_EXT = "bat";
+
+        //styles
+        TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
+        TextStyle LightBlueStyle = new TextStyle(Brushes.RoyalBlue, null, FontStyle.Regular);
+        TextStyle YellowStyle = new TextStyle(Brushes.YellowGreen, null, FontStyle.Regular);
+        TextStyle RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
+        TextStyle BoldStyle = new TextStyle(null, null, FontStyle.Bold | FontStyle.Underline);
+        TextStyle GrayStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
+        TextStyle MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
+        TextStyle GreenStyleItalic = new TextStyle(Brushes.Green, null, FontStyle.Italic);
+        TextStyle BrownStyleItalic = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
+        TextStyle MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
+        MarkerStyle SameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(40, Color.Gray)));
+
         /// <summary>
         /// Initialzes the Form.
         /// </summary>
@@ -78,23 +91,29 @@ namespace Essay_Analysis_Tool
                 tb.Dock = DockStyle.Fill;
                 tb.BorderStyle = BorderStyle.Fixed3D;
                 tb.LeftPadding = 17;
-                tb.Language = Language.CSharp;
                 tb.AddStyle(sameWordsStyle);//same words style
                 var tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb);
                 tab.Tag = fileName;
-                tb.Language = Language.Custom;
+                tb.HighlightingRangeType = HighlightingRangeType.VisibleRange;
                 if (fileName != null)
                 {
-                    setSyntaxWithExtension(fileName, tb);
-                    tb.OpenFile(fileName);
+                    if (!setCurrentEditorSyntaxHighlight(fileName, tb))
+                    {
+                        tb.OpenFile(fileName);
+                        batchSyntaxHighlight(tb);
+                    }
+                    else
+                    {
+                        tb.OpenFile(fileName);
+                    }
                 }
                 tsFiles.AddTab(tab);
                 tsFiles.SelectedItem = tab;
                 tb.Focus();
+                tb.TextChanged += new EventHandler<TextChangedEventArgs>(tb_TextChanged);
                 tb.DelayedTextChangedInterval = 1000;
                 tb.DelayedEventsInterval = 500;
                 tb.ChangedLineColor = changedLineColor;
-                tb.HighlightingRangeType = HighlightingRangeType.VisibleRange;
                 AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
                 documentMap.Target = CurrentTB;
                 tabCount++;
@@ -124,7 +143,7 @@ namespace Essay_Analysis_Tool
         /// Detects the current syntax via the string argument that gets passed in.
         /// </summary>
         /// <param name="fName">Name of the file currently open in the editor</param>
-        private void setSyntaxWithExtension(string fName, FastColoredTextBox mainEditor)
+        private bool setCurrentEditorSyntaxHighlight(string fName, FastColoredTextBox mainEditor)
         {
             char[] name = fName.ToCharArray();
             string ext = "";
@@ -175,11 +194,17 @@ namespace Essay_Analysis_Tool
                     mainEditor.Language = Language.CSharp;
                     syntaxLabel.Text = "Java";
                     break;
+                case _BAT_EXT:
+                    mainEditor.Language = Language.Custom;
+                    batchToolStripMenuItem.Checked = true;
+                    syntaxLabel.Text = "Batch";
+                    return false;
                 default:
                     mainEditor.Language = Language.Custom;
                     syntaxLabel.Text = "None";
                     break;
             }
+            return true;
         }
 
         public void changeSyntax(FastColoredTextBox tb, Language language)
@@ -454,6 +479,38 @@ namespace Essay_Analysis_Tool
                 tsFiles.RemoveTab(tsFiles.SelectedItem);
                 tabCount--;
             }
+            documentMap.Target = null;
+        }
+
+        private void batchSyntaxHighlight(FastColoredTextBox fctb)
+        {
+            fctb.LeftBracket = '(';
+            fctb.RightBracket = ')';
+            Range e = fctb.Range;
+            // Clear all styles
+            e.ClearStyle(StyleIndex.All);
+            //variable highlighting
+            e.SetStyle(YellowStyle, "(\".+?\"|\'.+?\')", RegexOptions.Singleline);
+            e.SetStyle(MagentaStyle, @"%.+?%", RegexOptions.Multiline);
+            //attribute highlighting
+            e.SetStyle(GrayStyle, @"^\s*(?<range>\[.+?\])\s*$", RegexOptions.Multiline);
+            //class name highlighting
+            e.SetStyle(BoldStyle, @"^:[a-zA-Z]+", RegexOptions.Multiline);
+            //symbol highlighting
+            e.SetStyle(MagentaStyle, @"^(@)(?=(?i)echo)", RegexOptions.Multiline);
+            e.SetStyle(RedStyle, @"(\*)", RegexOptions.Singleline);
+            //keyword highlighting
+            e.SetStyle(BlueStyle, @"(?<!(^(?i)(rem|::|echo).*))(?i)goto", RegexOptions.Multiline);
+            e.SetStyle(BlueStyle, @"(?<!(^(?i)(rem|::|echo).*))(?i)do", RegexOptions.Multiline);
+            e.SetStyle(BlueStyle, @"^([ ]{1,}|@)?\b(?i)(set|echo|for|pushd|popd|pause|exit|cd|if|else|goto|del|cls)(?![a-zA-Z]|[0-9])", RegexOptions.Multiline);
+            //outside keyword highlighting
+            e.SetStyle(LightBlueStyle, @"^([ ]{1,}|@)?\b(?i)(git)(?![a-zA-Z]|[0-9])", RegexOptions.Multiline);
+            //comment highlighting
+            e.SetStyle(GreenStyleItalic, @"(REM.*)");
+            e.SetStyle(GreenStyleItalic, @"::.*");
+            //clear folding markers
+            e.ClearFoldingMarkers();
+            BATCH_HIGHLIGHTING = true;
         }
 
         /// <summary>
@@ -725,6 +782,21 @@ namespace Essay_Analysis_Tool
             {
                 statusStrip1.Hide();
             }
+        }
+
+        private void tb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (CurrentTB.Language == Language.Custom)
+            {
+                batchSyntaxHighlight(CurrentTB);
+            }
+        }
+
+        private void batchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            syntaxLabel.Text = "Batch";
+            CurrentTB.Language = Language.Custom;
+            batchSyntaxHighlight(CurrentTB);
         }
     }
 }
