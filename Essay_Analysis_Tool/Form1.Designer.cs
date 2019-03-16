@@ -257,7 +257,7 @@
             // 
             this.statusBarToolStripMenuItem.CheckOnClick = true;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.statusBarToolStripMenuItem.Text = "Status Bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.statusBarToolStripMenuItem_Click);
             // 
@@ -275,7 +275,7 @@
             this.xMLToolStripMenuItem,
             this.batchToolStripMenuItem});
             this.syntaxHighlightingToolStripMenuItem.Name = "syntaxHighlightingToolStripMenuItem";
-            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.syntaxHighlightingToolStripMenuItem.Text = "Syntax Highlighting";
             // 
             // noneToolStripMenuItem
@@ -340,16 +340,6 @@
             this.xMLToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.xMLToolStripMenuItem.Text = "XML";
             this.xMLToolStripMenuItem.Click += new System.EventHandler(this.xMLToolStripMenuItem_Click);
-            // 
-            // documentMapToolStripMenuItem
-            // 
-            this.documentMapToolStripMenuItem.Checked = true;
-            this.documentMapToolStripMenuItem.CheckOnClick = true;
-            this.documentMapToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.documentMapToolStripMenuItem.Name = "documentMapToolStripMenuItem";
-            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.documentMapToolStripMenuItem.Text = "Document Map";
-            this.documentMapToolStripMenuItem.Click += new System.EventHandler(this.documentMapToolStripMenuItem_Click);
             // 
             // batchToolStripMenuItem
             // 
@@ -598,7 +588,7 @@
             this.tsFiles.TabIndex = 4;
             this.tsFiles.Text = "faTabStrip1";
             this.tsFiles.TabStripItemSelectionChanged += new FarsiLibrary.Win.TabStripItemChangedHandler(this.tsFiles_TabStripItemSelectionChanged);
-            this.tsFiles.TabStripItemClosed += new System.EventHandler(this.zoomOutToolStripButton_Click);
+            this.tsFiles.TabStripItemClosed += new System.EventHandler(this.tsFiles_TabStripItemClosed);
             // 
             // documentMap1
             // 
