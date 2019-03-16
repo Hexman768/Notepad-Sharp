@@ -115,8 +115,8 @@ namespace Essay_Analysis_Tool
                 tb.DelayedEventsInterval = 500;
                 tb.ChangedLineColor = changedLineColor;
                 AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
-                documentMap.Target = CurrentTB;
                 tabCount++;
+                updateDocumentMap();
             }
             catch (Exception ex)
             {
@@ -286,7 +286,7 @@ namespace Essay_Analysis_Tool
         {
             get
             {
-                if (tsFiles.SelectedItem == null)
+                if (tsFiles.SelectedItem == null || tabCount == 0)
                 {
                     return null;
                 }
@@ -796,6 +796,12 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "Batch";
             CurrentTB.Language = Language.Custom;
             batchSyntaxHighlight(CurrentTB);
+        }
+
+        private void tsFiles_TabStripItemClosed(object sender, EventArgs e)
+        {
+            tabCount--;
+            updateDocumentMap();
         }
     }
 }
