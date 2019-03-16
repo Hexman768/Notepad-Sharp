@@ -212,7 +212,6 @@ namespace Essay_Analysis_Tool
             try
             {
                 tb.Language = language;
-                tb.OpenFile(file_open.FileName);
             }
             catch (Exception e)
             {
