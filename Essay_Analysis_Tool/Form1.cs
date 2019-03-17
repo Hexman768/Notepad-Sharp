@@ -803,5 +803,21 @@ namespace Essay_Analysis_Tool
             tabCount--;
             updateDocumentMap();
         }
+
+        private void refreshToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Refresh();
+            }
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Refresh();
+            }
+        }
     }
 }
