@@ -46,7 +46,6 @@
             this.findButton = new System.Windows.Forms.ToolStripMenuItem();
             this.findNextButton = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.documentMapToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -165,8 +164,7 @@
             this.deleteToolStripMenuItem,
             this.findButton,
             this.findNextButton,
-            this.replaceToolStripMenuItem,
-            this.refreshToolStripMenuItem});
+            this.replaceToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
@@ -261,7 +259,7 @@
             // 
             this.statusBarToolStripMenuItem.CheckOnClick = true;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.statusBarToolStripMenuItem.Text = "Status Bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.statusBarToolStripMenuItem_Click);
             // 
@@ -279,7 +277,7 @@
             this.xMLToolStripMenuItem,
             this.batchToolStripMenuItem});
             this.syntaxHighlightingToolStripMenuItem.Name = "syntaxHighlightingToolStripMenuItem";
-            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.syntaxHighlightingToolStripMenuItem.Text = "Syntax Highlighting";
             // 
             // noneToolStripMenuItem
@@ -355,11 +353,8 @@
             // 
             // documentMapToolStripMenuItem
             // 
-            this.documentMapToolStripMenuItem.Checked = true;
-            this.documentMapToolStripMenuItem.CheckOnClick = true;
-            this.documentMapToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.documentMapToolStripMenuItem.Name = "documentMapToolStripMenuItem";
-            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.documentMapToolStripMenuItem.Text = "Document Map";
             this.documentMapToolStripMenuItem.Click += new System.EventHandler(this.documentMapToolStripMenuItem_Click);
             // 
@@ -613,7 +608,7 @@
             this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.tsFiles.Location = new System.Drawing.Point(12, 60);
             this.tsFiles.Name = "tsFiles";
-            this.tsFiles.Size = new System.Drawing.Size(769, 486);
+            this.tsFiles.Size = new System.Drawing.Size(915, 486);
             this.tsFiles.TabIndex = 4;
             this.tsFiles.Text = "faTabStrip1";
             this.tsFiles.TabStripItemSelectionChanged += new FarsiLibrary.Win.TabStripItemChangedHandler(this.tsFiles_TabStripItemSelectionChanged);
@@ -641,6 +636,7 @@
             this.documentMap.TabIndex = 0;
             this.documentMap.Target = null;
             this.documentMap.Text = "documentMap";
+            this.documentMap.Visible = false;
             // 
             // mainForm
             // 
@@ -728,7 +724,6 @@
         private System.Windows.Forms.ToolStripMenuItem documentMapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem batchToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton hlCurrentLineToolStripButton;
     }
 }

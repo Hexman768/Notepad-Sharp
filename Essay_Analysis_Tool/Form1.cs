@@ -28,6 +28,7 @@ namespace Essay_Analysis_Tool
         public bool BATCH_HIGHLIGHTING = false;
         public bool WRAP_SEARCH = false;
         public bool HIGHLIGHT_CURRENT_LINE = true;
+        public bool ENABLE_DOCUMENT_MAP = true;
         public String EMPTY_STRING = "";
         public int tabCount;
         
@@ -418,6 +419,14 @@ namespace Essay_Analysis_Tool
         private void updateDocumentMap()
         {
             documentMap.Target = tabCount > 0 ? CurrentTB : null;
+            documentMap.Visible = ENABLE_DOCUMENT_MAP ? true : false;
+            if (!ENABLE_DOCUMENT_MAP || CurrentTB == null)
+            {
+                tsFiles.Width = this.Width - 40;
+                documentMap.Visible = false;
+                return;
+            }
+            tsFiles.Width = documentMap.Left - 23;
         }
 
         /// <summary>
@@ -678,7 +687,8 @@ namespace Essay_Analysis_Tool
         /// <param name="e"></param>
         private void documentMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            documentMap.Visible = documentMapToolStripMenuItem.Checked ? true : false;
+            ENABLE_DOCUMENT_MAP = ENABLE_DOCUMENT_MAP ? false : true;
+            updateDocumentMap();
         }
 
         /// <summary>
@@ -795,9 +805,12 @@ namespace Essay_Analysis_Tool
 
         private void batchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "Batch";
-            CurrentTB.Language = Language.Custom;
-            batchSyntaxHighlight(CurrentTB);
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "Batch";
+                CurrentTB.Language = Language.Custom;
+                batchSyntaxHighlight(CurrentTB);
+            }
         }
 
         private void tsFiles_TabStripItemClosed(object sender, EventArgs e)

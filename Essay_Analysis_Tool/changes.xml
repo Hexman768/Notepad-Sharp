@@ -2,6 +2,8 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="1.0.0">
+      <action dev="" issue="" date="" type=""></action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0052" date="03-20-2019" type="fix">ISSUE-0052: Fixed DocumentMap UI Issue.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0039" date="03-20-2019" type="add">Added refresh button icon and main editor icon.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0039" date="03-17-2019" type="add">Added refresh button to tool strip.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0046" date="03-16-2019" type="fix">Fixed Using "X" button on tabstrip causes documentmap to retain image.</action>
