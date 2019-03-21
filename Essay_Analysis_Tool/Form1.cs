@@ -27,6 +27,7 @@ namespace Essay_Analysis_Tool
         public bool NEW_FILE = true;
         public bool BATCH_HIGHLIGHTING = false;
         public bool WRAP_SEARCH = false;
+        public bool HIGHLIGHT_CURRENT_LINE = true;
         public String EMPTY_STRING = "";
         public int tabCount;
         
@@ -117,6 +118,7 @@ namespace Essay_Analysis_Tool
                 AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
                 tabCount++;
                 updateDocumentMap();
+                highlightCurrentLine();
             }
             catch (Exception ex)
             {
@@ -811,13 +813,30 @@ namespace Essay_Analysis_Tool
                 CurrentTB.Refresh();
             }
         }
-
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        
+        private void highlightCurrentLine()
         {
+            foreach (FATabStripItem tab in tsFiles.Items)
+            {
+                if (HIGHLIGHT_CURRENT_LINE)
+                {
+                    (tab.Controls[0] as FastColoredTextBox).CurrentLineColor = currentLineColor;
+                }
+                else
+                {
+                    (tab.Controls[0] as FastColoredTextBox).CurrentLineColor = Color.Transparent;
+                }
+            }
             if (CurrentTB != null)
             {
-                CurrentTB.Refresh();
+                CurrentTB.Invalidate();
             }
+        }
+        
+        private void hlCurrentLineToolStripButton_Click(object sender, EventArgs e)
+        {
+            HIGHLIGHT_CURRENT_LINE = HIGHLIGHT_CURRENT_LINE ? false : true;
+            highlightCurrentLine();
         }
     }
 }
