@@ -170,51 +170,63 @@ namespace Essay_Analysis_Tool
             switch(ext)
             {
                 case _HTML_EXT:
-                    mainEditor.Language = Language.HTML;
+                    changeSyntax(CurrentTB, Language.HTML);
                     syntaxLabel.Text = "HTML";
                     break;
                 case _XML_EXT:
-                    mainEditor.Language = Language.XML;
+                    changeSyntax(CurrentTB, Language.XML);
                     syntaxLabel.Text = "XML";
                     break;
                 case _JAVASCRIPT_EXT:
-                    mainEditor.Language = Language.JS;
+                    changeSyntax(CurrentTB, Language.JS);
                     syntaxLabel.Text = "JavaScript";
                     break;
                 case _LUA_EXT:
-                    mainEditor.Language = Language.Lua;
+                    changeSyntax(CurrentTB, Language.Lua);
                     syntaxLabel.Text = "Lua";
                     break;
                 case _CSHARP_EXT:
-                    mainEditor.Language = Language.CSharp;
+                    changeSyntax(CurrentTB, Language.CSharp);
                     syntaxLabel.Text = "C#";
                     break;
                 case _SQL_EXT:
-                    mainEditor.Language = Language.SQL;
+                    changeSyntax(CurrentTB, Language.SQL);
                     syntaxLabel.Text = "SQL";
                     break;
                 case _JAVA_EXT:
-                    mainEditor.Language = Language.CSharp;
+                    changeSyntax(CurrentTB, Language.CSharp);
                     syntaxLabel.Text = "Java";
                     break;
                 case _BAT_EXT:
                     mainEditor.Language = Language.Custom;
+                    BATCH_HIGHLIGHTING = true;
                     batchToolStripMenuItem.Checked = true;
                     syntaxLabel.Text = "Batch";
                     return false;
                 default:
                     mainEditor.Language = Language.Custom;
+                    BATCH_HIGHLIGHTING = false;
                     syntaxLabel.Text = "None";
                     break;
             }
             return true;
         }
-
+        
+        /// <summary>
+        /// Changes the language of the given FastColoredTextBox instacnce
+        /// and clears all styles.
+        /// </summary>
+        /// <param name="tb">FastColoredTextBox</param>
+        /// <param name="language">Language</param>
         public void changeSyntax(FastColoredTextBox tb, Language language)
         {
+            BATCH_HIGHLIGHTING = false;
             try
             {
+                tb.Range.ClearStyle(StyleIndex.All);
                 tb.Language = language;
+                tb.TextChanged -= tb_TextChanged;
+                tb.OnTextChanged();
             }
             catch (Exception e)
             {
@@ -797,7 +809,7 @@ namespace Essay_Analysis_Tool
 
         private void tb_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (CurrentTB.Language == Language.Custom)
+            if (CurrentTB.Language == Language.Custom && BATCH_HIGHLIGHTING)
             {
                 batchSyntaxHighlight(CurrentTB);
             }
