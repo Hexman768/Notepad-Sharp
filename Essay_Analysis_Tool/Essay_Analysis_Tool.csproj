@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FastColoredTextBox">
-      <HintPath>..\Notepad-Sharp\Resources\FastColoredTextBox.dll</HintPath>
+    <Reference Include="FastColoredTextBox, Version=2.16.24.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\FastColoredTextBox.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,8 +49,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TabStrip">
-      <HintPath>..\Notepad-Sharp\Resources\TabStrip.dll</HintPath>
+    <Reference Include="TabStrip, Version=2.0.2523.29272, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\TabStrip.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

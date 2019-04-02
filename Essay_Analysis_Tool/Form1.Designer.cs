@@ -173,7 +173,7 @@
             // 
             this.undoToolStripMenuItem.Enabled = false;
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.undoToolStripMenuItem.Text = "Undo";
             this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
             // 
@@ -181,53 +181,53 @@
             // 
             this.redoToolStripMenuItem.Enabled = false;
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.redoToolStripMenuItem.Text = "Redo";
             // 
             // cutToolStripMenuItem
             // 
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cutToolStripMenuItem.Text = "Cut";
             // 
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Enabled = false;
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             // 
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Enabled = false;
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Enabled = false;
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             // 
             // findButton
             // 
             this.findButton.Name = "findButton";
-            this.findButton.Size = new System.Drawing.Size(124, 22);
+            this.findButton.Size = new System.Drawing.Size(180, 22);
             this.findButton.Text = "Find";
             this.findButton.Click += new System.EventHandler(this.findButton_Click);
             // 
             // findNextButton
             // 
             this.findNextButton.Name = "findNextButton";
-            this.findNextButton.Size = new System.Drawing.Size(124, 22);
+            this.findNextButton.Size = new System.Drawing.Size(180, 22);
             this.findNextButton.Text = "Find Next";
             // 
             // replaceToolStripMenuItem
             // 
             this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
-            this.replaceToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.replaceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.replaceToolStripMenuItem.Text = "Replace";
             // 
             // formatToolStripMenuItem
@@ -259,7 +259,7 @@
             // 
             this.statusBarToolStripMenuItem.CheckOnClick = true;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.statusBarToolStripMenuItem.Text = "Status Bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.statusBarToolStripMenuItem_Click);
             // 
@@ -277,7 +277,7 @@
             this.xMLToolStripMenuItem,
             this.batchToolStripMenuItem});
             this.syntaxHighlightingToolStripMenuItem.Name = "syntaxHighlightingToolStripMenuItem";
-            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.syntaxHighlightingToolStripMenuItem.Text = "Syntax Highlighting";
             // 
             // noneToolStripMenuItem
@@ -354,7 +354,7 @@
             // documentMapToolStripMenuItem
             // 
             this.documentMapToolStripMenuItem.Name = "documentMapToolStripMenuItem";
-            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.documentMapToolStripMenuItem.Text = "Document Map";
             this.documentMapToolStripMenuItem.Click += new System.EventHandler(this.documentMapToolStripMenuItem_Click);
             // 
@@ -611,6 +611,7 @@
             this.tsFiles.Size = new System.Drawing.Size(915, 486);
             this.tsFiles.TabIndex = 4;
             this.tsFiles.Text = "faTabStrip1";
+            this.tsFiles.TabStripItemClosing += new FarsiLibrary.Win.TabStripItemClosingHandler(this.tsFiles_TabStripItemClosing);
             this.tsFiles.TabStripItemSelectionChanged += new FarsiLibrary.Win.TabStripItemChangedHandler(this.tsFiles_TabStripItemSelectionChanged);
             this.tsFiles.TabStripItemClosed += new System.EventHandler(this.tsFiles_TabStripItemClosed);
             // 
@@ -653,6 +654,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "mainForm";
             this.Text = "Notepad#";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainForm_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
