@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -30,7 +29,6 @@ namespace Essay_Analysis_Tool
         public bool HIGHLIGHT_CURRENT_LINE = true;
         public bool ENABLE_DOCUMENT_MAP = true;
         public String EMPTY_STRING = "";
-        public int tabCount;
         
         private const string _html = "html";
         private const string _xml = "xml";
@@ -42,18 +40,43 @@ namespace Essay_Analysis_Tool
         private const string _bat = "bat";
 
         //styles
-        TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
-        TextStyle LightBlueStyle = new TextStyle(Brushes.RoyalBlue, null, FontStyle.Regular);
-        TextStyle YellowStyle = new TextStyle(Brushes.YellowGreen, null, FontStyle.Regular);
-        TextStyle RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
-        TextStyle BoldStyle = new TextStyle(null, null, FontStyle.Bold | FontStyle.Underline);
-        TextStyle GrayStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
-        TextStyle MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
-        TextStyle GreenStyleItalic = new TextStyle(Brushes.Green, null, FontStyle.Italic);
-        TextStyle BrownStyleItalic = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
-        TextStyle MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
-        MarkerStyle SameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(40, Color.Gray)));
-        
+        protected static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();
+        public readonly TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
+        public readonly TextStyle LightBlueStyle = new TextStyle(Brushes.RoyalBlue, null, FontStyle.Regular);
+        public readonly TextStyle YellowStyle = new TextStyle(Brushes.YellowGreen, null, FontStyle.Regular);
+        public readonly TextStyle RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
+        public readonly TextStyle BoldStyle = new TextStyle(null, null, FontStyle.Bold | FontStyle.Underline);
+        public readonly TextStyle GrayStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
+        public readonly TextStyle MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
+        public readonly TextStyle GreenStyleItalic = new TextStyle(Brushes.Green, null, FontStyle.Italic);
+        public readonly TextStyle BrownStyleItalic = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
+        public readonly TextStyle MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
+        public readonly MarkerStyle SameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(40, Color.Gray)));
+        public readonly Style BrownStyle = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
+
+        protected Regex JavaAttributeRegex,
+                      JavaClassNameRegex;
+
+        protected Regex JavaCommentRegex1,
+                      JavaCommentRegex2,
+                      JavaCommentRegex3;
+
+        protected Regex JavaKeywordRegex;
+        protected Regex JavaNumberRegex;
+        protected Regex JavaStringRegex;
+        protected Regex HTMLAttrRegex,
+                      HTMLAttrValRegex,
+                      HTMLCommentRegex1,
+                      HTMLCommentRegex2;
+
+        protected Regex HTMLEndTagRegex;
+
+        protected Regex HTMLEntityRegex,
+                      HTMLTagContentRegex;
+
+        protected Regex HTMLTagNameRegex;
+        protected Regex HTMLTagRegex;
+
         /// <summary>
         /// Initialzes the Form.
         /// </summary>
@@ -88,10 +111,16 @@ namespace Essay_Analysis_Tool
                 tb.HighlightingRangeType = HighlightingRangeType.VisibleRange;
                 if (fileName != null)
                 {
-                    if (!SetCurrentEditorSyntaxHighlight(fileName, tb))
+                    SetCurrentEditorSyntaxHighlight(fileName, tb);
+                    if (tb.Language == Language.Custom && BATCH_HIGHLIGHTING)
                     {
                         tb.OpenFile(fileName);
                         BatchSyntaxHighlight(tb);
+                    }
+                    else if (tb.Language == Language.Custom && !BATCH_HIGHLIGHTING)
+                    {
+                        tb.OpenFile(fileName);
+                        JavaSyntaxHighlight(tb);
                     }
                     else
                     {
@@ -101,12 +130,8 @@ namespace Essay_Analysis_Tool
                 tsFiles.AddTab(tab);
                 tsFiles.SelectedItem = tab;
                 tb.Focus();
-                tb.TextChanged += new EventHandler<TextChangedEventArgs>(tb_TextChanged);
-                tb.DelayedTextChangedInterval = 1000;
-                tb.DelayedEventsInterval = 500;
                 tb.ChangedLineColor = changedLineColor;
                 AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
-                tabCount++;
                 UpdateDocumentMap();
                 HighlightCurrentLine();
             }
@@ -125,7 +150,7 @@ namespace Essay_Analysis_Tool
             NEW_FILE = true;
         }
         
-        private bool SetCurrentEditorSyntaxHighlight(string fName, FastColoredTextBox mainEditor)
+        private void SetCurrentEditorSyntaxHighlight(string fName, FastColoredTextBox mainEditor)
         {
             char[] name = fName.ToCharArray();
             string ext = "";
@@ -173,7 +198,7 @@ namespace Essay_Analysis_Tool
                     syntaxLabel.Text = "SQL";
                     break;
                 case _java:
-                    ChangeSyntax(mainEditor, Language.CSharp);
+                    mainEditor.Language = Language.Custom;
                     syntaxLabel.Text = "Java";
                     break;
                 case _bat:
@@ -181,14 +206,13 @@ namespace Essay_Analysis_Tool
                     BATCH_HIGHLIGHTING = true;
                     batchToolStripMenuItem.Checked = true;
                     syntaxLabel.Text = "Batch";
-                    return false;
+                    break;
                 default:
                     mainEditor.Language = Language.Custom;
                     BATCH_HIGHLIGHTING = false;
                     syntaxLabel.Text = "None";
                     break;
             }
-            return true;
         }
         
         /// <summary>
@@ -269,7 +293,7 @@ namespace Essay_Analysis_Tool
         {
             get
             {
-                if (tsFiles.SelectedItem == null || tabCount == 0)
+                if (tsFiles.SelectedItem == null)
                 {
                     return null;
                 }
@@ -301,6 +325,17 @@ namespace Essay_Analysis_Tool
                 _selection.End = value.End;
                 _selection.EndUpdate();
                 Invalidate();
+            }
+        }
+
+        public static RegexOptions RegexCompiledOption
+        {
+            get
+            {
+                if (platformType == Platform.X86)
+                    return RegexOptions.Compiled;
+                else
+                    return RegexOptions.None;
             }
         }
 
@@ -471,6 +506,147 @@ namespace Essay_Analysis_Tool
             //clear folding markers
             e.ClearFoldingMarkers();
             BATCH_HIGHLIGHTING = true;
+            fctb.TextChanged += new EventHandler<TextChangedEventArgs>(tb_TextChanged);
+        }
+
+        protected void InitHTMLRegex()
+        {
+            HTMLCommentRegex1 = new Regex(@"(<!--.*?-->)|(<!--.*)", RegexOptions.Singleline | RegexCompiledOption);
+            HTMLCommentRegex2 = new Regex(@"(<!--.*?-->)|(.*-->)",
+                                          RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+            HTMLTagRegex = new Regex(@"<|/>|</|>", RegexCompiledOption);
+            HTMLTagNameRegex = new Regex(@"<(?<range>[!\w:]+)", RegexCompiledOption);
+            HTMLEndTagRegex = new Regex(@"</(?<range>[\w:]+)>", RegexCompiledOption);
+            HTMLTagContentRegex = new Regex(@"<[^>]+>", RegexCompiledOption);
+            HTMLAttrRegex =
+                new Regex(
+                    @"(?<range>[\w\d\-]{1,20}?)='[^']*'|(?<range>[\w\d\-]{1,20})=""[^""]*""|(?<range>[\w\d\-]{1,20})=[\w\d\-]{1,20}",
+                    RegexCompiledOption);
+            HTMLAttrValRegex =
+                new Regex(
+                    @"[\w\d\-]{1,20}?=(?<range>'[^']*')|[\w\d\-]{1,20}=(?<range>""[^""]*"")|[\w\d\-]{1,20}=(?<range>[\w\d\-]{1,20})",
+                    RegexCompiledOption);
+            HTMLEntityRegex = new Regex(@"\&(amp|gt|lt|nbsp|quot|apos|copy|reg|#[0-9]{1,8}|#x[0-9a-f]{1,8});",
+                                        RegexCompiledOption | RegexOptions.IgnoreCase);
+        }
+
+        protected void InitJavaRegex()
+        {
+            JavaStringRegex =
+                new Regex(
+                    @"
+                            # Character definitions:
+                            '
+                            (?> # disable backtracking
+                              (?:
+                                \\[^\r\n]|    # escaped meta char
+                                [^'\r\n]      # any character except '
+                              )*
+                            )
+                            '?
+                            |
+                            # Normal string & verbatim strings definitions:
+                            (?<verbatimIdentifier>@)?         # this group matches if it is an verbatim string
+                            ""
+                            (?> # disable backtracking
+                              (?:
+                                # match and consume an escaped character including escaped double quote ("") char
+                                (?(verbatimIdentifier)        # if it is a verbatim string ...
+                                  """"|                         #   then: only match an escaped double quote ("") char
+                                  \\.                         #   else: match an escaped sequence
+                                )
+                                | # OR
+            
+                                # match any char except double quote char ("")
+                                [^""]
+                              )*
+                            )
+                            ""
+                        ",
+                    RegexOptions.ExplicitCapture | RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace |
+                    RegexCompiledOption
+                    ); //thanks to rittergig for this regex
+
+            JavaCommentRegex1 = new Regex(@"//.*$", RegexOptions.Multiline | RegexCompiledOption);
+            JavaCommentRegex2 = new Regex(@"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline | RegexCompiledOption);
+            JavaCommentRegex3 = new Regex(@"(/\*.*?\*/)|(.*\*/)",
+                                            RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+            JavaNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b",
+                                          RegexCompiledOption);
+            JavaAttributeRegex = new Regex(@"^\s*(?<range>\[.+?\])\s*$", RegexOptions.Multiline | RegexCompiledOption);
+            JavaClassNameRegex = new Regex(@"\b(class|struct|enum|interface)\s+(?<range>\w+?)\b", RegexCompiledOption);
+            JavaKeywordRegex =
+                new Regex(
+                    @"\b(abstract|as|base|bool|break|byte|case|catch|char|checked|class|const|continue|decimal|default|delegate|do|double|else|enum|event|explicit|extern|false|finally|fixed|float|for|foreach|goto|if|implicit|in|int|interface|internal|is|lock|long|namespace|new|null|object|operator|out|override|params|private|protected|public|readonly|ref|return|sbyte|sealed|short|sizeof|stackalloc|static|string|struct|super|switch|this|throw|true|try|typeof|uint|ulong|unchecked|unsafe|ushort|import|virtual|void|volatile|while|add|alias|ascending|descending|dynamic|from|get|global|group|into|join|let|orderby|package|partial|remove|select|set|value|var|where|yield)\b|#region\b|#endregion\b",
+                    RegexCompiledOption);
+        }
+
+        private void JavaSyntaxHighlight(FastColoredTextBox fctb)
+        {
+            Range range = fctb.Range;
+            range.tb.CommentPrefix = "//";
+            range.tb.LeftBracket = '(';
+            range.tb.RightBracket = ')';
+            range.tb.LeftBracket2 = '{';
+            range.tb.RightBracket2 = '}';
+            range.tb.BracketsHighlightStrategy = BracketsHighlightStrategy.Strategy2;
+
+            range.tb.AutoIndentCharsPatterns
+                = @"
+^\s*[\w\.]+(\s\w+)?\s*(?<range>=)\s*(?<range>[^;]+);
+^\s*(case|default)\s*[^:]*(?<range>:)\s*(?<range>[^;]+);
+";
+            //clear style of changed range
+            range.ClearStyle(BrownStyle, GreenStyleItalic, MagentaStyle, BoldStyle, BlueStyle, GreenStyleItalic);
+            //
+            if (JavaStringRegex == null)
+                InitJavaRegex();
+            //string highlighting
+            range.SetStyle(BrownStyle, JavaStringRegex);
+            //comment highlighting
+            range.SetStyle(GreenStyleItalic, JavaCommentRegex1);
+            range.SetStyle(GreenStyleItalic, JavaCommentRegex2);
+            range.SetStyle(GreenStyleItalic, JavaCommentRegex3);
+            //number highlighting
+            range.SetStyle(MagentaStyle, JavaStringRegex);
+            //attribute highlighting
+            range.SetStyle(GreenStyleItalic, JavaAttributeRegex);
+            //class name highlighting
+            range.SetStyle(BoldStyle, JavaClassNameRegex);
+            //keyword highlighting
+            range.SetStyle(BlueStyle, JavaKeywordRegex);
+
+            //find document comments
+            foreach (Range r in range.GetRanges(@"^\s*///.*$", RegexOptions.Multiline))
+            {
+                //remove C# highlighting from this fragment
+                r.ClearStyle(StyleIndex.All);
+                //do XML highlighting
+                if (HTMLTagRegex == null)
+                    InitHTMLRegex();
+                //
+                r.SetStyle(GreenStyleItalic);
+                //tags
+                foreach (Range rr in r.GetRanges(HTMLTagContentRegex))
+                {
+                    rr.ClearStyle(StyleIndex.All);
+                    rr.SetStyle(GrayStyle);
+                }
+                //prefix '///'
+                foreach (Range rr in r.GetRanges(@"^\s*///", RegexOptions.Multiline))
+                {
+                    rr.ClearStyle(StyleIndex.All);
+                    rr.SetStyle(GrayStyle);
+                }
+            }
+
+            //clear folding markers
+            range.ClearFoldingMarkers();
+            //set folding markers
+            range.SetFoldingMarkers("{", "}"); //allow to collapse brackets block
+            range.SetFoldingMarkers(@"#region\b", @"#endregion\b"); //allow to collapse #region blocks
+            range.SetFoldingMarkers(@"/\*", @"\*/"); //allow to collapse comment block
+            fctb.TextChanged += new EventHandler<TextChangedEventArgs>(tb_TextChanged);
         }
         
         private void cutToolStripButton_Click(object sender, EventArgs e)
@@ -693,6 +869,20 @@ namespace Essay_Analysis_Tool
             {
                 BatchSyntaxHighlight(CurrentTB);
             }
+            else if (CurrentTB.Language == Language.Custom)
+            {
+                JavaSyntaxHighlight(CurrentTB);
+            }
+        }
+
+        private void javaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                syntaxLabel.Text = "Java";
+                CurrentTB.Language = Language.Custom;
+                JavaSyntaxHighlight(CurrentTB);
+            }
         }
 
         private void batchToolStripMenuItem_Click(object sender, EventArgs e)
@@ -707,7 +897,6 @@ namespace Essay_Analysis_Tool
 
         private void tsFiles_TabStripItemClosed(object sender, EventArgs e)
         {
-            tabCount--;
             UpdateDocumentMap();
         }
 
@@ -716,6 +905,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 CurrentTB.Refresh();
+                CurrentTB.OnTextChanged(CurrentTB.Range);
             }
         }
         
