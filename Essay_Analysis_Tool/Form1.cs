@@ -1,6 +1,7 @@
 using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -19,11 +20,10 @@ namespace Essay_Analysis_Tool
         ContextMenuStrip cmMain;
         Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
         Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
-        private readonly Range selection;
+        private readonly Range _selection;
 
         public bool UNDO_AVAIALBE = false;
         public bool FIND_FORM_CLOSED = true;
-        public bool IS_FILE_DIRTY = false;
         public bool NEW_FILE = true;
         public bool BATCH_HIGHLIGHTING = false;
         public bool WRAP_SEARCH = false;
@@ -32,14 +32,14 @@ namespace Essay_Analysis_Tool
         public String EMPTY_STRING = "";
         public int tabCount;
         
-        private const string _HTML_EXT = "html";
-        private const string _XML_EXT = "xml";
-        private const string _JAVASCRIPT_EXT = "js";
-        private const string _CSHARP_EXT = "cs";
-        private const string _LUA_EXT = "lua";
-        private const string _SQL_EXT = "sql";
-        private const string _JAVA_EXT = "java";
-        private const string _BAT_EXT = "bat";
+        private const string _html = "html";
+        private const string _xml = "xml";
+        private const string _javascript = "js";
+        private const string _csharp = "cs";
+        private const string _lua = "lua";
+        private const string _sql = "sql";
+        private const string _java = "java";
+        private const string _bat = "bat";
 
         //styles
         TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
@@ -53,7 +53,7 @@ namespace Essay_Analysis_Tool
         TextStyle BrownStyleItalic = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
         TextStyle MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
         MarkerStyle SameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(40, Color.Gray)));
-
+        
         /// <summary>
         /// Initialzes the Form.
         /// </summary>
@@ -62,12 +62,6 @@ namespace Essay_Analysis_Tool
             InitializeComponent();
         }
         
-        /// <summary>
-        /// Opens an open file dialogue upon clicking the "Open" Option
-        /// available in the "Edit" drop-down menu.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (file_open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -77,12 +71,7 @@ namespace Essay_Analysis_Tool
         }
 
         private Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
-
-        /// <summary>
-        /// Creates a new tab as well as a new instance of FastColoredTextBox for
-        /// the given filename.
-        /// </summary>
-        /// <param name="fileName">File Name</param>
+        
         private void CreateTab(string fileName)
         {
             try
@@ -99,10 +88,10 @@ namespace Essay_Analysis_Tool
                 tb.HighlightingRangeType = HighlightingRangeType.VisibleRange;
                 if (fileName != null)
                 {
-                    if (!setCurrentEditorSyntaxHighlight(fileName, tb))
+                    if (!SetCurrentEditorSyntaxHighlight(fileName, tb))
                     {
                         tb.OpenFile(fileName);
-                        batchSyntaxHighlight(tb);
+                        BatchSyntaxHighlight(tb);
                     }
                     else
                     {
@@ -118,8 +107,8 @@ namespace Essay_Analysis_Tool
                 tb.ChangedLineColor = changedLineColor;
                 AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
                 tabCount++;
-                updateDocumentMap();
-                highlightCurrentLine();
+                UpdateDocumentMap();
+                HighlightCurrentLine();
             }
             catch (Exception ex)
             {
@@ -129,24 +118,14 @@ namespace Essay_Analysis_Tool
                 }
             }
         }
-
-        /// <summary>
-        /// Creates a new blank file file while effectively erradicating any unsaved
-        /// changes to the previously open document.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateTab(null);
             NEW_FILE = true;
         }
-
-        /// <summary>
-        /// Detects the current syntax via the string argument that gets passed in.
-        /// </summary>
-        /// <param name="fName">Name of the file currently open in the editor</param>
-        private bool setCurrentEditorSyntaxHighlight(string fName, FastColoredTextBox mainEditor)
+        
+        private bool SetCurrentEditorSyntaxHighlight(string fName, FastColoredTextBox mainEditor)
         {
             char[] name = fName.ToCharArray();
             string ext = "";
@@ -169,35 +148,35 @@ namespace Essay_Analysis_Tool
 
             switch(ext)
             {
-                case _HTML_EXT:
-                    changeSyntax(CurrentTB, Language.HTML);
+                case _html:
+                    ChangeSyntax(mainEditor, Language.HTML);
                     syntaxLabel.Text = "HTML";
                     break;
-                case _XML_EXT:
-                    changeSyntax(CurrentTB, Language.XML);
+                case _xml:
+                    ChangeSyntax(mainEditor, Language.XML);
                     syntaxLabel.Text = "XML";
                     break;
-                case _JAVASCRIPT_EXT:
-                    changeSyntax(CurrentTB, Language.JS);
+                case _javascript:
+                    ChangeSyntax(mainEditor, Language.JS);
                     syntaxLabel.Text = "JavaScript";
                     break;
-                case _LUA_EXT:
-                    changeSyntax(CurrentTB, Language.Lua);
+                case _lua:
+                    ChangeSyntax(mainEditor, Language.Lua);
                     syntaxLabel.Text = "Lua";
                     break;
-                case _CSHARP_EXT:
-                    changeSyntax(CurrentTB, Language.CSharp);
+                case _csharp:
+                    ChangeSyntax(mainEditor, Language.CSharp);
                     syntaxLabel.Text = "C#";
                     break;
-                case _SQL_EXT:
-                    changeSyntax(CurrentTB, Language.SQL);
+                case _sql:
+                    ChangeSyntax(mainEditor, Language.SQL);
                     syntaxLabel.Text = "SQL";
                     break;
-                case _JAVA_EXT:
-                    changeSyntax(CurrentTB, Language.CSharp);
+                case _java:
+                    ChangeSyntax(mainEditor, Language.CSharp);
                     syntaxLabel.Text = "Java";
                     break;
-                case _BAT_EXT:
+                case _bat:
                     mainEditor.Language = Language.Custom;
                     BATCH_HIGHLIGHTING = true;
                     batchToolStripMenuItem.Checked = true;
@@ -218,7 +197,7 @@ namespace Essay_Analysis_Tool
         /// </summary>
         /// <param name="tb">FastColoredTextBox</param>
         /// <param name="language">Language</param>
-        public void changeSyntax(FastColoredTextBox tb, Language language)
+        public void ChangeSyntax(FastColoredTextBox tb, Language language)
         {
             BATCH_HIGHLIGHTING = false;
             try
@@ -232,17 +211,11 @@ namespace Essay_Analysis_Tool
             {
                 if (MessageBox.Show(e.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
                 {
-                    changeSyntax(tb, language);
+                    ChangeSyntax(tb, language);
                 }
             }
         }
         
-        /// <summary>
-        /// Opens a save file dialogue upon clicking the "Save" Option
-        /// available in the "Edit" drop-down menu.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tsFiles.SelectedItem != null)
@@ -251,11 +224,6 @@ namespace Essay_Analysis_Tool
             }
         }
         
-        /// <summary>
-        /// Takes the current file and saves it as a new one.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tsFiles.SelectedItem != null)
@@ -320,20 +288,30 @@ namespace Essay_Analysis_Tool
         /// </summary>
         public Range Selection
         {
-            get { return selection; }
+            get { return _selection; }
             set
             {
-                if (value == selection)
+                if (value == _selection)
                 {
                     return;
                 }
 
-                selection.BeginUpdate();
-                selection.Start = value.Start;
-                selection.End = value.End;
-                selection.EndUpdate();
+                _selection.BeginUpdate();
+                _selection.Start = value.Start;
+                _selection.End = value.End;
+                _selection.EndUpdate();
                 Invalidate();
             }
+        }
+
+        private List<FATabStripItem> GetTabList()
+        {
+            List<FATabStripItem> list = new List<FATabStripItem>();
+            foreach (FATabStripItem tab in tsFiles.Items)
+            {
+                list.Add(tab);
+            }
+            return list;
         }
         
         /// <summary>
@@ -372,54 +350,27 @@ namespace Essay_Analysis_Tool
             
             return true;
         }
-
-        /// <summary>
-        /// Closes the application.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-
-        /// <summary>
-        /// Undoes the last change to the currently open file.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.Undo();
         }
         
-        /// <summary>
-        /// Calls the create tab method.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void newToolStripButton_Click(object sender, EventArgs e)
         {
             CreateTab(null);
         }
-
-        /// <summary>
-        /// Calls the method to show the built-in find dialog.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void findButton_Click(object sender, EventArgs e)
         {
             ShowFindDialog();
         }
-
-        /// <summary>
-        /// Checks if the user clicks ok on the open file dialog, if so
-        /// this method calls the method to create a new tab with the file
-        /// name pulled from the open file dialog.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void openToolStripButton_Click(object sender, EventArgs e)
         {
             if (file_open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -428,11 +379,12 @@ namespace Essay_Analysis_Tool
             }
         }
 
-        private void updateDocumentMap()
+        private void UpdateDocumentMap()
         {
-            documentMap.Target = tabCount > 0 ? CurrentTB : null;
+            List<FATabStripItem> list = GetTabList();
+            documentMap.Target = list.Count > 0 ? CurrentTB : null;
             documentMap.Visible = ENABLE_DOCUMENT_MAP ? true : false;
-            if (!ENABLE_DOCUMENT_MAP || CurrentTB == null)
+            if (!ENABLE_DOCUMENT_MAP || documentMap.Target == null)
             {
                 tsFiles.Width = this.Width - 40;
                 documentMap.Visible = false;
@@ -440,25 +392,19 @@ namespace Essay_Analysis_Tool
             }
             tsFiles.Width = documentMap.Left - 23;
         }
-
-        /// <summary>
-        /// Removes the tab that is currently selected by the user then
-        /// decreases the tab count by 1.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void closeToolStripButton_Click(object sender, EventArgs e)
         {
+            TabStripItemClosingEventArgs args = new TabStripItemClosingEventArgs(tsFiles.SelectedItem);
+            tsFiles_TabStripItemClosing(args);
+            if (args.Cancel)
+            {
+                return;
+            }
             tsFiles.RemoveTab(tsFiles.SelectedItem);
-            tabCount--;
-            updateDocumentMap();
+            UpdateDocumentMap();
         }
-
-        /// <summary>
-        /// Displays the font dialog which allows the user to change the editor font.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (fontDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -466,12 +412,7 @@ namespace Essay_Analysis_Tool
                 CurrentTB.Font = fontDialog.Font;
             }
         }
-
-        /// <summary>
-        /// Saves the current file if the current tab is not null.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void saveToolStripButton_Click(object sender, EventArgs e)
         {
             if (tsFiles.SelectedItem != null)
@@ -479,32 +420,29 @@ namespace Essay_Analysis_Tool
                 Save(tsFiles.SelectedItem);
             }
         }
-
-        /// <summary>
-        /// Calls the close all tabs function.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void closeAllToolStripButton_Click(object sender, EventArgs e)
         {
             CloseAllTabs();
-            updateDocumentMap();
+            UpdateDocumentMap();
         }
-
-        /// <summary>
-        /// Closes all tabs until the running count of tabs is 0.
-        /// </summary>
+        
         private void CloseAllTabs()
-        {            
-            while (tabCount > 0)
+        {
+            List<FATabStripItem> list = GetTabList();
+            foreach (FATabStripItem tab in list)
             {
-                tsFiles.RemoveTab(tsFiles.SelectedItem);
-                tabCount--;
+                TabStripItemClosingEventArgs args = new TabStripItemClosingEventArgs(tab);
+                tsFiles_TabStripItemClosing(args);
+                if (args.Cancel)
+                {
+                    return;
+                }
+                tsFiles.RemoveTab(tab);
             }
-            documentMap.Target = null;
         }
 
-        private void batchSyntaxHighlight(FastColoredTextBox fctb)
+        private void BatchSyntaxHighlight(FastColoredTextBox fctb)
         {
             fctb.LeftBracket = '(';
             fctb.RightBracket = ')';
@@ -534,12 +472,7 @@ namespace Essay_Analysis_Tool
             e.ClearFoldingMarkers();
             BATCH_HIGHLIGHTING = true;
         }
-
-        /// <summary>
-        /// Calls the cut function on the current instance of FastColoredTextBox assuming it is not null.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void cutToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
@@ -547,12 +480,7 @@ namespace Essay_Analysis_Tool
                 CurrentTB.Cut();
             }
         }
-
-        /// <summary>
-        /// Calls the paste function on the current instance of FastColoredTextBox assuming it is not null.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void pasteToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
@@ -560,12 +488,7 @@ namespace Essay_Analysis_Tool
                 CurrentTB.Paste();
             }
         }
-
-        /// <summary>
-        /// Calls the copy function on the current instance of FastColoredTextBox assuming it is not null.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void copyToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
@@ -573,12 +496,7 @@ namespace Essay_Analysis_Tool
                 CurrentTB.Copy();
             }
         }
-
-        /// <summary>
-        /// Calls the undo function on the current instance of FastColoredTextBox assuming it is not null.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void undoToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
@@ -586,12 +504,7 @@ namespace Essay_Analysis_Tool
                 CurrentTB.Undo();
             }
         }
-
-        /// <summary>
-        /// Calls the redo function on the current instance of FastColoredTextBox assuming it is not null.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void redoToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
@@ -599,12 +512,7 @@ namespace Essay_Analysis_Tool
                 CurrentTB.Redo();
             }
         }
-
-        /// <summary>
-        /// Increases the text size by 2.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void zoomInToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
@@ -612,12 +520,7 @@ namespace Essay_Analysis_Tool
                 CurrentTB.ChangeFontSize(2);
             }
         }
-
-        /// <summary>
-        /// Reduces the text size by 2.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void zoomOutToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
@@ -625,12 +528,7 @@ namespace Essay_Analysis_Tool
                 CurrentTB.ChangeFontSize(-2);
             }
         }
-
-        /// <summary>
-        /// Opens the find dialog if the current instance of FastColoredTextBox is not null.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void findToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
@@ -638,13 +536,7 @@ namespace Essay_Analysis_Tool
                 ShowFindDialog();
             }
         }
-
-        /// <summary>
-        /// Checks for hotkeys by checking which keycodes have been sent to 
-        /// this method.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void mainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.F)
@@ -690,28 +582,16 @@ namespace Essay_Analysis_Tool
                 }
             }
         }
-
-        /// <summary>
-        /// Sets the document map target to the current instance of FastColoredTextBox if
-        /// the document map option under "view" is selected.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void documentMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ENABLE_DOCUMENT_MAP = ENABLE_DOCUMENT_MAP ? false : true;
-            updateDocumentMap();
+            UpdateDocumentMap();
         }
-
-        /// <summary>
-        /// Sets the document map target to the current instance of FastColoredTextBox if
-        /// the current instance of FastColoredTextBox is not null and the document map
-        /// option under "view" is selected.
-        /// </summary>
-        /// <param name="e"></param>
+        
         private void tsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
         {
-            updateDocumentMap();
+            UpdateDocumentMap();
         }
 
         private void cToolStripMenuItem_Click(object sender, EventArgs e)
@@ -719,7 +599,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 syntaxLabel.Text = "C#";
-                changeSyntax(CurrentTB, Language.CSharp);
+                ChangeSyntax(CurrentTB, Language.CSharp);
             }
         }
 
@@ -728,7 +608,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 syntaxLabel.Text = "None";
-                changeSyntax(CurrentTB, Language.Custom);
+                ChangeSyntax(CurrentTB, Language.Custom);
             }
         }
 
@@ -737,7 +617,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 syntaxLabel.Text = "HTML";
-                changeSyntax(CurrentTB, Language.HTML);
+                ChangeSyntax(CurrentTB, Language.HTML);
             }
         }
 
@@ -746,7 +626,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 syntaxLabel.Text = "JavaScript";
-                changeSyntax(CurrentTB, Language.JS);
+                ChangeSyntax(CurrentTB, Language.JS);
             }
         }
 
@@ -755,7 +635,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 syntaxLabel.Text = "Lua";
-                changeSyntax(CurrentTB, Language.Lua);
+                ChangeSyntax(CurrentTB, Language.Lua);
             }
         }
 
@@ -764,7 +644,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 syntaxLabel.Text = "PHP";
-                changeSyntax(CurrentTB, Language.PHP);
+                ChangeSyntax(CurrentTB, Language.PHP);
             }
         }
 
@@ -773,7 +653,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 syntaxLabel.Text = "SQL";
-                changeSyntax(CurrentTB, Language.SQL);
+                ChangeSyntax(CurrentTB, Language.SQL);
             }
         }
 
@@ -782,7 +662,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 syntaxLabel.Text = "Visual Basic";
-                changeSyntax(CurrentTB, Language.VB);
+                ChangeSyntax(CurrentTB, Language.VB);
             }
         }
 
@@ -791,7 +671,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 syntaxLabel.Text = "XML";
-                changeSyntax(CurrentTB, Language.XML);
+                ChangeSyntax(CurrentTB, Language.XML);
             }
         }
 
@@ -811,7 +691,7 @@ namespace Essay_Analysis_Tool
         {
             if (CurrentTB.Language == Language.Custom && BATCH_HIGHLIGHTING)
             {
-                batchSyntaxHighlight(CurrentTB);
+                BatchSyntaxHighlight(CurrentTB);
             }
         }
 
@@ -821,14 +701,14 @@ namespace Essay_Analysis_Tool
             {
                 syntaxLabel.Text = "Batch";
                 CurrentTB.Language = Language.Custom;
-                batchSyntaxHighlight(CurrentTB);
+                BatchSyntaxHighlight(CurrentTB);
             }
         }
 
         private void tsFiles_TabStripItemClosed(object sender, EventArgs e)
         {
             tabCount--;
-            updateDocumentMap();
+            UpdateDocumentMap();
         }
 
         private void refreshToolStripButton_Click(object sender, EventArgs e)
@@ -839,7 +719,7 @@ namespace Essay_Analysis_Tool
             }
         }
         
-        private void highlightCurrentLine()
+        private void HighlightCurrentLine()
         {
             foreach (FATabStripItem tab in tsFiles.Items)
             {
@@ -861,7 +741,46 @@ namespace Essay_Analysis_Tool
         private void hlCurrentLineToolStripButton_Click(object sender, EventArgs e)
         {
             HIGHLIGHT_CURRENT_LINE = HIGHLIGHT_CURRENT_LINE ? false : true;
-            highlightCurrentLine();
+            HighlightCurrentLine();
+        }
+
+        private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            List<FATabStripItem> list = new List<FATabStripItem>();
+            foreach (FATabStripItem tab in tsFiles.Items)
+            {
+                list.Add(tab);
+            }
+            foreach (FATabStripItem tab in list)
+            {
+                TabStripItemClosingEventArgs args = new TabStripItemClosingEventArgs(tab);
+                tsFiles_TabStripItemClosing(args);
+                if (args.Cancel)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                tsFiles.RemoveTab(tab);
+            }
+        }
+
+        private void tsFiles_TabStripItemClosing(TabStripItemClosingEventArgs e)
+        {
+            if ((e.Item.Controls[0] as FastColoredTextBox).IsChanged)
+            {
+                switch (MessageBox.Show("Do you want save " + e.Item.Title + " ?", "Save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information))
+                {
+                    case System.Windows.Forms.DialogResult.Yes:
+                        if (!Save(e.Item))
+                        {
+                            e.Cancel = true;
+                        }
+                        break;
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        break;
+                }
+            }
         }
     }
 }
