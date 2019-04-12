@@ -3,6 +3,7 @@
   <body>
     <release date="${buildTimestamp}" description="" version="1.0.0">
       <action dev="" issue="" date="" type=""></action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0008" date="05-13-2019" type="fix">ISSUE-0008: Adding source code files to save file dialog</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0043" date="04-06-2019" type="add">ISSUE-0043: Enhanced Java Support</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0054" date="03-21-2019" type="fix">ISSUE-0054: Fixed editor starting with syntax highlighting set to batch.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0052" date="03-20-2019" type="fix">ISSUE-0052: Fixed DocumentMap UI Issue.</action>
