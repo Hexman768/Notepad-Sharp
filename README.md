@@ -1,5 +1,5 @@
 # Notepad-Sharp
-A notepad++ look-alike written in C#
+A general purpose text editor that supports various programming languages for code editing.
 
 # Build
 Notepad# can be cloned into visual studio.
