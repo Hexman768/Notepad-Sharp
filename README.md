@@ -1,13 +1,13 @@
 # Notepad-Sharp
 A general purpose text editor that supports various programming languages for code editing.
-
+___
 # Build
 Notepad# can be cloned into visual studio.
 Once inside visual studio you will have to delete the references to the FastColoredTextBox and the tabstrip. You can then
 add those references back by adding them from the project's resources folder.
 
 ![Demo](https://user-images.githubusercontent.com/41409007/54795175-22029a00-4c19-11e9-9cc0-4b673270a624.png)
-
+___
 # Contributing
 If you would like to contribute, please do one of the following:
 
