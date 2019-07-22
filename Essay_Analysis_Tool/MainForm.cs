@@ -30,6 +30,7 @@ namespace Essay_Analysis_Tool
         //General variable declarations and definitions
         private readonly Range _selection;
         private bool _batchHighlighting = false;
+        private bool _javaHighlighting = false;
         private bool _highlightCurrentLine = true;
         private bool _enableDocumentMap = true;
 
@@ -200,6 +201,7 @@ namespace Essay_Analysis_Tool
                 "*.html|All files (*.*)|*.*|Java source file (*.java)|*.java|JavaScript file (*.js)|*.js|JSON file (*.json)|*.json|" +
                 "Lua source file (*.lua)|*.lua|PHP file (*.php)|*.php|Structured Query Language file (*.sql)|*.sql|" +
                 "Visual Basic file (*.vb)|*.vb";
+            CreateTab(null);
         }
 
         #region Tab Functionality
@@ -229,11 +231,13 @@ namespace Essay_Analysis_Tool
                     if (tb.Language == Language.Custom && _batchHighlighting)
                     {
                         tb.OpenFile(fileName);
+                        tb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
                         BatchSyntaxHighlight(tb);
                     }
-                    else if (tb.Language == Language.Custom && !_batchHighlighting)
+                    else if (tb.Language == Language.Custom && _javaHighlighting)
                     {
                         tb.OpenFile(fileName);
+                        tb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
                         JavaSyntaxHighlight(tb);
                     }
                     else
@@ -251,13 +255,14 @@ namespace Essay_Analysis_Tool
                 tsFiles.SelectedItem = tab;
                 tb.Focus();
                 tb.ChangedLineColor = changedLineColor;
+                tb.KeyDown += new KeyEventHandler(MainForm_KeyDown);
                 AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
                 UpdateDocumentMap();
                 HighlightCurrentLine();
             }
             catch (Exception ex)
             {
-                if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
+                if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
                 {
                     CreateTab(fileName);
                 }
@@ -433,7 +438,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void OpenToolStripButton_Click(object sender, EventArgs e)
         {
-            if (file_open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (file_open.ShowDialog() == DialogResult.OK)
             {
                 CreateTab(file_open.FileName);
             }
@@ -463,7 +468,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void FontToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (fontDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (fontDialog.ShowDialog() == DialogResult.OK)
             {
                 CurrentTB.Font = fontDialog.Font;
             }
@@ -476,7 +481,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void SaveToolStripButton_Click(object sender, EventArgs e)
         {
-            if (tsFiles.SelectedItem != null)
+            if (tsFiles != null && tsFiles.SelectedItem != null)
             {
                 Save(tsFiles.SelectedItem);
             }
@@ -873,47 +878,40 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="KeyEventArgs"/></param>
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.F)
+            if (e.Control && e.KeyCode == Keys.F && CurrentTB != null)
             {
-                if (CurrentTB != null)
+                ShowFindDialog();
+            }
+            else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control && CurrentTB != null)
+            {
+                CurrentTB.Copy();
+            }
+            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control && CurrentTB != null)
+            {
+                CurrentTB.Paste();
+            }
+            else if (e.KeyCode == Keys.X && e.Modifiers == Keys.Control && CurrentTB != null)
+            {
+                CurrentTB.Cut();
+            }
+            else if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && CurrentTB != null)
+            {
+                CurrentTB.Undo();
+            }
+            else if (e.KeyCode == Keys.Y && e.Modifiers == Keys.Control && CurrentTB != null)
+            {
+                CurrentTB.Redo();
+            }
+            else if (e.Control && e.KeyCode == Keys.O)
+            {
+                if (file_open.ShowDialog() == DialogResult.OK)
                 {
-                    ShowFindDialog();
+                    CreateTab(file_open.FileName);
                 }
             }
-            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.C)
+            else if (e.Control && e.Shift && e.KeyCode == Keys.Back && CurrentTB != null)
             {
-                if (CurrentTB != null)
-                {
-                    CurrentTB.Copy();
-                }
-            }
-            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.V)
-            {
-                if (CurrentTB != null)
-                {
-                    CurrentTB.Paste();
-                }
-            }
-            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.X)
-            {
-                if (CurrentTB != null)
-                {
-                    CurrentTB.Cut();
-                }
-            }
-            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.Z)
-            {
-                if (CurrentTB != null)
-                {
-                    CurrentTB.Undo();
-                }
-            }
-            else if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.R)
-            {
-                if (CurrentTB != null)
-                {
-                    CurrentTB.Redo();
-                }
+                CurrentTB.ClearCurrentLine();
             }
         }
 
@@ -937,7 +935,7 @@ namespace Essay_Analysis_Tool
             {
                 BatchSyntaxHighlight(CurrentTB);
             }
-            else if (CurrentTB.Language == Language.Custom)
+            else if (CurrentTB.Language == Language.Custom && _javaHighlighting)
             {
                 JavaSyntaxHighlight(CurrentTB);
             }
@@ -1008,6 +1006,11 @@ namespace Essay_Analysis_Tool
                 + Environment.OSVersion + "\nLicense: GNU General Public License v3.0";
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char keyPressed = e.KeyChar;
+        }
         #endregion
 
         #region Document Map Functionality
@@ -1063,7 +1066,6 @@ namespace Essay_Analysis_Tool
             //clear folding markers
             e.ClearFoldingMarkers();
             _batchHighlighting = true;
-            fctb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
         }
 
         /// <summary>
@@ -1131,7 +1133,7 @@ namespace Essay_Analysis_Tool
             range.SetFoldingMarkers("{", "}"); //allow to collapse brackets block
             range.SetFoldingMarkers(@"#region\b", @"#endregion\b"); //allow to collapse #region blocks
             range.SetFoldingMarkers(@"/\*", @"\*/"); //allow to collapse comment block
-            fctb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
+            _javaHighlighting = true;
         }
 
         /// <summary>
@@ -1188,6 +1190,7 @@ namespace Essay_Analysis_Tool
                     break;
                 case _java:
                     mainEditor.Language = Language.Custom;
+                    _javaHighlighting = true;
                     syntaxLabel.Text = "Java";
                     break;
                 case _bat:
@@ -1199,6 +1202,7 @@ namespace Essay_Analysis_Tool
                 default:
                     mainEditor.Language = Language.Custom;
                     _batchHighlighting = false;
+                    _javaHighlighting = false;
                     syntaxLabel.Text = "None";
                     break;
             }
