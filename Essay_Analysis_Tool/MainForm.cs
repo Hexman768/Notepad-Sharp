@@ -10,9 +10,9 @@ namespace Essay_Analysis_Tool
     using System.Windows.Forms;
 
     /// <summary>
-    /// Defines the <see cref="mainForm" />
+    /// Defines the <see cref="MainForm" />
     /// </summary>
-    public partial class mainForm : Form
+    public partial class MainForm : Form
     {
         #region Variable declarations and definitions
         //Dialog definitions
@@ -22,7 +22,6 @@ namespace Essay_Analysis_Tool
 
         //Form declarations
         internal FindForm findForm;
-        internal ContextMenuStrip cmMain;
 
         //Line Colors
         internal Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
@@ -30,9 +29,6 @@ namespace Essay_Analysis_Tool
 
         //General variable declarations and definitions
         private readonly Range _selection;
-        private bool _undoAvailable = false;
-        private bool _findFormClosed = true;
-        private bool _newFile = true;
         private bool _batchHighlighting = false;
         private bool _highlightCurrentLine = true;
         private bool _enableDocumentMap = true;
@@ -194,7 +190,7 @@ namespace Essay_Analysis_Tool
         /// <summary>
         /// Initializes a new instance of the <see cref="mainForm"/> class.
         /// </summary>
-        public mainForm()
+        public MainForm()
         {
             InitializeComponent();
             sfdMain.Filter = "Normal text file (*.txt)|*.txt|C# source file (*.cs)|*.cs|Hyper Text Markup Language file (*.html)|" +
@@ -212,16 +208,18 @@ namespace Essay_Analysis_Tool
         {
             try
             {
-                var tb = new FastColoredTextBox();
-                tb.Font = new Font("Consolas", 9.75f);
-                tb.ContextMenuStrip = cmMain;
-                tb.Dock = DockStyle.Fill;
-                tb.BorderStyle = BorderStyle.Fixed3D;
-                tb.LeftPadding = 17;
-                tb.AddStyle(sameWordsStyle);//same words style
-                var tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb);
-                tab.Tag = fileName;
-                tb.HighlightingRangeType = HighlightingRangeType.VisibleRange;
+                var tb = new FastColoredTextBox
+                {
+                    Font = new Font("Consolas", 9.75f),
+                    ContextMenuStrip = null,
+                    Dock = DockStyle.Fill,
+                    BorderStyle = BorderStyle.Fixed3D,
+                    LeftPadding = 17,
+                    HighlightingRangeType = HighlightingRangeType.VisibleRange
+                };
+
+                tb.AddStyle(sameWordsStyle);
+
                 if (fileName != null)
                 {
                     SetCurrentEditorSyntaxHighlight(fileName, tb);
@@ -240,6 +238,12 @@ namespace Essay_Analysis_Tool
                         tb.OpenFile(fileName);
                     }
                 }
+
+                var tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb)
+                {
+                    Tag = fileName
+                };
+                
                 tsFiles.AddTab(tab);
                 tsFiles.SelectedItem = tab;
                 tb.Focus();
@@ -266,7 +270,7 @@ namespace Essay_Analysis_Tool
             foreach (FATabStripItem tab in list)
             {
                 TabStripItemClosingEventArgs args = new TabStripItemClosingEventArgs(tab);
-                tsFiles_TabStripItemClosing(args);
+                TsFiles_TabStripItemClosing(args);
                 if (args.Cancel)
                 {
                     return;
@@ -380,51 +384,51 @@ namespace Essay_Analysis_Tool
 
         #region Button Click Event Handlers
         /// <summary>
-        /// Handles Event ArgumentsxitToolStripMenuItem_Click event.
+        /// Handles Event ExitToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
         /// <summary>
-        /// Handles the undoToolStripMenuItem_Click event.
+        /// Handles the UndoToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.Undo();
         }
 
         /// <summary>
-        /// Handles the newToolStripButton_Click event.
+        /// Handles the NewToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void newToolStripButton_Click(object sender, EventArgs e)
+        private void NewToolStripButton_Click(object sender, EventArgs e)
         {
             CreateTab(null);
         }
 
         /// <summary>
-        /// Handles the findButton_Click event.
+        /// Handles the FindButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void findButton_Click(object sender, EventArgs e)
+        private void FindButton_Click(object sender, EventArgs e)
         {
             ShowFindDialog();
         }
 
         /// <summary>
-        /// Handles the openToolStripButton_Click event.
+        /// Handles the OpenToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void openToolStripButton_Click(object sender, EventArgs e)
+        private void OpenToolStripButton_Click(object sender, EventArgs e)
         {
             if (file_open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -433,14 +437,14 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the closeToolStripButton_Click event.
+        /// Handles the CloseToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void closeToolStripButton_Click(object sender, EventArgs e)
+        private void CloseToolStripButton_Click(object sender, EventArgs e)
         {
             TabStripItemClosingEventArgs args = new TabStripItemClosingEventArgs(tsFiles.SelectedItem);
-            tsFiles_TabStripItemClosing(args);
+            TsFiles_TabStripItemClosing(args);
             if (args.Cancel)
             {
                 return;
@@ -450,11 +454,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Hanldes the fontToolStripMenuItem_Click event.
+        /// Hanldes the FontToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void fontToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (fontDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -463,11 +467,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the saveToolStripButton_Click event.
+        /// Handles the SaveToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void saveToolStripButton_Click(object sender, EventArgs e)
+        private void SaveToolStripButton_Click(object sender, EventArgs e)
         {
             if (tsFiles.SelectedItem != null)
             {
@@ -476,22 +480,22 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// The closeAllToolStripButton_Click
+        /// The CloseAllToolStripButton_Click
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void closeAllToolStripButton_Click(object sender, EventArgs e)
+        private void CloseAllToolStripButton_Click(object sender, EventArgs e)
         {
             CloseAllTabs();
             UpdateDocumentMap();
         }
 
         /// <summary>
-        /// Handles the cutToolStripButton_Click event.
+        /// Handles the CutToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void cutToolStripButton_Click(object sender, EventArgs e)
+        private void CutToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -500,11 +504,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the pasteToolStripButton_Click event.
+        /// Handles the PasteToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void pasteToolStripButton_Click(object sender, EventArgs e)
+        private void PasteToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -513,11 +517,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the copyToolStripButton_Click event.
+        /// Handles the CopyToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void copyToolStripButton_Click(object sender, EventArgs e)
+        private void CopyToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -526,11 +530,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the undoToolStripButton_Click event.
+        /// Handles the UndoToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void undoToolStripButton_Click(object sender, EventArgs e)
+        private void UndoToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -539,11 +543,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the redoToolStripButton_Click event.
+        /// Handles the RedoToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void redoToolStripButton_Click(object sender, EventArgs e)
+        private void RedoToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -552,11 +556,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the zoomInToolStripButton_Click event.
+        /// Handles the ZoomInToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void zoomInToolStripButton_Click(object sender, EventArgs e)
+        private void ZoomInToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -565,11 +569,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the zoomOutToolStripButton_Click event.
+        /// Handles the ZoomOutToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void zoomOutToolStripButton_Click(object sender, EventArgs e)
+        private void ZoomOutToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -578,11 +582,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the findToolStripButton_Click event.
+        /// Handles the FindToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void findToolStripButton_Click(object sender, EventArgs e)
+        private void FindToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -591,22 +595,22 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the documentMapToolStripMenuItem_Click event.
+        /// Handles the DocumentMapToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void documentMapToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DocumentMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _enableDocumentMap = _enableDocumentMap ? false : true;
             UpdateDocumentMap();
         }
 
         /// <summary>
-        /// Handles the cToolStripMenuItem_Click event.
+        /// Handles the CToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void cToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -616,11 +620,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the noneToolStripMenuItem_Click event.
+        /// Handles the NoneToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void noneToolStripMenuItem_Click(object sender, EventArgs e)
+        private void NoneToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -630,11 +634,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the hTMLToolStripMenuItem_Click event.
+        /// Handles the HTMLToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void hTMLToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HTMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -644,11 +648,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the javaScriptToolStripMenuItem_Click event.
+        /// Handles the JavaScriptToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void javaScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        private void JavaScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -658,11 +662,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the luaToolStripMenuItem_Click event.
+        /// Handles the LuaToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void luaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LuaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -672,11 +676,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the pHPToolStripMenuItem_Click event.
+        /// Handles the PHPToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void pHPToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PHPToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -686,11 +690,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the sQLToolStripMenuItem_Click event.
+        /// Handles the SQLToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void sQLToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SQLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -700,11 +704,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the visualBasicToolStripMenuItem_Click event.
+        /// Handles the VisualBasicToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void visualBasicToolStripMenuItem_Click(object sender, EventArgs e)
+        private void VisualBasicToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -714,11 +718,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the xMLToolStripMenuItem_Click event.
+        /// Handles the XMLToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void xMLToolStripMenuItem_Click(object sender, EventArgs e)
+        private void XMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -728,11 +732,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the statusBarToolStripMenuItem_Click event.
+        /// Handles the StatusBarToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void statusBarToolStripMenuItem_Click(object sender, EventArgs e)
+        private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (statusBarToolStripMenuItem.Checked)
             {
@@ -745,11 +749,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the javaToolStripMenuItem_Click event.
+        /// Handles the JavaToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void javaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void JavaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -760,11 +764,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the batchToolStripMenuItem_Click event.
+        /// Handles the BatchToolStripMenuItem_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void batchToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BatchToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -775,11 +779,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the refreshToolStripButton_Click event.
+        /// Handles the RefreshToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void refreshToolStripButton_Click(object sender, EventArgs e)
+        private void RefreshToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
             {
@@ -789,22 +793,22 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// The hlCurrentLineToolStripButton_Click
+        /// The HlCurrentLineToolStripButton_Click
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void hlCurrentLineToolStripButton_Click(object sender, EventArgs e)
+        private void HlCurrentLineToolStripButton_Click(object sender, EventArgs e)
         {
             _highlightCurrentLine = _highlightCurrentLine ? false : true;
             HighlightCurrentLine();
         }
 
         /// <summary>
-        /// The openToolStripMenuItem_Click
+        /// The OpenToolStripMenuItem_Click
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (file_open.ShowDialog() == DialogResult.OK)
             {
@@ -813,11 +817,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// The saveToolStripMenuItem_Click
+        /// The SaveToolStripMenuItem_Click
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tsFiles.SelectedItem != null)
             {
@@ -826,11 +830,11 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// The saveAsToolStripMenuItem_Click
+        /// The SaveAsToolStripMenuItem_Click
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tsFiles.SelectedItem != null)
             {
@@ -848,24 +852,23 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// The newToolStripMenuItem_Click
+        /// The NewToolStripMenuItem_Click
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateTab(null);
-            _newFile = true;
         }
         #endregion
 
         #region Event Handlers
         /// <summary>
-        /// Handles the mainForm_KeyDown event.
+        /// Handles the MainForm_KeyDown event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="KeyEventArgs"/></param>
-        private void mainForm_KeyDown(object sender, KeyEventArgs e)
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.F)
             {
@@ -912,20 +915,20 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the tsFiles_TabStripItemSelectionChanged event.
+        /// Handles the TsFiles_TabStripItemSelectionChanged event.
         /// </summary>
         /// <param name="e">Event Arguments<see cref="TabStripItemChangedEventArgs"/></param>
-        private void tsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
+        private void TsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
         {
             UpdateDocumentMap();
         }
 
         /// <summary>
-        /// Handles the tb_TextChanged event.
+        /// Handles the Tb_TextChanged event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="TextChangedEventArgs"/></param>
-        private void tb_TextChanged(object sender, TextChangedEventArgs e)
+        private void Tb_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (CurrentTB.Language == Language.Custom && _batchHighlighting)
             {
@@ -938,21 +941,21 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the tsFiles_TabStripItemClosed event.
+        /// Handles the TsFiles_TabStripItemClosed event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void tsFiles_TabStripItemClosed(object sender, EventArgs e)
+        private void TsFiles_TabStripItemClosed(object sender, EventArgs e)
         {
             UpdateDocumentMap();
         }
 
         /// <summary>
-        /// The mainForm_FormClosing
+        /// The MainForm_FormClosing
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="FormClosingEventArgs"/></param>
-        private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             List<FATabStripItem> list = new List<FATabStripItem>();
             foreach (FATabStripItem tab in tsFiles.Items)
@@ -962,7 +965,7 @@ namespace Essay_Analysis_Tool
             foreach (FATabStripItem tab in list)
             {
                 TabStripItemClosingEventArgs args = new TabStripItemClosingEventArgs(tab);
-                tsFiles_TabStripItemClosing(args);
+                TsFiles_TabStripItemClosing(args);
                 if (args.Cancel)
                 {
                     e.Cancel = true;
@@ -973,10 +976,10 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// The tsFiles_TabStripItemClosing
+        /// The TsFiles_TabStripItemClosing
         /// </summary>
         /// <param name="e">Event Arguments<see cref="TabStripItemClosingEventArgs"/></param>
-        private void tsFiles_TabStripItemClosing(TabStripItemClosingEventArgs e)
+        private void TsFiles_TabStripItemClosing(TabStripItemClosingEventArgs e)
         {
             if ((e.Item.Controls[0] as FastColoredTextBox).IsChanged)
             {
@@ -1049,7 +1052,7 @@ namespace Essay_Analysis_Tool
             //clear folding markers
             e.ClearFoldingMarkers();
             _batchHighlighting = true;
-            fctb.TextChanged += new EventHandler<TextChangedEventArgs>(tb_TextChanged);
+            fctb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
         }
 
         /// <summary>
@@ -1117,7 +1120,7 @@ namespace Essay_Analysis_Tool
             range.SetFoldingMarkers("{", "}"); //allow to collapse brackets block
             range.SetFoldingMarkers(@"#region\b", @"#endregion\b"); //allow to collapse #region blocks
             range.SetFoldingMarkers(@"/\*", @"\*/"); //allow to collapse comment block
-            fctb.TextChanged += new EventHandler<TextChangedEventArgs>(tb_TextChanged);
+            fctb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
         }
 
         /// <summary>
@@ -1203,7 +1206,7 @@ namespace Essay_Analysis_Tool
             {
                 tb.Range.ClearStyle(StyleIndex.All);
                 tb.Language = language;
-                tb.TextChanged -= tb_TextChanged;
+                tb.TextChanged -= Tb_TextChanged;
                 tb.OnTextChanged();
             }
             catch (Exception e)
