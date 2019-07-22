@@ -43,6 +43,9 @@ namespace Essay_Analysis_Tool
         private const string _java = "java";
         private const string _bat = "bat";
 
+        //Application Version
+        private const string Version = "v1.0.0.SNAPSHOT";
+
         //file types
         private const string _fthtml = "Hyper Text Markup Language File (*.html)";
         private const string _ftxml = "Extensible Markup Language file (.xml)";
@@ -996,6 +999,14 @@ namespace Essay_Analysis_Tool
                         break;
                 }
             }
+        }
+
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string title = "About Notepad#";
+            string message = "Created by: Zachary Pedigo\nVersion: " + Version + "\n" + "Date: " + DateTime.Now + "\n" + "OS: "
+                + Environment.OSVersion + "\nLicense: GNU General Public License v3.0";
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         #endregion
 
