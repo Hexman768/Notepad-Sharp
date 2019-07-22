@@ -1,3 +1,15 @@
+//
+//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+//  KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+//  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
+//  PURPOSE.
+//
+//  License: GNU Lesser General Public License (LGPLv3)
+//
+//  Email: Zachary.Pedigo1@gmail.com
+//
+//  Copyright (C) Zachary Pedigo, 2019.
+
 namespace Essay_Analysis_Tool
 {
     using FarsiLibrary.Win;
