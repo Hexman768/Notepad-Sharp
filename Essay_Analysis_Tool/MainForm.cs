@@ -18,6 +18,7 @@ namespace Essay_Analysis_Tool
     using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
 
@@ -34,6 +35,7 @@ namespace Essay_Analysis_Tool
 
         //Form declarations
         internal FindForm findForm;
+        AutocompleteMenu popupMenu;
 
         //Line Colors
         internal Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
@@ -268,9 +270,20 @@ namespace Essay_Analysis_Tool
                 tb.Focus();
                 tb.ChangedLineColor = changedLineColor;
                 tb.KeyDown += new KeyEventHandler(MainForm_KeyDown);
-                AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
+                tb.KeyUp += new KeyEventHandler(MainForm_KeyUp);
                 UpdateDocumentMap();
                 HighlightCurrentLine();
+
+                //create autocomplete popup menu
+                popupMenu = new AutocompleteMenu(tb);
+                popupMenu.ForeColor = Color.White;
+                popupMenu.BackColor = Color.Gray;
+                popupMenu.SelectedColor = Color.Purple;
+                popupMenu.SearchPattern = @"[\w\.]";
+                popupMenu.AllowTabKey = true;
+                popupMenu.AlwaysShowTooltip = true;
+                //assign DynamicCollection as items source
+                popupMenu.Items.SetAutocompleteItems(new DynamicCollection(popupMenu, tb));
             }
             catch (Exception ex)
             {
@@ -883,6 +896,7 @@ namespace Essay_Analysis_Tool
         #endregion
 
         #region Event Handlers
+
         /// <summary>
         /// Handles the MainForm_KeyDown event.
         /// </summary>
@@ -924,6 +938,19 @@ namespace Essay_Analysis_Tool
             else if (e.Control && e.Shift && e.KeyCode == Keys.Back && CurrentTB != null)
             {
                 CurrentTB.ClearCurrentLine();
+            }
+        }
+
+        /// <summary>
+        /// Handles the MainForm_KeyDown event.
+        /// </summary>
+        /// <param name="sender">Sender Object<see cref="object"/></param>
+        /// <param name="e">Event Arguments<see cref="KeyEventArgs"/></param>
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Decimal)
+            {
+                popupMenu.Show();
             }
         }
 
@@ -1324,6 +1351,203 @@ namespace Essay_Analysis_Tool
                     @"\b(abstract|as|base|bool|break|byte|case|catch|char|checked|class|const|continue|decimal|default|delegate|do|double|else|enum|event|explicit|extern|false|finally|fixed|float|for|foreach|goto|if|implicit|in|int|interface|internal|is|lock|long|namespace|new|null|object|operator|out|override|params|private|protected|public|readonly|ref|return|sbyte|sealed|short|sizeof|stackalloc|static|string|struct|super|switch|this|throw|true|try|typeof|uint|ulong|unchecked|unsafe|ushort|import|virtual|void|volatile|while|add|alias|ascending|descending|dynamic|from|get|global|group|into|join|let|orderby|package|partial|remove|select|set|value|var|where|yield)\b|#region\b|#endregion\b",
                     RegexCompiledOption);
         }
+        #endregion
+
+        #region AutoCompleteMenu Functionality
+
+        /// <summary>
+        /// This item appears when any part of snippet text is typed
+        /// </summary>
+        class DeclarationSnippet : SnippetAutocompleteItem
+        {
+            public DeclarationSnippet(string snippet)
+                : base(snippet)
+            {
+            }
+
+            public override CompareResult Compare(string fragmentText)
+            {
+                var pattern = Regex.Escape(fragmentText);
+                if (Regex.IsMatch(Text, "\\b" + pattern, RegexOptions.IgnoreCase))
+                    return CompareResult.Visible;
+                return CompareResult.Hidden;
+            }
+        }
+
+        /// <summary>
+        /// Divides numbers and words: "123AND456" -> "123 AND 456"
+        /// Or "i=2" -> "i = 2"
+        /// </summary>
+        class InsertSpaceSnippet : AutocompleteItem
+        {
+            string pattern;
+
+            public InsertSpaceSnippet(string pattern) : base("")
+            {
+                this.pattern = pattern;
+            }
+
+            public InsertSpaceSnippet()
+                : this(@"^(\d+)([a-zA-Z_]+)(\d*)$")
+            {
+            }
+
+            public override CompareResult Compare(string fragmentText)
+            {
+                if (Regex.IsMatch(fragmentText, pattern))
+                {
+                    Text = InsertSpaces(fragmentText);
+                    if (Text != fragmentText)
+                        return CompareResult.Visible;
+                }
+                return CompareResult.Hidden;
+            }
+
+            public string InsertSpaces(string fragment)
+            {
+                var m = Regex.Match(fragment, pattern);
+                if (m == null)
+                    return fragment;
+                if (m.Groups[1].Value == "" && m.Groups[3].Value == "")
+                    return fragment;
+                return (m.Groups[1].Value + " " + m.Groups[2].Value + " " + m.Groups[3].Value).Trim();
+            }
+
+            public override string ToolTipTitle
+            {
+                get
+                {
+                    return Text;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Builds list of methods and properties for current class name was typed in the textbox
+        /// </summary>
+        internal class DynamicCollection : IEnumerable<AutocompleteItem>
+        {
+            private AutocompleteMenu menu;
+            private FastColoredTextBox tb;
+
+            public DynamicCollection(AutocompleteMenu menu, FastColoredTextBox tb)
+            {
+                this.menu = menu;
+                this.tb = tb;
+            }
+
+            public IEnumerator<AutocompleteItem> GetEnumerator()
+            {
+                //get current fragment of the text
+                var text = menu.Fragment.Text;
+
+                //extract class name (part before dot)
+                var parts = text.Split('.');
+                if (parts.Length < 2)
+                    yield break;
+                var className = parts[parts.Length - 2];
+
+                //find type for given className
+                var type = FindTypeByName(className);
+
+                if (type == null)
+                    yield break;
+
+                //return static methods of the class
+                foreach (var methodName in type.GetMethods().AsEnumerable().Select(mi => mi.Name).Distinct())
+                    yield return new MethodAutocompleteItem(methodName + "()")
+                    {
+                        ToolTipTitle = methodName,
+                        ToolTipText = "Description of method " + methodName + " goes here.",
+                    };
+
+                //return static properties of the class
+                foreach (var pi in type.GetProperties())
+                    yield return new MethodAutocompleteItem(pi.Name)
+                    {
+                        ToolTipTitle = pi.Name,
+                        ToolTipText = "Description of property " + pi.Name + " goes here.",
+                    };
+            }
+
+            Type FindTypeByName(string name)
+            {
+                System.Reflection.Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                Type type = null;
+                foreach (var a in assemblies)
+                {
+                    foreach (var t in a.GetTypes())
+                        if (t.Name == name)
+                        {
+                            return t;
+                        }
+                }
+
+                return null;
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
+        /// <summary>
+        /// Inerts line break after '}'
+        /// </summary>
+        class InsertEnterSnippet : AutocompleteItem
+        {
+            Place enterPlace = Place.Empty;
+
+            public InsertEnterSnippet()
+                : base("[Line break]")
+            {
+            }
+
+            public override CompareResult Compare(string fragmentText)
+            {
+                var r = Parent.Fragment.Clone();
+                while (r.Start.iChar > 0)
+                {
+                    if (r.CharBeforeStart == '}')
+                    {
+                        enterPlace = r.Start;
+                        return CompareResult.Visible;
+                    }
+
+                    r.GoLeftThroughFolded();
+                }
+
+                return CompareResult.Hidden;
+            }
+
+            public override string GetTextForReplace()
+            {
+                //extend range
+                Range r = Parent.Fragment;
+                Place end = r.End;
+                r.Start = enterPlace;
+                r.End = r.End;
+                //insert line break
+                return Environment.NewLine + r.Text;
+            }
+
+            public override void OnSelected(AutocompleteMenu popupMenu, SelectedEventArgs e)
+            {
+                base.OnSelected(popupMenu, e);
+                if (Parent.Fragment.tb.AutoIndent)
+                    Parent.Fragment.tb.DoAutoIndent();
+            }
+
+            public override string ToolTipTitle
+            {
+                get
+                {
+                    return "Insert line break after '}'";
+                }
+            }
+        }
+
         #endregion
     }
 }
