@@ -12,13 +12,13 @@
 
 namespace Essay_Analysis_Tool
 {
+    using Essay_Analysis_Tool.Properties;
     using FarsiLibrary.Win;
     using FastColoredTextBoxNS;
     using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
-    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
 
@@ -32,10 +32,10 @@ namespace Essay_Analysis_Tool
         internal OpenFileDialog file_open = new OpenFileDialog();
         internal SaveFileDialog sfdMain = new SaveFileDialog();
         internal FontDialog fontDialog = new FontDialog();
+        LoggerForm logger = new LoggerForm();
 
         //Form declarations
         internal FindForm findForm;
-        AutocompleteMenu popupMenu;
 
         //Line Colors
         internal Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
@@ -57,19 +57,6 @@ namespace Essay_Analysis_Tool
         private const string _sql = "sql";
         private const string _java = "java";
         private const string _bat = "bat";
-
-        //Application Version
-        private const string Version = "v1.0.0.SNAPSHOT";
-
-        //file types
-        private const string _fthtml = "Hyper Text Markup Language File (*.html)";
-        private const string _ftxml = "Extensible Markup Language file (.xml)";
-        private const string _ftjs = "Javascript source file (.js)";
-        private const string _ftcsharp = "C# source file (.cs)";
-        private const string _ftlua = "Lua source file (.lua)";
-        private const string _ftsql = "Structured Query Language file (.sql)";
-        private const string _ftjava = "Java source file (.java)";
-        private const string _ftbatch = "Windows Batch file (.bat)";
 
         /// <summary>
         /// Defines the Platform Type.
@@ -203,6 +190,18 @@ namespace Essay_Analysis_Tool
                     return RegexOptions.None;
             }
         }
+
+        AutocompleteMenu popupMenu;
+        string[] keywords = { "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "add", "alias", "ascending", "descending", "dynamic", "from", "get", "global", "group", "into", "join", "let", "orderby", "partial", "remove", "select", "set", "value", "var", "where", "yield" };
+        string[] methods = { "Equals()", "GetHashCode()", "GetType()", "ToString()" };
+        string[] snippets = { "if(^)\n{\n;\n}", "if(^)\n{\n;\n}\nelse\n{\n;\n}", "for(^;;)\n{\n;\n}", "while(^)\n{\n;\n}", "do${\n^;\n}while();", "switch(^)\n{\ncase : break;\n}" };
+        string[] declarationSnippets = {
+               "public class ^\n{\n}", "private class ^\n{\n}", "internal class ^\n{\n}",
+               "public struct ^\n{\n;\n}", "private struct ^\n{\n;\n}", "internal struct ^\n{\n;\n}",
+               "public void ^()\n{\n;\n}", "private void ^()\n{\n;\n}", "internal void ^()\n{\n;\n}", "protected void ^()\n{\n;\n}",
+               "public ^{ get; set; }", "private ^{ get; set; }", "internal ^{ get; set; }", "protected ^{ get; set; }"
+               };
+
         #endregion
 
         /// <summary>
@@ -211,91 +210,91 @@ namespace Essay_Analysis_Tool
         public MainForm()
         {
             InitializeComponent();
+
+            logger.Log("Form Initialized!", LoggerMessageType.Info);
             sfdMain.Filter = "Normal text file (*.txt)|*.txt|C# source file (*.cs)|*.cs|Hyper Text Markup Language file (*.html)|" +
                 "*.html|All files (*.*)|*.*|Java source file (*.java)|*.java|JavaScript file (*.js)|*.js|JSON file (*.json)|*.json|" +
                 "Lua source file (*.lua)|*.lua|PHP file (*.php)|*.php|Structured Query Language file (*.sql)|*.sql|" +
                 "Visual Basic file (*.vb)|*.vb";
-            CreateTab(null);
+
+            CreateTab();
+            BuildAutocompleteMenu();
         }
 
         #region Tab Functionality
+
         /// <summary>
-        /// The CreateTab
+        /// Creates a new tab with read and write access to a specified file
+        /// directed at by the path contained in the fileName.
         /// </summary>
-        /// <param name="fileName">The fileName<see cref="string"/></param>
+        /// <param name="fileName">Name and Path of the file.</param>
         private void CreateTab(string fileName)
         {
-            try
+            if (string.IsNullOrEmpty(fileName))
             {
-                var tb = new FastColoredTextBox
-                {
-                    Font = new Font("Consolas", 9.75f),
-                    ContextMenuStrip = null,
-                    Dock = DockStyle.Fill,
-                    BorderStyle = BorderStyle.Fixed3D,
-                    LeftPadding = 17,
-                    HighlightingRangeType = HighlightingRangeType.VisibleRange
-                };
-
-                tb.AddStyle(sameWordsStyle);
-
-                if (fileName != null)
-                {
-                    SetCurrentEditorSyntaxHighlight(fileName, tb);
-                    if (tb.Language == Language.Custom && _batchHighlighting)
-                    {
-                        tb.OpenFile(fileName);
-                        tb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
-                        BatchSyntaxHighlight(tb);
-                    }
-                    else if (tb.Language == Language.Custom && _javaHighlighting)
-                    {
-                        tb.OpenFile(fileName);
-                        tb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
-                        JavaSyntaxHighlight(tb);
-                    }
-                    else
-                    {
-                        tb.OpenFile(fileName);
-                    }
-                }
-
-                var tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb)
-                {
-                    Tag = fileName
-                };
-                
-                tsFiles.AddTab(tab);
-                tsFiles.SelectedItem = tab;
-                tb.Focus();
-                tb.ChangedLineColor = changedLineColor;
-                tb.KeyDown += new KeyEventHandler(MainForm_KeyDown);
-                tb.KeyUp += new KeyEventHandler(MainForm_KeyUp);
-                UpdateDocumentMap();
-                HighlightCurrentLine();
-
-                //create autocomplete popup menu
-                popupMenu = new AutocompleteMenu(tb);
-                popupMenu.ForeColor = Color.White;
-                popupMenu.BackColor = Color.Gray;
-                popupMenu.SelectedColor = Color.Purple;
-                popupMenu.SearchPattern = @"[\w\.]";
-                popupMenu.AllowTabKey = true;
-                popupMenu.AlwaysShowTooltip = true;
-                //assign DynamicCollection as items source
-                popupMenu.Items.SetAutocompleteItems(new DynamicCollection(popupMenu, tb));
+                logger.Log(Resources.InvalidFilename, LoggerMessageType.Error);
+                return;
             }
-            catch (Exception ex)
+
+            var tb = new FastColoredTextBox
             {
-                if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
+                Font = new Font("Consolas", 9.75f),
+                ContextMenuStrip = null,
+                Dock = DockStyle.Fill,
+                BorderStyle = BorderStyle.Fixed3D,
+                LeftPadding = 17,
+                HighlightingRangeType = HighlightingRangeType.VisibleRange
+            };
+
+            tb.AddStyle(sameWordsStyle);
+
+            if (fileName != Resources.CreateFileCode)
+            {
+                SetCurrentEditorSyntaxHighlight(fileName, tb);
+                if (tb.Language == Language.Custom && _batchHighlighting)
                 {
-                    CreateTab(fileName);
+                    tb.OpenFile(fileName);
+                    tb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
+                    BatchSyntaxHighlight(tb);
+                }
+                else if (tb.Language == Language.Custom && _javaHighlighting)
+                {
+                    tb.OpenFile(fileName);
+                    tb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
+                    JavaSyntaxHighlight(tb);
+                }
+                else
+                {
+                    tb.OpenFile(fileName);
                 }
             }
+
+            var tab = new FATabStripItem(fileName != Resources.CreateFileCode ? Path.GetFileName(fileName) : "[new]", tb)
+            {
+                Tag = fileName
+            };
+
+            //create autocomplete popup menu
+            popupMenu = new AutocompleteMenu(tb);
+            popupMenu.SearchPattern = @"[\w\.:=!<>]";
+            popupMenu.AllowTabKey = true;
+
+            tsFiles.AddTab(tab);
+            tsFiles.SelectedItem = tab;
+            tb.Focus();
+            tb.ChangedLineColor = changedLineColor;
+            tb.KeyDown += new KeyEventHandler(MainForm_KeyDown);
+            UpdateDocumentMap();
+            HighlightCurrentLine();
+        }
+
+        private void CreateTab()
+        {
+            CreateTab(Resources.CreateFileCode);
         }
 
         /// <summary>
-        /// The CloseAllTabs
+        /// This function closes all tabs via the Count variable stored within the tab strip.
         /// </summary>
         private void CloseAllTabs()
         {
@@ -319,10 +318,12 @@ namespace Essay_Analysis_Tool
         private List<FATabStripItem> GetTabList()
         {
             List<FATabStripItem> list = new List<FATabStripItem>();
+
             foreach (FATabStripItem tab in tsFiles.Items)
             {
                 list.Add(tab);
             }
+
             return list;
         }
 
@@ -330,37 +331,31 @@ namespace Essay_Analysis_Tool
         /// Attempts to save the current file upon clicking the "Save" Option
         /// available in the "Edit" drop-down menu.
         /// </summary>
-        /// <param name="tab">The tab<see cref="FATabStripItem"/></param>
-        /// <returns>The <see cref="bool"/></returns>
+        /// <param name="tab">Tab inside the tab list.</param>
+        /// <returns>A boolean value based on whether or not a successfull save was performed.</returns>
         private bool Save(FATabStripItem tab)
         {
+            if (tab == null)
+            {
+                logger.Log(Resources.NullTabStripItem, LoggerMessageType.Error);
+                MessageBox.Show("Save Unsucessfull.", "Save not complete", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
             var tb = (tab.Controls[0] as FastColoredTextBox);
+
             if (tab.Tag == null)
             {
                 if (sfdMain.ShowDialog() != DialogResult.OK)
                 {
-                    return false;
+                    return true;
                 }
                 tab.Title = Path.GetFileName(sfdMain.FileName);
                 tab.Tag = sfdMain.FileName;
             }
 
-            try
-            {
-                File.WriteAllText(tab.Tag as string, tb.Text);
-                tb.IsChanged = false;
-            }
-            catch (Exception ex)
-            {
-                if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
-                {
-                    return Save(tab);
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            File.WriteAllText(tab.Tag as string, tb.Text);
+            tb.IsChanged = false;
 
             return true;
         }
@@ -389,6 +384,7 @@ namespace Essay_Analysis_Tool
         #endregion
 
         #region Find Dialog Functionality
+
         /// <summary>
         /// Shows find dialog
         /// </summary>
@@ -413,9 +409,11 @@ namespace Essay_Analysis_Tool
             findForm.Show();
             findForm.Focus();
         }
+
         #endregion
 
         #region Button Click Event Handlers
+
         /// <summary>
         /// Handles Event ExitToolStripMenuItem_Click event.
         /// </summary>
@@ -433,7 +431,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CurrentTB.Undo();
+            if (CurrentTB != null)
+            {
+                CurrentTB.Undo();
+            }
         }
 
         /// <summary>
@@ -443,7 +444,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void NewToolStripButton_Click(object sender, EventArgs e)
         {
-            CreateTab(null);
+            CreateTab();
         }
 
         /// <summary>
@@ -476,14 +477,17 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void CloseToolStripButton_Click(object sender, EventArgs e)
         {
-            TabStripItemClosingEventArgs args = new TabStripItemClosingEventArgs(tsFiles.SelectedItem);
-            TsFiles_TabStripItemClosing(args);
-            if (args.Cancel)
+            if (tsFiles.SelectedItem != null)
             {
-                return;
+                TabStripItemClosingEventArgs args = new TabStripItemClosingEventArgs(tsFiles.SelectedItem);
+                TsFiles_TabStripItemClosing(args);
+                if (args.Cancel)
+                {
+                    return;
+                }
+                tsFiles.RemoveTab(tsFiles.SelectedItem);
+                UpdateDocumentMap();
             }
-            tsFiles.RemoveTab(tsFiles.SelectedItem);
-            UpdateDocumentMap();
         }
 
         /// <summary>
@@ -493,7 +497,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void FontToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (fontDialog.ShowDialog() == DialogResult.OK)
+            if (CurrentTB != null && fontDialog.ShowDialog() == DialogResult.OK)
             {
                 CurrentTB.Font = fontDialog.Font;
             }
@@ -506,7 +510,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void SaveToolStripButton_Click(object sender, EventArgs e)
         {
-            if (tsFiles != null && tsFiles.SelectedItem != null)
+            if (tsFiles.SelectedItem != null)
             {
                 Save(tsFiles.SelectedItem);
             }
@@ -621,10 +625,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void FindToolStripButton_Click(object sender, EventArgs e)
         {
-            if (CurrentTB != null)
-            {
-                ShowFindDialog();
-            }
+            ShowFindDialog();
         }
 
         /// <summary>
@@ -635,6 +636,7 @@ namespace Essay_Analysis_Tool
         private void DocumentMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _enableDocumentMap = _enableDocumentMap ? false : true;
+
             UpdateDocumentMap();
         }
 
@@ -645,9 +647,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void CToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "C#";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "C#";
                 ChangeSyntax(CurrentTB, Language.CSharp);
             }
         }
@@ -659,9 +662,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void NoneToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "None";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "None";
                 ChangeSyntax(CurrentTB, Language.Custom);
             }
         }
@@ -673,9 +677,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void HTMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "HTML";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "HTML";
                 ChangeSyntax(CurrentTB, Language.HTML);
             }
         }
@@ -687,9 +692,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void JavaScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "JavaScript";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "JavaScript";
                 ChangeSyntax(CurrentTB, Language.JS);
             }
         }
@@ -701,9 +707,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void LuaToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "Lua";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "Lua";
                 ChangeSyntax(CurrentTB, Language.Lua);
             }
         }
@@ -715,9 +722,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void PHPToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "PHP";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "PHP";
                 ChangeSyntax(CurrentTB, Language.PHP);
             }
         }
@@ -729,9 +737,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void SQLToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "SQL";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "SQL";
                 ChangeSyntax(CurrentTB, Language.SQL);
             }
         }
@@ -743,9 +752,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void VisualBasicToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "Visual Basic";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "Visual Basic";
                 ChangeSyntax(CurrentTB, Language.VB);
             }
         }
@@ -757,9 +767,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void XMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "XML";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "XML";
                 ChangeSyntax(CurrentTB, Language.XML);
             }
         }
@@ -788,10 +799,12 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void JavaToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "Java";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "Java";
                 CurrentTB.Language = Language.Custom;
+
                 JavaSyntaxHighlight(CurrentTB);
             }
         }
@@ -803,10 +816,12 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void BatchToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            syntaxLabel.Text = "Batch";
+
             if (CurrentTB != null)
             {
-                syntaxLabel.Text = "Batch";
                 CurrentTB.Language = Language.Custom;
+
                 BatchSyntaxHighlight(CurrentTB);
             }
         }
@@ -833,6 +848,7 @@ namespace Essay_Analysis_Tool
         private void HlCurrentLineToolStripButton_Click(object sender, EventArgs e)
         {
             _highlightCurrentLine = _highlightCurrentLine ? false : true;
+
             HighlightCurrentLine();
         }
 
@@ -843,10 +859,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (file_open.ShowDialog() == DialogResult.OK)
-            {
-                CreateTab(file_open.FileName);
-            }
+            CreateTab(file_open.FileName);
         }
 
         /// <summary>
@@ -891,8 +904,9 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CreateTab(null);
+            CreateTab();
         }
+
         #endregion
 
         #region Event Handlers
@@ -904,53 +918,43 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="KeyEventArgs"/></param>
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.F && CurrentTB != null)
+            if (CurrentTB != null)
             {
-                ShowFindDialog();
-            }
-            else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control && CurrentTB != null)
-            {
-                CurrentTB.Copy();
-            }
-            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control && CurrentTB != null)
-            {
-                CurrentTB.Paste();
-            }
-            else if (e.KeyCode == Keys.X && e.Modifiers == Keys.Control && CurrentTB != null)
-            {
-                CurrentTB.Cut();
-            }
-            else if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && CurrentTB != null)
-            {
-                CurrentTB.Undo();
-            }
-            else if (e.KeyCode == Keys.Y && e.Modifiers == Keys.Control && CurrentTB != null)
-            {
-                CurrentTB.Redo();
-            }
-            else if (e.Control && e.KeyCode == Keys.O)
-            {
-                if (file_open.ShowDialog() == DialogResult.OK)
+                if (e.Control && e.KeyCode == Keys.F && CurrentTB != null)
                 {
-                    CreateTab(file_open.FileName);
+                    ShowFindDialog();
                 }
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.Back && CurrentTB != null)
-            {
-                CurrentTB.ClearCurrentLine();
-            }
-        }
-
-        /// <summary>
-        /// Handles the MainForm_KeyDown event.
-        /// </summary>
-        /// <param name="sender">Sender Object<see cref="object"/></param>
-        /// <param name="e">Event Arguments<see cref="KeyEventArgs"/></param>
-        private void MainForm_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Decimal)
-            {
-                popupMenu.Show();
+                else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control && CurrentTB != null)
+                {
+                    CurrentTB.Copy();
+                }
+                else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control && CurrentTB != null)
+                {
+                    CurrentTB.Paste();
+                }
+                else if (e.KeyCode == Keys.X && e.Modifiers == Keys.Control && CurrentTB != null)
+                {
+                    CurrentTB.Cut();
+                }
+                else if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && CurrentTB != null)
+                {
+                    CurrentTB.Undo();
+                }
+                else if (e.KeyCode == Keys.Y && e.Modifiers == Keys.Control && CurrentTB != null)
+                {
+                    CurrentTB.Redo();
+                }
+                else if (e.Control && e.KeyCode == Keys.O)
+                {
+                    if (file_open.ShowDialog() == DialogResult.OK)
+                    {
+                        CreateTab(file_open.FileName);
+                    }
+                }
+                else if (e.Control && e.Shift && e.KeyCode == Keys.Back && CurrentTB != null)
+                {
+                    CurrentTB.ClearCurrentLine();
+                }
             }
         }
 
@@ -961,6 +965,12 @@ namespace Essay_Analysis_Tool
         private void TsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
         {
             UpdateDocumentMap();
+
+            if (CurrentTB != null)
+            {
+                popupMenu = new AutocompleteMenu(CurrentTB);
+                BuildAutocompleteMenu();
+            }
         }
 
         /// <summary>
@@ -970,13 +980,16 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="TextChangedEventArgs"/></param>
         private void Tb_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (CurrentTB.Language == Language.Custom && _batchHighlighting)
+            if (CurrentTB != null)
             {
-                BatchSyntaxHighlight(CurrentTB);
-            }
-            else if (CurrentTB.Language == Language.Custom && _javaHighlighting)
-            {
-                JavaSyntaxHighlight(CurrentTB);
+                if (CurrentTB.Language == Language.Custom && _batchHighlighting)
+                {
+                    BatchSyntaxHighlight(CurrentTB);
+                }
+                else if (CurrentTB.Language == Language.Custom && _javaHighlighting)
+                {
+                    JavaSyntaxHighlight(CurrentTB);
+                }
             }
         }
 
@@ -1041,46 +1054,58 @@ namespace Essay_Analysis_Tool
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string title = "About Notepad#";
-            string message = "Created by: Zachary Pedigo\nVersion: " + Version + "\n" + "Date: " + DateTime.Now + "\n" + "OS: "
+            string message = "Created by: Zachary Pedigo\nVersion: " + Resources.ApplicationVersion + "\n" + "Date: " + DateTime.Now + "\n" + "OS: "
                 + Environment.OSVersion + "\nLicense: GNU General Public License v3.0";
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
+        private void LoggerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            char keyPressed = e.KeyChar;
+            logger.Show();
         }
+
         #endregion
 
         #region Document Map Functionality
+
         /// <summary>
         /// Updates the target of the DocumentMap.
         /// </summary>
         private void UpdateDocumentMap()
         {
-            List<FATabStripItem> list = GetTabList();
-            documentMap.Target = list.Count > 0 ? CurrentTB : null;
-            documentMap.Visible = _enableDocumentMap ? true : false;
-            if (!_enableDocumentMap || documentMap.Target == null)
+            if (CurrentTB != null)
             {
-                tsFiles.Width = this.Width - 40;
-                documentMap.Visible = false;
-                return;
+                List<FATabStripItem> list = GetTabList();
+                documentMap.Target = list.Count > 0 ? CurrentTB : null;
+                documentMap.Visible = _enableDocumentMap ? true : false;
+                if (!_enableDocumentMap || documentMap.Target == null)
+                {
+                    tsFiles.Width = this.Width - 40;
+                    documentMap.Visible = false;
+                    return;
+                }
+                tsFiles.Width = documentMap.Left - 23;
             }
-            tsFiles.Width = documentMap.Left - 23;
         }
         #endregion
 
         #region Custom Syntax Highlighting
+
         /// <summary>
-        /// The BatchSyntaxHighlight
+        /// This function handles the windows batch file syntax highlighting.
         /// </summary>
         /// <param name="fctb">The fctb<see cref="FastColoredTextBox"/></param>
         private void BatchSyntaxHighlight(FastColoredTextBox fctb)
         {
-            fctb.LeftBracket = '(';
-            fctb.RightBracket = ')';
+            if (fctb == null)
+            {
+                logger.Log(Resources.NullFastColoredTextBox, LoggerMessageType.Error);
+                return;
+            }
+
             Range e = fctb.Range;
+            e.tb.LeftBracket = '(';
+            e.tb.RightBracket = ')';
             // Clear all styles
             e.ClearStyle(StyleIndex.All);
             //variable highlighting
@@ -1108,11 +1133,17 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// The JavaSyntaxHighlight
+        /// This function handles the syntax highlighting for the Java language.
         /// </summary>
         /// <param name="fctb">The fctb<see cref="FastColoredTextBox"/></param>
         private void JavaSyntaxHighlight(FastColoredTextBox fctb)
         {
+            if (fctb == null)
+            {
+                logger.Log(Resources.NullFastColoredTextBox, LoggerMessageType.Error);
+                return;
+            }
+
             Range range = fctb.Range;
             range.tb.CommentPrefix = "//";
             range.tb.LeftBracket = '(';
@@ -1123,7 +1154,7 @@ namespace Essay_Analysis_Tool
 
             range.tb.AutoIndentCharsPatterns = @"^\s*[\w\.]+(\s\w+)?\s*(?<range>=)\s*(?<range>[^;]+);^\s*(case|default)\s*[^:]*(?<range>:)\s*(?<range>[^;]+);";
             //clear style of changed range
-            range.ClearStyle(BrownStyle, GreenStyleItalic, MagentaStyle, BoldStyle, BlueStyle, GreenStyleItalic);
+            range.ClearStyle(BrownStyle, GreenStyleItalic, MagentaStyle, BoldStyle, BlueStyle);
             //
             if (JavaStringRegex == null)
                 InitJavaRegex();
@@ -1248,7 +1279,7 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Changes the language of the given FastColoredTextBox instacnce
+        /// Changes the language of the given FastColoredTextBox instance
         /// and clears all styles.
         /// </summary>
         /// <param name="tb">FastColoredTextBox</param>
@@ -1256,24 +1287,22 @@ namespace Essay_Analysis_Tool
         public void ChangeSyntax(FastColoredTextBox tb, Language language)
         {
             _batchHighlighting = false;
-            try
+
+            if (tb == null)
             {
-                tb.Range.ClearStyle(StyleIndex.All);
-                tb.Language = language;
-                tb.TextChanged -= Tb_TextChanged;
-                tb.OnTextChanged();
+                logger.Log(Resources.InvalidArgument, LoggerMessageType.Error);
+                return;
             }
-            catch (Exception e)
-            {
-                if (MessageBox.Show(e.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
-                {
-                    ChangeSyntax(tb, language);
-                }
-            }
+
+            tb.Range.ClearStyle(StyleIndex.All);
+            tb.Language = language;
+            tb.OnTextChanged();
         }
+
         #endregion
 
         #region Regex Initializers
+
         /// <summary>
         /// The InitHTMLRegex
         /// </summary>
@@ -1355,6 +1384,27 @@ namespace Essay_Analysis_Tool
 
         #region AutoCompleteMenu Functionality
 
+        private void BuildAutocompleteMenu()
+        {
+            List<AutocompleteItem> items = new List<AutocompleteItem>();
+
+            foreach (var item in snippets)
+                items.Add(new SnippetAutocompleteItem(item) { ImageIndex = 1 });
+            foreach (var item in declarationSnippets)
+                items.Add(new DeclarationSnippet(item) { ImageIndex = 0 });
+            foreach (var item in methods)
+                items.Add(new MethodAutocompleteItem(item) { ImageIndex = 2 });
+            foreach (var item in keywords)
+                items.Add(new AutocompleteItem(item));
+
+            items.Add(new InsertSpaceSnippet());
+            items.Add(new InsertSpaceSnippet(@"^(\w+)([=<>!:]+)(\w+)$"));
+            items.Add(new InsertEnterSnippet());
+
+            //set as autocomplete source
+            popupMenu.Items.SetAutocompleteItems(items);
+        }
+
         /// <summary>
         /// This item appears when any part of snippet text is typed
         /// </summary>
@@ -1419,76 +1469,6 @@ namespace Essay_Analysis_Tool
                 {
                     return Text;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Builds list of methods and properties for current class name was typed in the textbox
-        /// </summary>
-        internal class DynamicCollection : IEnumerable<AutocompleteItem>
-        {
-            private AutocompleteMenu menu;
-            private FastColoredTextBox tb;
-
-            public DynamicCollection(AutocompleteMenu menu, FastColoredTextBox tb)
-            {
-                this.menu = menu;
-                this.tb = tb;
-            }
-
-            public IEnumerator<AutocompleteItem> GetEnumerator()
-            {
-                //get current fragment of the text
-                var text = menu.Fragment.Text;
-
-                //extract class name (part before dot)
-                var parts = text.Split('.');
-                if (parts.Length < 2)
-                    yield break;
-                var className = parts[parts.Length - 2];
-
-                //find type for given className
-                var type = FindTypeByName(className);
-
-                if (type == null)
-                    yield break;
-
-                //return static methods of the class
-                foreach (var methodName in type.GetMethods().AsEnumerable().Select(mi => mi.Name).Distinct())
-                    yield return new MethodAutocompleteItem(methodName + "()")
-                    {
-                        ToolTipTitle = methodName,
-                        ToolTipText = "Description of method " + methodName + " goes here.",
-                    };
-
-                //return static properties of the class
-                foreach (var pi in type.GetProperties())
-                    yield return new MethodAutocompleteItem(pi.Name)
-                    {
-                        ToolTipTitle = pi.Name,
-                        ToolTipText = "Description of property " + pi.Name + " goes here.",
-                    };
-            }
-
-            Type FindTypeByName(string name)
-            {
-                System.Reflection.Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                Type type = null;
-                foreach (var a in assemblies)
-                {
-                    foreach (var t in a.GetTypes())
-                        if (t.Name == name)
-                        {
-                            return t;
-                        }
-                }
-
-                return null;
-            }
-
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
             }
         }
 
