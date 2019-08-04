@@ -309,6 +309,7 @@ namespace Essay_Analysis_Tool
                 }
                 tsFiles.RemoveTab(tab);
             }
+            SanitizeTabStrip();
         }
 
         /// <summary>
@@ -488,6 +489,7 @@ namespace Essay_Analysis_Tool
                 tsFiles.RemoveTab(tsFiles.SelectedItem);
                 UpdateDocumentMap();
             }
+            SanitizeTabStrip();
         }
 
         /// <summary>
@@ -1000,6 +1002,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void TsFiles_TabStripItemClosed(object sender, EventArgs e)
         {
+            SanitizeTabStrip();
             UpdateDocumentMap();
         }
 
@@ -1048,6 +1051,15 @@ namespace Essay_Analysis_Tool
                         e.Cancel = true;
                         break;
                 }
+            }
+        }
+
+        private void SanitizeTabStrip()
+        {
+            List<FATabStripItem> list = GetTabList();
+            if (list.Count == 0)
+            {
+                CreateTab();
             }
         }
 
