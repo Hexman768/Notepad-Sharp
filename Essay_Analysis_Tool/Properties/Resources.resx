@@ -114,4 +114,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApplicationVersion">
+    <value>v1.0.0.SNAPSHOT</value>
+  </data>
+  <data name="BatchFileType">
+    <value>Windows Batch file (.bat)</value>
+  </data>
+  <data name="CSharpFileType">
+    <value>C# source file (.cs)</value>
+  </data>
+  <data name="HTMLFileType">
+    <value>Hyper Text Markup Language File (*.html)</value>
+  </data>
+  <data name="JavaFileType">
+    <value>Java source file (.java)</value>
+  </data>
+  <data name="JSFileType">
+    <value>Javascript source file (.js)</value>
+  </data>
+  <data name="LuaFileType">
+    <value>Lua source file (.lua)</value>
+  </data>
+  <data name="NullFastColoredTextBox">
+    <value>FastColoredTextBox is null!</value>
+  </data>
+  <data name="NullTabStrip">
+    <value>FATabStrip is null!</value>
+  </data>
+  <data name="NullTabStripItem">
+    <value>FATabStripItem is null!</value>
+  </data>
+  <data name="SQLFileType">
+    <value>Structured Query Language file (.sql)</value>
+  </data>
+  <data name="InvalidFilename">
+    <value>Filename is null, empty, or whitespace!</value>
+  </data>
+  <data name="InvalidArgument">
+    <value>An invalid argument has been passed into the function!</value>
+  </data>
+  <data name="CreateFileCode">
+    <value>CREATEFILE</value>
+  </data>
+  <data name="Exception">
+    <value>Exception</value>
+  </data>
+  <data name="XMLFileType">
+    <value>Extensible Markup Language file (.xml)</value>
+  </data>
 </root>

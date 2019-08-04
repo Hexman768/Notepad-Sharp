@@ -40,8 +40,8 @@ namespace Essay_Analysis_Tool
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,11 +101,18 @@ namespace Essay_Analysis_Tool
             this.tsFiles = new FarsiLibrary.Win.FATabStrip();
             this.documentMap1 = new FastColoredTextBoxNS.DocumentMap();
             this.documentMap = new FastColoredTextBoxNS.DocumentMap();
+            this.loggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tsMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).BeginInit();
             this.SuspendLayout();
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // menuStrip1
             // 
@@ -265,7 +272,8 @@ namespace Essay_Analysis_Tool
             this.documentMapToolStripItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusBarToolStripMenuItem,
             this.syntaxHighlightingToolStripMenuItem,
-            this.documentMapToolStripMenuItem});
+            this.documentMapToolStripMenuItem,
+            this.loggerToolStripMenuItem});
             this.documentMapToolStripItem.Name = "documentMapToolStripItem";
             this.documentMapToolStripItem.Size = new System.Drawing.Size(44, 20);
             this.documentMapToolStripItem.Text = "View";
@@ -274,7 +282,7 @@ namespace Essay_Analysis_Tool
             // 
             this.statusBarToolStripMenuItem.CheckOnClick = true;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.statusBarToolStripMenuItem.Text = "Status Bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.StatusBarToolStripMenuItem_Click);
             // 
@@ -293,7 +301,7 @@ namespace Essay_Analysis_Tool
             this.batchToolStripMenuItem,
             this.javaToolStripMenuItem});
             this.syntaxHighlightingToolStripMenuItem.Name = "syntaxHighlightingToolStripMenuItem";
-            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.syntaxHighlightingToolStripMenuItem.Text = "Syntax Highlighting";
             // 
             // noneToolStripMenuItem
@@ -377,7 +385,7 @@ namespace Essay_Analysis_Tool
             // documentMapToolStripMenuItem
             // 
             this.documentMapToolStripMenuItem.Name = "documentMapToolStripMenuItem";
-            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.documentMapToolStripMenuItem.Text = "Document Map";
             this.documentMapToolStripMenuItem.Click += new System.EventHandler(this.DocumentMapToolStripMenuItem_Click);
             // 
@@ -663,6 +671,13 @@ namespace Essay_Analysis_Tool
             this.documentMap.Text = "documentMap";
             this.documentMap.Visible = false;
             // 
+            // loggerToolStripMenuItem
+            // 
+            this.loggerToolStripMenuItem.Name = "loggerToolStripMenuItem";
+            this.loggerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loggerToolStripMenuItem.Text = "Logger";
+            this.loggerToolStripMenuItem.Click += new System.EventHandler(this.LoggerToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -753,6 +768,7 @@ namespace Essay_Analysis_Tool
         private System.Windows.Forms.ToolStripButton hlCurrentLineToolStripButton;
         private System.Windows.Forms.ToolStripMenuItem javaToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ToolStripMenuItem loggerToolStripMenuItem;
     }
 }
 
