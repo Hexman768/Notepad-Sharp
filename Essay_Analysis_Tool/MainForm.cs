@@ -28,6 +28,7 @@ namespace Essay_Analysis_Tool
     public partial class MainForm : Form
     {
         #region Variable declarations and definitions
+
         //Dialog definitions
         internal OpenFileDialog file_open = new OpenFileDialog();
         internal SaveFileDialog sfdMain = new SaveFileDialog();
@@ -43,7 +44,6 @@ namespace Essay_Analysis_Tool
 
         //General variable declarations and definitions
         private readonly Range _selection;
-        private bool _batchHighlighting = false;
         private bool _javaHighlighting = false;
         private bool _highlightCurrentLine = true;
         private bool _enableDocumentMap = true;
@@ -212,10 +212,18 @@ namespace Essay_Analysis_Tool
             InitializeComponent();
 
             logger.Log("Form Initialized!", LoggerMessageType.Info);
-            sfdMain.Filter = "Normal text file (*.txt)|*.txt|C# source file (*.cs)|*.cs|Hyper Text Markup Language file (*.html)|" +
-                "*.html|All files (*.*)|*.*|Java source file (*.java)|*.java|JavaScript file (*.js)|*.js|JSON file (*.json)|*.json|" +
-                "Lua source file (*.lua)|*.lua|PHP file (*.php)|*.php|Structured Query Language file (*.sql)|*.sql|" +
-                "Visual Basic file (*.vb)|*.vb";
+            sfdMain.Filter = Resources.NormalTextFileType + "|*.txt|"
+                + Resources.BatchFileType + "|*.bat|"
+                + Resources.CSharpFileType + "|*.cs|"
+                + Resources.HTMLFileType + "|*.html|"
+                + Resources.JavaFileType + "|*.java|"
+                + Resources.JSFileType + "|*.js|"
+                + Resources.JSONFileType + "|*.json|"
+                + Resources.LuaFileType + "|*.lua|"
+                + Resources.PHPFileType + "|*.php|"
+                + Resources.SQLFileType + "|*.sql|"
+                + Resources.VBFileType + "|*.vb|"
+                + Resources.AllFileTypes + "|*.*";
 
             CreateTab();
             BuildAutocompleteMenu();
@@ -251,13 +259,7 @@ namespace Essay_Analysis_Tool
             if (fileName != Resources.CreateFileCode)
             {
                 SetCurrentEditorSyntaxHighlight(fileName, tb);
-                if (tb.Language == Language.Custom && _batchHighlighting)
-                {
-                    tb.OpenFile(fileName);
-                    tb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
-                    BatchSyntaxHighlight(tb);
-                }
-                else if (tb.Language == Language.Custom && _javaHighlighting)
+                if (tb.Language == Language.Custom && _javaHighlighting)
                 {
                     tb.OpenFile(fileName);
                     tb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
@@ -345,7 +347,7 @@ namespace Essay_Analysis_Tool
 
             var tb = (tab.Controls[0] as FastColoredTextBox);
 
-            if (tab.Tag == null)
+            if (tab.Tag == Resources.CreateFileCode)
             {
                 if (sfdMain.ShowDialog() != DialogResult.OK)
                 {
@@ -400,10 +402,9 @@ namespace Essay_Analysis_Tool
         /// <param name="findText">The findText<see cref="string"/></param>
         public virtual void ShowFindDialog(string findText)
         {
-            if (findForm == null)
+            if (findForm == null && CurrentTB != null)
             {
                 findForm = new FindForm(CurrentTB);
-                findForm.Show();
             }
 
             findForm.tbFind.SelectAll();
@@ -822,9 +823,7 @@ namespace Essay_Analysis_Tool
 
             if (CurrentTB != null)
             {
-                CurrentTB.Language = Language.Custom;
-
-                BatchSyntaxHighlight(CurrentTB);
+                ChangeSyntax(CurrentTB, Language.Batch);
             }
         }
 
@@ -922,35 +921,18 @@ namespace Essay_Analysis_Tool
         {
             if (CurrentTB != null)
             {
-                if (e.Control && e.KeyCode == Keys.F && CurrentTB != null)
-                {
-                    ShowFindDialog();
-                }
-                else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control && CurrentTB != null)
-                {
-                    CurrentTB.Copy();
-                }
-                else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control && CurrentTB != null)
-                {
-                    CurrentTB.Paste();
-                }
-                else if (e.KeyCode == Keys.X && e.Modifiers == Keys.Control && CurrentTB != null)
-                {
-                    CurrentTB.Cut();
-                }
-                else if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && CurrentTB != null)
-                {
-                    CurrentTB.Undo();
-                }
-                else if (e.KeyCode == Keys.Y && e.Modifiers == Keys.Control && CurrentTB != null)
-                {
-                    CurrentTB.Redo();
-                }
-                else if (e.Control && e.KeyCode == Keys.O)
+                if (e.Control && e.KeyCode == Keys.O)
                 {
                     if (file_open.ShowDialog() == DialogResult.OK)
                     {
                         CreateTab(file_open.FileName);
+                    }
+                }
+                else if (e.KeyCode == Keys.S && e.Modifiers == Keys.Control && CurrentTB != null)
+                {
+                    if (tsFiles.SelectedItem != null)
+                    {
+                        Save(tsFiles.SelectedItem);
                     }
                 }
                 else if (e.Control && e.Shift && e.KeyCode == Keys.Back && CurrentTB != null)
@@ -984,11 +966,7 @@ namespace Essay_Analysis_Tool
         {
             if (CurrentTB != null)
             {
-                if (CurrentTB.Language == Language.Custom && _batchHighlighting)
-                {
-                    BatchSyntaxHighlight(CurrentTB);
-                }
-                else if (CurrentTB.Language == Language.Custom && _javaHighlighting)
+                if (CurrentTB.Language == Language.Custom && _javaHighlighting)
                 {
                     JavaSyntaxHighlight(CurrentTB);
                 }
@@ -1102,47 +1080,6 @@ namespace Essay_Analysis_Tool
         #endregion
 
         #region Custom Syntax Highlighting
-
-        /// <summary>
-        /// This function handles the windows batch file syntax highlighting.
-        /// </summary>
-        /// <param name="fctb">The fctb<see cref="FastColoredTextBox"/></param>
-        private void BatchSyntaxHighlight(FastColoredTextBox fctb)
-        {
-            if (fctb == null)
-            {
-                logger.Log(Resources.NullFastColoredTextBox, LoggerMessageType.Error);
-                return;
-            }
-
-            Range e = fctb.Range;
-            e.tb.LeftBracket = '(';
-            e.tb.RightBracket = ')';
-            // Clear all styles
-            e.ClearStyle(StyleIndex.All);
-            //variable highlighting
-            e.SetStyle(YellowStyle, "(\".+?\"|\'.+?\')", RegexOptions.Singleline);
-            e.SetStyle(MagentaStyle, @"%.+?%", RegexOptions.Multiline);
-            //attribute highlighting
-            e.SetStyle(GrayStyle, @"^\s*(?<range>\[.+?\])\s*$", RegexOptions.Multiline);
-            //class name highlighting
-            e.SetStyle(BoldStyle, @"^:[a-zA-Z]+", RegexOptions.Multiline);
-            //symbol highlighting
-            e.SetStyle(MagentaStyle, @"^(@)(?=(?i)echo)", RegexOptions.Multiline);
-            e.SetStyle(RedStyle, @"(\*)", RegexOptions.Singleline);
-            //keyword highlighting
-            e.SetStyle(BlueStyle, @"(?<!(^(?i)(rem|::|echo).*))(?i)goto", RegexOptions.Multiline);
-            e.SetStyle(BlueStyle, @"(?<!(^(?i)(rem|::|echo).*))(?i)do", RegexOptions.Multiline);
-            e.SetStyle(BlueStyle, @"^([ ]{1,}|@)?\b(?i)(set|echo|for|pushd|popd|pause|exit|cd|if|else|goto|del|cls)(?![a-zA-Z]|[0-9])", RegexOptions.Multiline);
-            //outside keyword highlighting
-            e.SetStyle(LightBlueStyle, @"^([ ]{1,}|@)?\b(?i)(git)(?![a-zA-Z]|[0-9])", RegexOptions.Multiline);
-            //comment highlighting
-            e.SetStyle(GreenStyleItalic, @"(REM.*)");
-            e.SetStyle(GreenStyleItalic, @"::.*");
-            //clear folding markers
-            e.ClearFoldingMarkers();
-            _batchHighlighting = true;
-        }
 
         /// <summary>
         /// This function handles the syntax highlighting for the Java language.
@@ -1276,14 +1213,11 @@ namespace Essay_Analysis_Tool
                     syntaxLabel.Text = "Java";
                     break;
                 case _bat:
-                    mainEditor.Language = Language.Custom;
-                    _batchHighlighting = true;
-                    batchToolStripMenuItem.Checked = true;
+                    ChangeSyntax(mainEditor, Language.Batch);
                     syntaxLabel.Text = "Batch";
                     break;
                 default:
                     mainEditor.Language = Language.Custom;
-                    _batchHighlighting = false;
                     _javaHighlighting = false;
                     syntaxLabel.Text = "None";
                     break;
@@ -1298,8 +1232,6 @@ namespace Essay_Analysis_Tool
         /// <param name="language">Language</param>
         public void ChangeSyntax(FastColoredTextBox tb, Language language)
         {
-            _batchHighlighting = false;
-
             if (tb == null)
             {
                 logger.Log(Resources.InvalidArgument, LoggerMessageType.Error);

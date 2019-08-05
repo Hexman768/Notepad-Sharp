@@ -117,23 +117,38 @@
   <data name="ApplicationVersion">
     <value>v1.0.0.SNAPSHOT</value>
   </data>
+  <data name="AllFileTypes">
+    <value>All files (*.*)</value>
+  </data>
   <data name="BatchFileType">
-    <value>Windows Batch file (.bat)</value>
+    <value>Windows Batch file (*.bat)</value>
   </data>
   <data name="CSharpFileType">
-    <value>C# source file (.cs)</value>
+    <value>C# source file (*.cs)</value>
   </data>
   <data name="HTMLFileType">
     <value>Hyper Text Markup Language File (*.html)</value>
   </data>
   <data name="JavaFileType">
-    <value>Java source file (.java)</value>
+    <value>Java source file (*.java)</value>
   </data>
   <data name="JSFileType">
-    <value>Javascript source file (.js)</value>
+    <value>Javascript source file (*.js)</value>
+  </data>
+  <data name="JSONFileType">
+    <value>JSON file (*.json)</value>
   </data>
   <data name="LuaFileType">
-    <value>Lua source file (.lua)</value>
+    <value>Lua source file (*.lua)</value>
+  </data>
+  <data name="NormalTextFileType">
+    <value>Normal text file (*.txt)</value>
+  </data>
+  <data name="PHPFileType">
+    <value>PHP file (*.php)</value>
+  </data>
+  <data name="VBFileType">
+    <value>Visual Basic file (*.vb)</value>
   </data>
   <data name="NullFastColoredTextBox">
     <value>FastColoredTextBox is null!</value>
@@ -145,7 +160,7 @@
     <value>FATabStripItem is null!</value>
   </data>
   <data name="SQLFileType">
-    <value>Structured Query Language file (.sql)</value>
+    <value>Structured Query Language file (*.sql)</value>
   </data>
   <data name="InvalidFilename">
     <value>Filename is null, empty, or whitespace!</value>

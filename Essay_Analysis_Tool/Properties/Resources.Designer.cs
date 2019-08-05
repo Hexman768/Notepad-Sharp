@@ -61,6 +61,15 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All files (*.*).
+        /// </summary>
+        internal static string AllFileTypes {
+            get {
+                return ResourceManager.GetString("AllFileTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to v1.0.0.SNAPSHOT.
         /// </summary>
         internal static string ApplicationVersion {
@@ -70,7 +79,7 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Windows Batch file (.bat).
+        ///   Looks up a localized string similar to Windows Batch file (*.bat).
         /// </summary>
         internal static string BatchFileType {
             get {
@@ -88,7 +97,7 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to C# source file (.cs).
+        ///   Looks up a localized string similar to C# source file (*.cs).
         /// </summary>
         internal static string CSharpFileType {
             get {
@@ -133,7 +142,7 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Java source file (.java).
+        ///   Looks up a localized string similar to Java source file (*.java).
         /// </summary>
         internal static string JavaFileType {
             get {
@@ -142,7 +151,7 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Javascript source file (.js).
+        ///   Looks up a localized string similar to Javascript source file (*.js).
         /// </summary>
         internal static string JSFileType {
             get {
@@ -151,11 +160,29 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lua source file (.lua).
+        ///   Looks up a localized string similar to JSON file (*.json).
+        /// </summary>
+        internal static string JSONFileType {
+            get {
+                return ResourceManager.GetString("JSONFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lua source file (*.lua).
         /// </summary>
         internal static string LuaFileType {
             get {
                 return ResourceManager.GetString("LuaFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal text file (*.txt).
+        /// </summary>
+        internal static string NormalTextFileType {
+            get {
+                return ResourceManager.GetString("NormalTextFileType", resourceCulture);
             }
         }
         
@@ -187,11 +214,29 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Structured Query Language file (.sql).
+        ///   Looks up a localized string similar to PHP file (*.php).
+        /// </summary>
+        internal static string PHPFileType {
+            get {
+                return ResourceManager.GetString("PHPFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Structured Query Language file (*.sql).
         /// </summary>
         internal static string SQLFileType {
             get {
                 return ResourceManager.GetString("SQLFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visual Basic file (*.vb).
+        /// </summary>
+        internal static string VBFileType {
+            get {
+                return ResourceManager.GetString("VBFileType", resourceCulture);
             }
         }
         
