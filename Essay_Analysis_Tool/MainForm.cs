@@ -386,34 +386,6 @@ namespace Essay_Analysis_Tool
         }
         #endregion
 
-        #region Find Dialog Functionality
-
-        /// <summary>
-        /// Shows find dialog
-        /// </summary>
-        public virtual void ShowFindDialog()
-        {
-            ShowFindDialog(null);
-        }
-
-        /// <summary>
-        /// Shows find dialog
-        /// </summary>
-        /// <param name="findText">The findText<see cref="string"/></param>
-        public virtual void ShowFindDialog(string findText)
-        {
-            if (findForm == null && CurrentTB != null)
-            {
-                findForm = new FindForm(CurrentTB);
-            }
-
-            findForm.tbFind.SelectAll();
-            findForm.Show();
-            findForm.Focus();
-        }
-
-        #endregion
-
         #region Button Click Event Handlers
 
         /// <summary>
@@ -456,7 +428,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void FindButton_Click(object sender, EventArgs e)
         {
-            ShowFindDialog();
+            if (CurrentTB != null)
+            {
+                CurrentTB.ShowFindDialog();
+            }
         }
 
         /// <summary>
@@ -628,7 +603,10 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void FindToolStripButton_Click(object sender, EventArgs e)
         {
-            ShowFindDialog();
+            if (CurrentTB != null)
+            {
+                CurrentTB.ShowFindDialog();
+            }
         }
 
         /// <summary>
@@ -906,6 +884,46 @@ namespace Essay_Analysis_Tool
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateTab();
+        }
+
+        private void ReplaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.ShowReplaceDialog();
+            }
+        }
+
+        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Copy();
+            }
+        }
+
+        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Redo();
+            }
+        }
+
+        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Cut();
+            }
+        }
+
+        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Paste();
+            }
         }
 
         #endregion
