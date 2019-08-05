@@ -168,9 +168,6 @@
   <data name="InvalidArgument">
     <value>An invalid argument has been passed into the function!</value>
   </data>
-  <data name="CreateFileCode">
-    <value>CREATEFILE</value>
-  </data>
   <data name="Exception">
     <value>Exception</value>
   </data>

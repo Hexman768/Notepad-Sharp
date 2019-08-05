@@ -238,12 +238,6 @@ namespace Essay_Analysis_Tool
         /// <param name="fileName">Name and Path of the file.</param>
         private void CreateTab(string fileName)
         {
-            if (string.IsNullOrEmpty(fileName))
-            {
-                logger.Log(Resources.InvalidFilename, LoggerMessageType.Error);
-                return;
-            }
-
             var tb = new FastColoredTextBox
             {
                 Font = new Font("Consolas", 9.75f),
@@ -256,7 +250,7 @@ namespace Essay_Analysis_Tool
 
             tb.AddStyle(sameWordsStyle);
 
-            if (fileName != Resources.CreateFileCode)
+            if (fileName != null)
             {
                 SetCurrentEditorSyntaxHighlight(fileName, tb);
                 if (tb.Language == Language.Custom && _javaHighlighting)
@@ -271,7 +265,7 @@ namespace Essay_Analysis_Tool
                 }
             }
 
-            var tab = new FATabStripItem(fileName != Resources.CreateFileCode ? Path.GetFileName(fileName) : "[new]", tb)
+            var tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb)
             {
                 Tag = fileName
             };
@@ -292,7 +286,7 @@ namespace Essay_Analysis_Tool
 
         private void CreateTab()
         {
-            CreateTab(Resources.CreateFileCode);
+            CreateTab(null);
         }
 
         /// <summary>
@@ -347,7 +341,7 @@ namespace Essay_Analysis_Tool
 
             var tb = (tab.Controls[0] as FastColoredTextBox);
 
-            if (tab.Tag == Resources.CreateFileCode)
+            if (tab.Tag == null)
             {
                 if (sfdMain.ShowDialog() != DialogResult.OK)
                 {

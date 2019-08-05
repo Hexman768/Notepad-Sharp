@@ -88,15 +88,6 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATEFILE.
-        /// </summary>
-        internal static string CreateFileCode {
-            get {
-                return ResourceManager.GetString("CreateFileCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to C# source file (*.cs).
         /// </summary>
         internal static string CSharpFileType {
