@@ -280,6 +280,7 @@ namespace Essay_Analysis_Tool
             tb.Focus();
             tb.ChangedLineColor = changedLineColor;
             tb.KeyDown += new KeyEventHandler(MainForm_KeyDown);
+            tb.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             UpdateDocumentMap();
             HighlightCurrentLine();
         }
@@ -352,7 +353,7 @@ namespace Essay_Analysis_Tool
             }
 
             File.WriteAllText(tab.Tag as string, tb.Text);
-            tb.IsChanged = false;
+            UpdateChangedFlag(false);
 
             return true;
         }
@@ -378,6 +379,7 @@ namespace Essay_Analysis_Tool
                 CurrentTB.Invalidate();
             }
         }
+
         #endregion
 
         #region Button Click Event Handlers
@@ -920,6 +922,19 @@ namespace Essay_Analysis_Tool
             }
         }
 
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string title = "About Notepad#";
+            string message = "Created by: Zachary Pedigo\nVersion: " + Resources.ApplicationVersion + "\n" + "Date: " + DateTime.Now + "\n" + "OS: "
+                + Environment.OSVersion + "\nLicense: GNU General Public License v3.0";
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void LoggerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logger.Show();
+        }
+
         #endregion
 
         #region Event Handlers
@@ -966,6 +981,7 @@ namespace Essay_Analysis_Tool
             {
                 popupMenu = new AutocompleteMenu(CurrentTB);
                 BuildAutocompleteMenu();
+                UpdateChangedFlag(CurrentTB.IsChanged);
             }
         }
 
@@ -983,6 +999,12 @@ namespace Essay_Analysis_Tool
                     JavaSyntaxHighlight(CurrentTB);
                 }
             }
+        }
+
+        private void Tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
+        {
+            var tb = sender as FastColoredTextBox;
+            UpdateChangedFlag(tb.IsChanged);
         }
 
         /// <summary>
@@ -1053,19 +1075,6 @@ namespace Essay_Analysis_Tool
             }
         }
 
-        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string title = "About Notepad#";
-            string message = "Created by: Zachary Pedigo\nVersion: " + Resources.ApplicationVersion + "\n" + "Date: " + DateTime.Now + "\n" + "OS: "
-                + Environment.OSVersion + "\nLicense: GNU General Public License v3.0";
-            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void LoggerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            logger.Show();
-        }
-
         #endregion
 
         #region Document Map Functionality
@@ -1089,6 +1098,7 @@ namespace Essay_Analysis_Tool
                 tsFiles.Width = documentMap.Left - 23;
             }
         }
+
         #endregion
 
         #region Custom Syntax Highlighting
@@ -1481,6 +1491,19 @@ namespace Essay_Analysis_Tool
                 {
                     return "Insert line break after '}'";
                 }
+            }
+        }
+
+        #endregion
+
+        #region Tool Strip Functionality
+
+        private void UpdateChangedFlag(bool isChanged)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.IsChanged = isChanged;
+                saveToolStripButton.Enabled = isChanged;
             }
         }
 
