@@ -44,7 +44,6 @@ namespace Essay_Analysis_Tool
 
         //General variable declarations and definitions
         private readonly Range _selection;
-        private bool _javaHighlighting = false;
         private bool _highlightCurrentLine = true;
         private bool _enableDocumentMap = true;
 
@@ -55,8 +54,6 @@ namespace Essay_Analysis_Tool
         private const string _csharp = "cs";
         private const string _lua = "lua";
         private const string _sql = "sql";
-        private const string _java = "java";
-        private const string _bat = "bat";
 
         /// <summary>
         /// Defines the Platform Type.
@@ -64,76 +61,7 @@ namespace Essay_Analysis_Tool
         protected static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();
 
         //Styles
-        private readonly TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
-        private readonly TextStyle LightBlueStyle = new TextStyle(Brushes.RoyalBlue, null, FontStyle.Regular);
-        private readonly TextStyle YellowStyle = new TextStyle(Brushes.YellowGreen, null, FontStyle.Regular);
-        private readonly TextStyle RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
-        private readonly TextStyle BoldStyle = new TextStyle(null, null, FontStyle.Bold | FontStyle.Underline);
-        private readonly TextStyle GrayStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
-        private readonly TextStyle MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
-        private readonly TextStyle GreenStyleItalic = new TextStyle(Brushes.Green, null, FontStyle.Italic);
-        private readonly TextStyle BrownStyleItalic = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
-        private readonly TextStyle MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
-        private readonly MarkerStyle SameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(40, Color.Gray)));
-        private readonly Style BrownStyle = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
         private Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
-
-        /// <summary>
-        /// Defines the JavaAttributeRegex and JavaClassNameRegex.
-        /// </summary>
-        protected Regex JavaAttributeRegex,
-                      JavaClassNameRegex;
-
-        /// <summary>
-        /// Defines the JavaCommentRegex1, JavaCommentRegex2 and JavaCommentRegex3.
-        /// </summary>
-        protected Regex JavaCommentRegex1,
-                      JavaCommentRegex2,
-                      JavaCommentRegex3;
-
-        /// <summary>
-        /// Defines the JavaKeywordRegex.
-        /// </summary>
-        protected Regex JavaKeywordRegex;
-
-        /// <summary>
-        /// Defines the JavaNumberRegex.
-        /// </summary>
-        protected Regex JavaNumberRegex;
-
-        /// <summary>
-        /// Defines the JavaStringRegex.
-        /// </summary>
-        protected Regex JavaStringRegex;
-
-        /// <summary>
-        /// Defines the HTMLAttrRegex, HTMLAttrValRegex, HTMLCommentRegex1 and HTMLCommentRegex2.
-        /// </summary>
-        protected Regex HTMLAttrRegex,
-                      HTMLAttrValRegex,
-                      HTMLCommentRegex1,
-                      HTMLCommentRegex2;
-
-        /// <summary>
-        /// Defines the HTMLEndTagRegex.
-        /// </summary>
-        protected Regex HTMLEndTagRegex;
-
-        /// <summary>
-        /// Defines the HTMLEntityRegex and HTMLTagContentRegex.
-        /// </summary>
-        protected Regex HTMLEntityRegex,
-                      HTMLTagContentRegex;
-
-        /// <summary>
-        /// Defines the HTMLTagNameRegex.
-        /// </summary>
-        protected Regex HTMLTagNameRegex;
-
-        /// <summary>
-        /// Defines the HTMLTagRegex.
-        /// </summary>
-        protected Regex HTMLTagRegex;
 
         /// <summary>
         /// Gets or sets the Current instance of FastColoredTextBox.
@@ -177,20 +105,6 @@ namespace Essay_Analysis_Tool
             }
         }
 
-        /// <summary>
-        /// Determines whether or not to use the RegexOptions Compiled option based on the platform.
-        /// </summary>
-        public static RegexOptions RegexCompiledOption
-        {
-            get
-            {
-                if (platformType == Platform.X86)
-                    return RegexOptions.Compiled;
-                else
-                    return RegexOptions.None;
-            }
-        }
-
         AutocompleteMenu popupMenu;
         string[] keywords = { "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "add", "alias", "ascending", "descending", "dynamic", "from", "get", "global", "group", "into", "join", "let", "orderby", "partial", "remove", "select", "set", "value", "var", "where", "yield" };
         string[] methods = { "Equals()", "GetHashCode()", "GetType()", "ToString()" };
@@ -213,10 +127,8 @@ namespace Essay_Analysis_Tool
 
             logger.Log("Form Initialized!", LoggerMessageType.Info);
             sfdMain.Filter = Resources.NormalTextFileType + "|*.txt|"
-                + Resources.BatchFileType + "|*.bat|"
                 + Resources.CSharpFileType + "|*.cs|"
                 + Resources.HTMLFileType + "|*.html|"
-                + Resources.JavaFileType + "|*.java|"
                 + Resources.JSFileType + "|*.js|"
                 + Resources.JSONFileType + "|*.json|"
                 + Resources.LuaFileType + "|*.lua|"
@@ -253,16 +165,7 @@ namespace Essay_Analysis_Tool
             if (fileName != null)
             {
                 SetCurrentEditorSyntaxHighlight(fileName, tb);
-                if (tb.Language == Language.Custom && _javaHighlighting)
-                {
-                    tb.OpenFile(fileName);
-                    tb.TextChanged += new EventHandler<TextChangedEventArgs>(Tb_TextChanged);
-                    JavaSyntaxHighlight(tb);
-                }
-                else
-                {
-                    tb.OpenFile(fileName);
-                }
+                tb.OpenFile(fileName);
             }
 
             var tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb)
@@ -770,38 +673,6 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// Handles the JavaToolStripMenuItem_Click event.
-        /// </summary>
-        /// <param name="sender">Sender Object<see cref="object"/></param>
-        /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void JavaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            syntaxLabel.Text = "Java";
-
-            if (CurrentTB != null)
-            {
-                CurrentTB.Language = Language.Custom;
-
-                JavaSyntaxHighlight(CurrentTB);
-            }
-        }
-
-        /// <summary>
-        /// Handles the BatchToolStripMenuItem_Click event.
-        /// </summary>
-        /// <param name="sender">Sender Object<see cref="object"/></param>
-        /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
-        private void BatchToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            syntaxLabel.Text = "Batch";
-
-            if (CurrentTB != null)
-            {
-                ChangeSyntax(CurrentTB, Language.Batch);
-            }
-        }
-
-        /// <summary>
         /// Handles the RefreshToolStripButton_Click event.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
@@ -985,22 +856,6 @@ namespace Essay_Analysis_Tool
             }
         }
 
-        /// <summary>
-        /// Handles the Tb_TextChanged event.
-        /// </summary>
-        /// <param name="sender">Sender Object<see cref="object"/></param>
-        /// <param name="e">Event Arguments<see cref="TextChangedEventArgs"/></param>
-        private void Tb_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (CurrentTB != null)
-            {
-                if (CurrentTB.Language == Language.Custom && _javaHighlighting)
-                {
-                    JavaSyntaxHighlight(CurrentTB);
-                }
-            }
-        }
-
         private void Tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
             var tb = sender as FastColoredTextBox;
@@ -1104,80 +959,6 @@ namespace Essay_Analysis_Tool
         #region Custom Syntax Highlighting
 
         /// <summary>
-        /// This function handles the syntax highlighting for the Java language.
-        /// </summary>
-        /// <param name="fctb">The fctb<see cref="FastColoredTextBox"/></param>
-        private void JavaSyntaxHighlight(FastColoredTextBox fctb)
-        {
-            if (fctb == null)
-            {
-                logger.Log(Resources.NullFastColoredTextBox, LoggerMessageType.Error);
-                return;
-            }
-
-            Range range = fctb.Range;
-            range.tb.CommentPrefix = "//";
-            range.tb.LeftBracket = '(';
-            range.tb.RightBracket = ')';
-            range.tb.LeftBracket2 = '{';
-            range.tb.RightBracket2 = '}';
-            range.tb.BracketsHighlightStrategy = BracketsHighlightStrategy.Strategy2;
-
-            range.tb.AutoIndentCharsPatterns = @"^\s*[\w\.]+(\s\w+)?\s*(?<range>=)\s*(?<range>[^;]+);^\s*(case|default)\s*[^:]*(?<range>:)\s*(?<range>[^;]+);";
-            //clear style of changed range
-            range.ClearStyle(BrownStyle, GreenStyleItalic, MagentaStyle, BoldStyle, BlueStyle);
-            //
-            if (JavaStringRegex == null)
-                InitJavaRegex();
-            //string highlighting
-            range.SetStyle(BrownStyle, JavaStringRegex);
-            //comment highlighting
-            range.SetStyle(GreenStyleItalic, JavaCommentRegex1);
-            range.SetStyle(GreenStyleItalic, JavaCommentRegex2);
-            range.SetStyle(GreenStyleItalic, JavaCommentRegex3);
-            //number highlighting
-            range.SetStyle(MagentaStyle, JavaStringRegex);
-            //attribute highlighting
-            range.SetStyle(GreenStyleItalic, JavaAttributeRegex);
-            //class name highlighting
-            range.SetStyle(BoldStyle, JavaClassNameRegex);
-            //keyword highlighting
-            range.SetStyle(BlueStyle, JavaKeywordRegex);
-
-            //find document comments
-            foreach (Range r in range.GetRanges(@"^\s*///.*$", RegexOptions.Multiline))
-            {
-                //remove C# highlighting from this fragment
-                r.ClearStyle(StyleIndex.All);
-                //do XML highlighting
-                if (HTMLTagRegex == null)
-                    InitHTMLRegex();
-                //
-                r.SetStyle(GreenStyleItalic);
-                //tags
-                foreach (Range rr in r.GetRanges(HTMLTagContentRegex))
-                {
-                    rr.ClearStyle(StyleIndex.All);
-                    rr.SetStyle(GrayStyle);
-                }
-                //prefix '///'
-                foreach (Range rr in r.GetRanges(@"^\s*///", RegexOptions.Multiline))
-                {
-                    rr.ClearStyle(StyleIndex.All);
-                    rr.SetStyle(GrayStyle);
-                }
-            }
-
-            //clear folding markers
-            range.ClearFoldingMarkers();
-            //set folding markers
-            range.SetFoldingMarkers("{", "}"); //allow to collapse brackets block
-            range.SetFoldingMarkers(@"#region\b", @"#endregion\b"); //allow to collapse #region blocks
-            range.SetFoldingMarkers(@"/\*", @"\*/"); //allow to collapse comment block
-            _javaHighlighting = true;
-        }
-
-        /// <summary>
         /// Sets the current syntax highlighting setting.
         /// </summary>
         /// <param name="fName">Filename<see cref="string"/></param>
@@ -1229,18 +1010,8 @@ namespace Essay_Analysis_Tool
                     ChangeSyntax(mainEditor, Language.SQL);
                     syntaxLabel.Text = "SQL";
                     break;
-                case _java:
-                    mainEditor.Language = Language.Custom;
-                    _javaHighlighting = true;
-                    syntaxLabel.Text = "Java";
-                    break;
-                case _bat:
-                    ChangeSyntax(mainEditor, Language.Batch);
-                    syntaxLabel.Text = "Batch";
-                    break;
                 default:
                     mainEditor.Language = Language.Custom;
-                    _javaHighlighting = false;
                     syntaxLabel.Text = "None";
                     break;
             }
@@ -1265,87 +1036,6 @@ namespace Essay_Analysis_Tool
             tb.OnTextChanged();
         }
 
-        #endregion
-
-        #region Regex Initializers
-
-        /// <summary>
-        /// The InitHTMLRegex
-        /// </summary>
-        protected void InitHTMLRegex()
-        {
-            HTMLCommentRegex1 = new Regex(@"(<!--.*?-->)|(<!--.*)", RegexOptions.Singleline | RegexCompiledOption);
-            HTMLCommentRegex2 = new Regex(@"(<!--.*?-->)|(.*-->)",
-                                          RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
-            HTMLTagRegex = new Regex(@"<|/>|</|>", RegexCompiledOption);
-            HTMLTagNameRegex = new Regex(@"<(?<range>[!\w:]+)", RegexCompiledOption);
-            HTMLEndTagRegex = new Regex(@"</(?<range>[\w:]+)>", RegexCompiledOption);
-            HTMLTagContentRegex = new Regex(@"<[^>]+>", RegexCompiledOption);
-            HTMLAttrRegex =
-                new Regex(
-                    @"(?<range>[\w\d\-]{1,20}?)='[^']*'|(?<range>[\w\d\-]{1,20})=""[^""]*""|(?<range>[\w\d\-]{1,20})=[\w\d\-]{1,20}",
-                    RegexCompiledOption);
-            HTMLAttrValRegex =
-                new Regex(
-                    @"[\w\d\-]{1,20}?=(?<range>'[^']*')|[\w\d\-]{1,20}=(?<range>""[^""]*"")|[\w\d\-]{1,20}=(?<range>[\w\d\-]{1,20})",
-                    RegexCompiledOption);
-            HTMLEntityRegex = new Regex(@"\&(amp|gt|lt|nbsp|quot|apos|copy|reg|#[0-9]{1,8}|#x[0-9a-f]{1,8});",
-                                        RegexCompiledOption | RegexOptions.IgnoreCase);
-        }
-
-        /// <summary>
-        /// The InitJavaRegex
-        /// </summary>
-        protected void InitJavaRegex()
-        {
-            JavaStringRegex =
-                new Regex(
-                    @"
-                            # Character definitions:
-                            '
-                            (?> # disable backtracking
-                              (?:
-                                \\[^\r\n]|    # escaped meta char
-                                [^'\r\n]      # any character except '
-                              )*
-                            )
-                            '?
-                            |
-                            # Normal string & verbatim strings definitions:
-                            (?<verbatimIdentifier>@)?         # this group matches if it is an verbatim string
-                            ""
-                            (?> # disable backtracking
-                              (?:
-                                # match and consume an escaped character including escaped double quote ("") char
-                                (?(verbatimIdentifier)        # if it is a verbatim string ...
-                                  """"|                         #   then: only match an escaped double quote ("") char
-                                  \\.                         #   else: match an escaped sequence
-                                )
-                                | # OR
-            
-                                # match any char except double quote char ("")
-                                [^""]
-                              )*
-                            )
-                            ""
-                        ",
-                    RegexOptions.ExplicitCapture | RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace |
-                    RegexCompiledOption
-                    ); //thanks to rittergig for this regex
-
-            JavaCommentRegex1 = new Regex(@"//.*$", RegexOptions.Multiline | RegexCompiledOption);
-            JavaCommentRegex2 = new Regex(@"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline | RegexCompiledOption);
-            JavaCommentRegex3 = new Regex(@"(/\*.*?\*/)|(.*\*/)",
-                                            RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
-            JavaNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b",
-                                          RegexCompiledOption);
-            JavaAttributeRegex = new Regex(@"^\s*(?<range>\[.+?\])\s*$", RegexOptions.Multiline | RegexCompiledOption);
-            JavaClassNameRegex = new Regex(@"\b(class|struct|enum|interface)\s+(?<range>\w+?)\b", RegexCompiledOption);
-            JavaKeywordRegex =
-                new Regex(
-                    @"\b(abstract|as|base|bool|break|byte|case|catch|char|checked|class|const|continue|decimal|default|delegate|do|double|else|enum|event|explicit|extern|false|finally|fixed|float|for|foreach|goto|if|implicit|in|int|interface|internal|is|lock|long|namespace|new|null|object|operator|out|override|params|private|protected|public|readonly|ref|return|sbyte|sealed|short|sizeof|stackalloc|static|string|struct|super|switch|this|throw|true|try|typeof|uint|ulong|unchecked|unsafe|ushort|import|virtual|void|volatile|while|add|alias|ascending|descending|dynamic|from|get|global|group|into|join|let|orderby|package|partial|remove|select|set|value|var|where|yield)\b|#region\b|#endregion\b",
-                    RegexCompiledOption);
-        }
         #endregion
 
         #region AutoCompleteMenu Functionality
