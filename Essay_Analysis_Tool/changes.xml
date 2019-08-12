@@ -3,6 +3,7 @@
   <body>
     <release date="${buildTimestamp}" description="" version="1.0.0">
       <action dev="" issue="" date="" type=""></action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0063" date="08-11-2019" type="add">Save file button should be dithered while data is clean.</action>
       <action dev="Zachary Pedigo" issue="N/A" date="08-04-2019" type="fix">Minor UI Improvements and Bug Fixes.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0064" date="08-03-2019" type="fix">Tab list should always contain at least one tab.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0067" date="08-03-2019" type="add">Added logger system to application and updated FastColoredTextBox.</action>
