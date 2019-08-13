@@ -826,16 +826,27 @@ namespace Essay_Analysis_Tool
                         CreateTab(file_open.FileName);
                     }
                 }
-                else if (e.KeyCode == Keys.S && e.Modifiers == Keys.Control && CurrentTB != null)
+                else if (e.KeyCode == Keys.S && e.Modifiers == Keys.Control)
                 {
                     if (tsFiles.SelectedItem != null)
                     {
                         Save(tsFiles.SelectedItem);
                     }
                 }
-                else if (e.Control && e.Shift && e.KeyCode == Keys.Back && CurrentTB != null)
+                else if (e.Control && e.Shift && e.KeyCode == Keys.L)
                 {
                     CurrentTB.ClearCurrentLine();
+                }
+                else if (e.Control && e.Shift && e.KeyCode == Keys.Oem2 && CurrentTB.CommentPrefix != null)
+                {
+                    if (!CurrentTB.SelectedText.Contains(CurrentTB.CommentPrefix))
+                    {
+                        CurrentTB.InsertLinePrefix(CurrentTB.CommentPrefix);
+                    }
+                    else
+                    {
+                        CurrentTB.RemoveLinePrefix(CurrentTB.CommentPrefix);
+                    }
                 }
             }
         }
