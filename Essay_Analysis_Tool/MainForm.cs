@@ -255,7 +255,11 @@ namespace Essay_Analysis_Tool
                 tab.Tag = sfdMain.FileName;
             }
 
-            File.WriteAllText(tab.Tag as string, tb.Text);
+            string filePath = (string) tab.Tag;
+
+            SetCurrentEditorSyntaxHighlight(filePath, tb);
+
+            File.WriteAllText(filePath, tb.Text);
             UpdateChangedFlag(false);
 
             return true;
