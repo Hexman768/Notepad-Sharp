@@ -720,13 +720,16 @@ namespace Essay_Analysis_Tool
         }
 
         /// <summary>
-        /// The OpenToolStripMenuItem_Click
+        /// Handle when the 'Open' submenu clicked in the 'File' menu.
         /// </summary>
         /// <param name="sender">Sender Object<see cref="object"/></param>
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CreateTab(file_open.FileName);
+            if(file_open.ShowDialog() == DialogResult.OK)
+            {
+                CreateTab(file_open.FileName);
+            }
         }
 
         /// <summary>
