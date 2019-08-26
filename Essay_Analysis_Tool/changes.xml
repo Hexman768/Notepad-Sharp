@@ -3,6 +3,7 @@
   <body>
     <release date="${buildTimestamp}" description="" version="1.0.0">
       <action dev="" issue="" date="" type=""></action>
+      <action dev="Tom PoLáKoSz" issue="ISSUE-0081" date="08-21-2019" type="fix">Current editor language does not change on save.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0076" date="08-12-2019" type="add">Implement the ability to comment selected lines.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0073" date="08-11-2019" type="fix">Remove Batch file and Java support.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0063" date="08-11-2019" type="add">Save file button should be dithered while data is clean.</action>
