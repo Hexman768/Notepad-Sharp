@@ -162,16 +162,20 @@ namespace Essay_Analysis_Tool
 
             tb.AddStyle(sameWordsStyle);
 
-            if (fileName != null)
-            {
-                SetCurrentEditorSyntaxHighlight(fileName, tb);
-                tb.OpenFile(fileName);
-            }
-
             var tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb)
             {
                 Tag = fileName
             };
+
+            if (fileName != null && !IsFileAlreadyOpen(fileName))
+            {
+                SetCurrentEditorSyntaxHighlight(fileName, tb);
+                tb.OpenFile(fileName);
+            }
+            else if (fileName != null)
+            {
+                return;
+            }
 
             //create autocomplete popup menu
             popupMenu = new AutocompleteMenu(tb);
@@ -186,6 +190,19 @@ namespace Essay_Analysis_Tool
             tb.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             UpdateDocumentMap();
             HighlightCurrentLine();
+        }
+
+        private bool IsFileAlreadyOpen(string fileName)
+        {
+            foreach (FATabStripItem tab in tsFiles.Items)
+            {
+                if (tab.Tag as string == fileName)
+                {
+                    tsFiles.SelectedItem = tab;
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void CreateTab()
