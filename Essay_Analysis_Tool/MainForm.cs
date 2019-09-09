@@ -706,7 +706,9 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 CurrentTB.Refresh();
-                CurrentTB.OnTextChanged(CurrentTB.Range);
+                var r = new Range(CurrentTB);
+                r.SelectAll();
+                CurrentTB.OnSyntaxHighlight(new TextChangedEventArgs(r));
             }
         }
 
@@ -1079,7 +1081,9 @@ namespace Essay_Analysis_Tool
 
             tb.Range.ClearStyle(StyleIndex.All);
             tb.Language = language;
-            tb.OnTextChanged();
+            Range r = new Range(CurrentTB);
+            r.SelectAll();
+            tb.OnSyntaxHighlight(new TextChangedEventArgs(r));
         }
 
         #endregion
