@@ -3,6 +3,7 @@
   <body>
     <release date="${buildTimestamp}" description="" version="1.0.0">
       <action dev="" issue="" date="" type=""></action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0082" date="09-09-2019" type="fix">Editor does not recognize .vbs extension.</action>
       <action dev="Tom PoLáKoSz" issue="ISSUE-0089" date="08-29-2019" type="fix">App crashes when clicking File/Open submenu after fresh start.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0087" date="08-26-2019" type="fix">Duplicate files can be opened several times.</action>
       <action dev="Tom PoLáKoSz" issue="ISSUE-0081" date="08-21-2019" type="fix">Current editor language does not change on save.</action>

@@ -54,6 +54,8 @@ namespace Essay_Analysis_Tool
         private const string _csharp = "cs";
         private const string _lua = "lua";
         private const string _sql = "sql";
+        private const string _vb = "vb";
+        private const string _vbs = "vbs";
 
         /// <summary>
         /// Defines the Platform Type.
@@ -135,6 +137,7 @@ namespace Essay_Analysis_Tool
                 + Resources.PHPFileType + "|*.php|"
                 + Resources.SQLFileType + "|*.sql|"
                 + Resources.VBFileType + "|*.vb|"
+                + Resources.VBSFileType + "|*.vbs|"
                 + Resources.AllFileTypes + "|*.*";
 
             CreateTab();
@@ -272,7 +275,7 @@ namespace Essay_Analysis_Tool
                 tab.Tag = sfdMain.FileName;
             }
 
-            string filePath = (string) tab.Tag;
+            string filePath = (string)tab.Tag;
 
             SetCurrentEditorSyntaxHighlight(filePath, tb);
 
@@ -726,7 +729,7 @@ namespace Essay_Analysis_Tool
         /// <param name="e">Event Arguments<see cref="EventArgs"/></param>
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(file_open.ShowDialog() == DialogResult.OK)
+            if (file_open.ShowDialog() == DialogResult.OK)
             {
                 CreateTab(file_open.FileName);
             }
@@ -1044,6 +1047,14 @@ namespace Essay_Analysis_Tool
                 case _sql:
                     ChangeSyntax(mainEditor, Language.SQL);
                     syntaxLabel.Text = "SQL";
+                    break;
+                case _vb:
+                    ChangeSyntax(mainEditor, Language.VB);
+                    syntaxLabel.Text = "Visual Basic";
+                    break;
+                case _vbs:
+                    ChangeSyntax(mainEditor, Language.VB);
+                    syntaxLabel.Text = "Visual Basic Script";
                     break;
                 default:
                     mainEditor.Language = Language.Custom;

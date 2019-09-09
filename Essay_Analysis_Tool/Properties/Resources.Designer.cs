@@ -232,6 +232,15 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to VBScript file (*.vbs).
+        /// </summary>
+        internal static string VBSFileType {
+            get {
+                return ResourceManager.GetString("VBSFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extensible Markup Language file (.xml).
         /// </summary>
         internal static string XMLFileType {

@@ -174,4 +174,7 @@
   <data name="XMLFileType">
     <value>Extensible Markup Language file (.xml)</value>
   </data>
+  <data name="VBSFileType">
+    <value>VBScript file (*.vbs)</value>
+  </data>
 </root>
