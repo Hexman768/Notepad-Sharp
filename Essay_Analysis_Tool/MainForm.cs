@@ -263,7 +263,7 @@ namespace Essay_Analysis_Tool
                 return false;
             }
 
-            var tb = (tab.Controls[0] as FastColoredTextBox);
+            FastColoredTextBox tb = tab.Controls[0] as FastColoredTextBox;
 
             if (tab.Tag == null)
             {
@@ -1081,7 +1081,7 @@ namespace Essay_Analysis_Tool
 
             tb.Range.ClearStyle(StyleIndex.All);
             tb.Language = language;
-            Range r = new Range(CurrentTB);
+            Range r = new Range(tb);
             r.SelectAll();
             tb.OnSyntaxHighlight(new TextChangedEventArgs(r));
         }
