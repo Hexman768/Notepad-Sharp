@@ -1,6 +1,6 @@
 ﻿namespace Essay_Analysis_Tool
 {
-    partial class DiffMergeForm
+    partial class DiffViewerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiffMergeForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiffViewerForm));
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -47,6 +47,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.fctb1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fctb2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -103,7 +104,7 @@
             // 
             // tbSecondFile
             // 
-            this.tbSecondFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.tbSecondFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbSecondFile.Location = new System.Drawing.Point(79, 37);
             this.tbSecondFile.Name = "tbSecondFile";
@@ -132,7 +133,7 @@
             // 
             // tbFirstFile
             // 
-            this.tbFirstFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.tbFirstFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFirstFile.Location = new System.Drawing.Point(79, 11);
             this.tbFirstFile.Name = "tbFirstFile";
@@ -174,19 +175,23 @@
         '\"',
         '\'',
         '\''};
-            this.fctb1.AutoScrollMinSize = new System.Drawing.Size(179, 14);
+            this.fctb1.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\n^\\s*(case|default)\\s*[^:]*(" +
+    "?<range>:)\\s*(?<range>[^;]+);";
+            this.fctb1.AutoScrollMinSize = new System.Drawing.Size(27, 14);
             this.fctb1.BackBrush = null;
             this.fctb1.CharHeight = 14;
             this.fctb1.CharWidth = 8;
             this.fctb1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fctb1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fctb1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fctb1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fctb1.IsReplaceMode = false;
             this.fctb1.Location = new System.Drawing.Point(0, 0);
             this.fctb1.Name = "fctb1";
             this.fctb1.Paddings = new System.Windows.Forms.Padding(0);
             this.fctb1.ReadOnly = true;
             this.fctb1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.fctb1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fctb1.ServiceColors")));
             this.fctb1.Size = new System.Drawing.Size(342, 311);
             this.fctb1.TabIndex = 26;
             this.fctb1.Zoom = 100;
@@ -206,19 +211,23 @@
         '\"',
         '\'',
         '\''};
-            this.fctb2.AutoScrollMinSize = new System.Drawing.Size(179, 14);
+            this.fctb2.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\n^\\s*(case|default)\\s*[^:]*(" +
+    "?<range>:)\\s*(?<range>[^;]+);";
+            this.fctb2.AutoScrollMinSize = new System.Drawing.Size(27, 14);
             this.fctb2.BackBrush = null;
             this.fctb2.CharHeight = 14;
             this.fctb2.CharWidth = 8;
             this.fctb2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fctb2.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fctb2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fctb2.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fctb2.IsReplaceMode = false;
             this.fctb2.Location = new System.Drawing.Point(0, 0);
             this.fctb2.Name = "fctb2";
             this.fctb2.Paddings = new System.Windows.Forms.Padding(0);
             this.fctb2.ReadOnly = true;
             this.fctb2.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.fctb2.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fctb2.ServiceColors")));
             this.fctb2.Size = new System.Drawing.Size(352, 311);
             this.fctb2.TabIndex = 27;
             this.fctb2.Zoom = 100;
@@ -227,8 +236,8 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(12, 92);
             this.splitContainer1.Name = "splitContainer1";
@@ -244,7 +253,7 @@
             this.splitContainer1.SplitterDistance = 342;
             this.splitContainer1.TabIndex = 28;
             // 
-            // DiffMergeSample
+            // DiffViewerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -261,12 +270,13 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tbFirstFile);
             this.Controls.Add(this.btFirst);
-            this.Name = "DiffMergeSample";
-            this.Text = "DiffMergeSample";
+            this.Name = "DiffViewerForm";
+            this.Text = "Diff Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.fctb1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fctb2)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

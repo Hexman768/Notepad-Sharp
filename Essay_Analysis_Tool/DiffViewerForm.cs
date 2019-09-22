@@ -10,26 +10,26 @@ using FastColoredTextBoxNS;
 
 namespace Essay_Analysis_Tool
 {
-    public partial class DiffMergeForm : Form
+    public partial class DiffViewerForm : Form
     {
         private int _updating;
         private static readonly Style _greenStyle;
         private static readonly Style _redStyle;
 
-        static DiffMergeForm()
+        static DiffViewerForm()
         {
             _greenStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Lime)));
             _redStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Red)));
         }
 
-        public DiffMergeForm()
+        public DiffViewerForm()
             : this("") { }
 
         /// <summary>
         /// Initialize a new form.
         /// </summary>
         /// <param name="file">Absolute or relative file path.</param>
-        public DiffMergeForm(string file)
+        public DiffViewerForm(string file)
             : this(file, "") { }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Essay_Analysis_Tool
         /// </summary>
         /// <param name="file1">Absolute or relative file path.</param>
         /// <param name="file2">Absolute or relative file path.</param>
-        public DiffMergeForm(string file1, string file2)
+        public DiffViewerForm(string file1, string file2)
         {
             InitializeComponent();
 

@@ -55,11 +55,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiffMergeForm.cs">
+    <Compile Include="DiffViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DiffMergeForm.Designer.cs">
-      <DependentUpon>DiffMergeForm.cs</DependentUpon>
+    <Compile Include="DiffViewerForm.Designer.cs">
+      <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LoggerMessageTypeEnum.cs" />
     <Compile Include="LoggerForm.cs">
@@ -76,8 +76,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="DiffMergeForm.resx">
-      <DependentUpon>DiffMergeForm.cs</DependentUpon>
+    <EmbeddedResource Include="DiffViewerForm.resx">
+      <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoggerForm.resx">
       <DependentUpon>LoggerForm.cs</DependentUpon>

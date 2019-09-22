@@ -988,11 +988,11 @@ namespace Essay_Analysis_Tool
             }
 
             if  (filePaths.Count == 1)
-                new DiffMergeForm(filePaths[0]).Show();
+                new DiffViewerForm(filePaths[0]).Show();
             else if (filePaths.Count == 2)
-                new DiffMergeForm(filePaths[0], filePaths[1]).Show();
+                new DiffViewerForm(filePaths[0], filePaths[1]).Show();
             else
-                new DiffMergeForm().Show();
+                new DiffViewerForm().Show();
         }
 
         #endregion
