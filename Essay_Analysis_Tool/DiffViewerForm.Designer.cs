@@ -184,7 +184,6 @@
             this.fctb1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fctb1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fctb1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fctb1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fctb1.IsReplaceMode = false;
             this.fctb1.Location = new System.Drawing.Point(0, 0);
             this.fctb1.Name = "fctb1";
@@ -220,7 +219,6 @@
             this.fctb2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fctb2.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fctb2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fctb2.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fctb2.IsReplaceMode = false;
             this.fctb2.Location = new System.Drawing.Point(0, 0);
             this.fctb2.Name = "fctb2";
@@ -271,6 +269,7 @@
             this.Controls.Add(this.tbFirstFile);
             this.Controls.Add(this.btFirst);
             this.Name = "DiffViewerForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Diff Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.fctb1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fctb2)).EndInit();
