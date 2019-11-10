@@ -59,7 +59,7 @@ namespace Essay_Analysis_Tool
 
         private void CompareButton_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(tbFirstFile.Text) && !File.Exists(tbSecondFile.Text))
+            if (!File.Exists(tbFirstFile.Text) || !File.Exists(tbSecondFile.Text))
             {
                 MessageBox.Show(this, "Please select a valid file", "Invalid file");
                 return;
