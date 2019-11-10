@@ -95,41 +95,33 @@ namespace Essay_Analysis_Tool
                 return;
 
             var vPos = (sender as FastColoredTextBox).VerticalScroll.Value;
-            var hPos = (sender as FastColoredTextBox).HorizontalScroll.Value;
             var curLine = (sender as FastColoredTextBox).Selection.Start.iLine;
 
             if (sender == fctb2)
-                UpdateScroll(fctb1, vPos, hPos, curLine);
+                UpdateScroll(fctb1, vPos, curLine);
             else
-                UpdateScroll(fctb2, vPos, hPos, curLine);
+                UpdateScroll(fctb2, vPos, curLine);
 
             fctb1.Refresh();
             fctb2.Refresh();
         }
 
-        private void UpdateScroll(FastColoredTextBox tb, int vPos, int hPos, int curLine)
+        private void UpdateScroll(FastColoredTextBox tb, int vPos, int curLine)
         {
             if (_updating > 0)
                 return;
-
+            //
             BeginUpdate();
-
+            //
             if (vPos <= tb.VerticalScroll.Maximum)
             {
                 tb.VerticalScroll.Value = vPos;
-            }
-
-            if (hPos <= tb.HorizontalScroll.Maximum)
-            {
-                tb.HorizontalScroll.Value = hPos;
-            }
-
-            if (vPos <= tb.VerticalScroll.Maximum && hPos <= tb.HorizontalScroll.Maximum)
                 tb.UpdateScrollbars();
+            }
 
             if (curLine < tb.LinesCount)
                 tb.Selection = new Range(tb, 0, curLine, 0, curLine);
-
+            //
             EndUpdate();
         }
 
@@ -162,7 +154,6 @@ namespace Essay_Analysis_Tool
                         fctb2.AppendText(Environment.NewLine);
                         break;
                 }
-
                 if (line.subLines != null)
                     Process(line.subLines);
             }
