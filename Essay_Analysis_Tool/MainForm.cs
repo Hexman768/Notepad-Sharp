@@ -970,6 +970,31 @@ namespace Essay_Analysis_Tool
             }
         }
 
+        private bool IsSavedTab(string tagName) => tagName != null;
+
+        private void DiffToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> filePaths = new List<string>();
+
+            foreach (FATabStripItem item in tsFiles.Items)
+            {
+                string filePath = (string)item.Tag;
+
+                if (IsSavedTab(filePath))
+                    filePaths.Add(filePath);
+
+                    if (filePaths.Count == 2)
+                        break;
+            }
+
+            if  (filePaths.Count == 1)
+                new DiffViewerForm(filePaths[0]).Show();
+            else if (filePaths.Count == 2)
+                new DiffViewerForm(filePaths[0], filePaths[1]).Show();
+            else
+                new DiffViewerForm().Show();
+        }
+
         #endregion
 
         #region Document Map Functionality
