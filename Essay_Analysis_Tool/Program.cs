@@ -10,6 +10,7 @@
 //
 //  Copyright (C) Zachary Pedigo, 2019.
 
+using Essay_Analysis_Tool.Business;
 using System;
 using System.Windows.Forms;
 
@@ -25,7 +26,9 @@ namespace Essay_Analysis_Tool
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            MainView view = new MainView();
+            MainViewController controller = new MainViewController(view);
+            view.ShowDialog();
         }
     }
 }

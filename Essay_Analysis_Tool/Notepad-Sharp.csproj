@@ -55,35 +55,40 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiffViewerForm.cs">
+    <Compile Include="Business\DeclarationSnippet.cs" />
+    <Compile Include="Business\InsertEnterSnippet.cs" />
+    <Compile Include="Business\InsertSpaceSnippet.cs" />
+    <Compile Include="Business\MainViewController.cs" />
+    <Compile Include="Interface\IMainView.cs" />
+    <Compile Include="Presentation\DiffViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DiffViewerForm.Designer.cs">
+    <Compile Include="Presentation\DiffViewerForm.Designer.cs">
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LoggerMessageTypeEnum.cs" />
-    <Compile Include="LoggerForm.cs">
+    <Compile Include="Presentation\LoggerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoggerForm.Designer.cs">
+    <Compile Include="Presentation\LoggerForm.Designer.cs">
       <DependentUpon>LoggerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Presentation\MainView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="Presentation\MainView.Designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="DiffViewerForm.resx">
+    <EmbeddedResource Include="Presentation\DiffViewerForm.resx">
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoggerForm.resx">
+    <EmbeddedResource Include="Presentation\LoggerForm.resx">
       <DependentUpon>LoggerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="Presentation\MainView.resx">
+      <DependentUpon>MainView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -116,6 +121,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>

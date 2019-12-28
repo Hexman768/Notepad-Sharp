@@ -12,7 +12,7 @@
 
 namespace Essay_Analysis_Tool
 {
-    partial class MainForm
+    partial class MainView
     {
         /// <summary>
         /// Required designer variable.
@@ -41,7 +41,7 @@ namespace Essay_Analysis_Tool
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
