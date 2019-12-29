@@ -34,7 +34,6 @@ namespace Essay_Analysis_Tool
         internal OpenFileDialog file_open = new OpenFileDialog();
         internal SaveFileDialog sfdMain = new SaveFileDialog();
         internal FontDialog fontDialog = new FontDialog();
-        LoggerForm logger = new LoggerForm();
 
         //Form declarations
         internal FindForm findForm;
@@ -72,7 +71,8 @@ namespace Essay_Analysis_Tool
 
         AutocompleteMenu popupMenu;
 
-        private MainViewController _controller;
+        private MainViewController _mainViewController;
+        private LoggerViewController _loggerViewController;
 
         #endregion
 
@@ -85,7 +85,6 @@ namespace Essay_Analysis_Tool
         {
             InitializeComponent();
 
-            logger.Log("Form Initialized!", LoggerMessageType.Info);
             sfdMain.Filter = Resources.NormalTextFileType + "|*.txt|"
                 + Resources.CSharpFileType + "|*.cs|"
                 + Resources.HTMLFileType + "|*.html|"
@@ -118,7 +117,7 @@ namespace Essay_Analysis_Tool
 
         private void NewToolStripButton_Click(object sender, EventArgs e)
         {
-            _controller.CreateTab(null);
+            _mainViewController.CreateTab(null);
         }
 
         private void FindButton_Click(object sender, EventArgs e)
@@ -133,7 +132,7 @@ namespace Essay_Analysis_Tool
         {
             if (file_open.ShowDialog() == DialogResult.OK)
             {
-                _controller.CreateTab(file_open.FileName);
+                _mainViewController.CreateTab(file_open.FileName);
             }
         }
 
@@ -165,7 +164,7 @@ namespace Essay_Analysis_Tool
         {
             if (tsFiles.SelectedItem != null)
             {
-                _controller.Save(tsFiles.SelectedItem);
+                _mainViewController.Save(tsFiles.SelectedItem);
             }
         }
 
@@ -252,7 +251,7 @@ namespace Essay_Analysis_Tool
 
             if (CurrentTB != null)
             {
-                _controller.ChangeSyntax(CurrentTB, Language.CSharp);
+                _mainViewController.ChangeSyntax(CurrentTB, Language.CSharp);
             }
         }
 
@@ -260,7 +259,7 @@ namespace Essay_Analysis_Tool
         {
             if (CurrentTB != null)
             {
-                _controller.ChangeSyntax(CurrentTB, Language.Custom);
+                _mainViewController.ChangeSyntax(CurrentTB, Language.Custom);
             }
         }
 
@@ -268,7 +267,7 @@ namespace Essay_Analysis_Tool
         {
             if (CurrentTB != null)
             {
-                _controller.ChangeSyntax(CurrentTB, Language.HTML);
+                _mainViewController.ChangeSyntax(CurrentTB, Language.HTML);
             }
         }
 
@@ -276,7 +275,7 @@ namespace Essay_Analysis_Tool
         {
             if (CurrentTB != null)
             {
-                _controller.ChangeSyntax(CurrentTB, Language.JS);
+                _mainViewController.ChangeSyntax(CurrentTB, Language.JS);
             }
         }
 
@@ -286,7 +285,7 @@ namespace Essay_Analysis_Tool
 
             if (CurrentTB != null)
             {
-                _controller.ChangeSyntax(CurrentTB, Language.Lua);
+                _mainViewController.ChangeSyntax(CurrentTB, Language.Lua);
             }
         }
 
@@ -296,7 +295,7 @@ namespace Essay_Analysis_Tool
 
             if (CurrentTB != null)
             {
-                _controller.ChangeSyntax(CurrentTB, Language.PHP);
+                _mainViewController.ChangeSyntax(CurrentTB, Language.PHP);
             }
         }
 
@@ -306,7 +305,7 @@ namespace Essay_Analysis_Tool
 
             if (CurrentTB != null)
             {
-                _controller.ChangeSyntax(CurrentTB, Language.SQL);
+                _mainViewController.ChangeSyntax(CurrentTB, Language.SQL);
             }
         }
 
@@ -316,7 +315,7 @@ namespace Essay_Analysis_Tool
 
             if (CurrentTB != null)
             {
-                _controller.ChangeSyntax(CurrentTB, Language.VB);
+                _mainViewController.ChangeSyntax(CurrentTB, Language.VB);
             }
         }
 
@@ -326,7 +325,7 @@ namespace Essay_Analysis_Tool
 
             if (CurrentTB != null)
             {
-                _controller.ChangeSyntax(CurrentTB, Language.XML);
+                _mainViewController.ChangeSyntax(CurrentTB, Language.XML);
             }
         }
 
@@ -364,7 +363,7 @@ namespace Essay_Analysis_Tool
         {
             if (file_open.ShowDialog() == DialogResult.OK)
             {
-                _controller.CreateTab(file_open.FileName);
+                _mainViewController.CreateTab(file_open.FileName);
             }
         }
 
@@ -372,7 +371,7 @@ namespace Essay_Analysis_Tool
         {
             if (tsFiles.SelectedItem != null)
             {
-                _controller.Save(tsFiles.SelectedItem);
+                _mainViewController.Save(tsFiles.SelectedItem);
             }
         }
 
@@ -382,7 +381,7 @@ namespace Essay_Analysis_Tool
             {
                 string oldFile = tsFiles.SelectedItem.Tag as string;
                 tsFiles.SelectedItem.Tag = null;
-                if (!_controller.Save(tsFiles.SelectedItem))
+                if (!_mainViewController.Save(tsFiles.SelectedItem))
                 {
                     if (oldFile != null)
                     {
@@ -395,7 +394,7 @@ namespace Essay_Analysis_Tool
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _controller.CreateTab(null);
+            _mainViewController.CreateTab(null);
         }
 
         private void ReplaceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -448,7 +447,7 @@ namespace Essay_Analysis_Tool
 
         private void LoggerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            logger.Show();
+            _loggerViewController.ShowView();
         }
 
         private void DiffToolStripMenuItem_Click(object sender, EventArgs e)
@@ -486,14 +485,14 @@ namespace Essay_Analysis_Tool
                 {
                     if (file_open.ShowDialog() == DialogResult.OK)
                     {
-                        _controller.CreateTab(file_open.FileName);
+                        _mainViewController.CreateTab(file_open.FileName);
                     }
                 }
                 else if (e.KeyCode == Keys.S && e.Modifiers == Keys.Control)
                 {
                     if (tsFiles.SelectedItem != null)
                     {
-                        _controller.Save(tsFiles.SelectedItem);
+                        _mainViewController.Save(tsFiles.SelectedItem);
                     }
                 }
                 else if (e.Control && e.Shift && e.KeyCode == Keys.L)
@@ -521,7 +520,7 @@ namespace Essay_Analysis_Tool
             if (CurrentTB != null)
             {
                 popupMenu = new AutocompleteMenu(CurrentTB);
-                _controller.BuildAutocompleteMenu();
+                _mainViewController.BuildAutocompleteMenu();
                 UpdateChangedFlag(CurrentTB.IsChanged);
             }
         }
@@ -565,7 +564,7 @@ namespace Essay_Analysis_Tool
                 switch (MessageBox.Show("Do you want save " + e.Item.Title + " ?", "Save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information))
                 {
                     case DialogResult.Yes:
-                        if (!_controller.Save(e.Item))
+                        if (!_mainViewController.Save(e.Item))
                         {
                             e.Cancel = true;
                         }
@@ -646,7 +645,7 @@ namespace Essay_Analysis_Tool
             List<FATabStripItem> list = GetTabList();
             if (list.Count == 0)
             {
-                _controller.CreateTab(null);
+                _mainViewController.CreateTab(null);
             }
         }
 
@@ -719,11 +718,19 @@ namespace Essay_Analysis_Tool
             return tab;
         }
 
-        public void SetController(MainViewController controller)
+        public void Log(string message, LoggerMessageType style)
         {
-            _controller = controller;
-            _controller.CreateTab(null);
-            _controller.BuildAutocompleteMenu();
+            _loggerViewController.Log(message, style);
+        }
+
+        public void SetController(MainViewController mainViewController, LoggerViewController loggerViewController)
+        {
+            _mainViewController = mainViewController;
+            _loggerViewController = loggerViewController;
+
+            _mainViewController.CreateTab(null);
+            _mainViewController.BuildAutocompleteMenu();
+            _loggerViewController.Log("Form Initialized!", LoggerMessageType.Info);
         }
 
         #endregion

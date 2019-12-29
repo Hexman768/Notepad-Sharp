@@ -1,36 +1,39 @@
-﻿using FastColoredTextBoxNS;
+﻿using Essay_Analysis_Tool.Interface;
+using FastColoredTextBoxNS;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 
-namespace Essay_Analysis_Tool
+namespace Essay_Analysis_Tool.Business
 {
-    public partial class LoggerForm : Form
+    /// <summary>
+    /// Class to hold the business logic for the <see cref="LoggerView"/>.
+    /// </summary>
+    public class LoggerViewController
     {
-
         #region Variable Declarations
 
         TextStyle infoStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
         TextStyle warningStyle = new TextStyle(Brushes.BurlyWood, null, FontStyle.Regular);
         TextStyle errorStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
 
+        private ILoggerView _view;
+
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Constructs the LoggerForm.
+        /// Constructs the <see cref="LoggerViewController"/>.
         /// </summary>
-        public LoggerForm()
+        /// <param name="view">Interface to the view.</param>
+        public LoggerViewController(ILoggerView view)
         {
-            InitializeComponent();
-
-            console.ReadOnly = true;
+            _view = view;
         }
 
         #endregion
 
-        #region Logging functionality
+        #region Functionality
 
         /// <summary>
         /// This function appends the given text to the logger form based on the specified
@@ -55,27 +58,15 @@ namespace Essay_Analysis_Tool
                     break;
             }
 
-            console.AppendText(DateTime.Now + ": " + value + "\n", style);
+            _view.AppendText(DateTime.Now + ": " + value + "\n", style);
         }
 
-        #endregion
-
-        #region Event Handlers
-
-        private void LoggerForm_FormClosing(object sender, FormClosingEventArgs e)
+        /// <summary>
+        /// Shows the <see cref="LoggerView"/>.
+        /// </summary>
+        public void ShowView()
         {
-            Hide();
-            e.Cancel = true;
-        }
-
-        private void SelectButton_Click(object sender, EventArgs e)
-        {
-            console.SelectAll();
-        }
-
-        private void CopyButton_Click(object sender, EventArgs e)
-        {
-            console.Copy();
+            _view.ShowView();
         }
 
         #endregion

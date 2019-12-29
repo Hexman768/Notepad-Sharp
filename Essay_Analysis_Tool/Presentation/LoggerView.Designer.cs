@@ -1,6 +1,6 @@
 ﻿namespace Essay_Analysis_Tool
 {
-    partial class LoggerForm
+    partial class LoggerView
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoggerForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoggerView));
             this.console = new FastColoredTextBoxNS.FastColoredTextBox();
             this.selectButton = new System.Windows.Forms.Button();
             this.copyButton = new System.Windows.Forms.Button();

@@ -27,7 +27,9 @@ namespace Essay_Analysis_Tool
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainView view = new MainView();
-            MainViewController controller = new MainViewController(view);
+            LoggerView loggerView = new LoggerView();
+            LoggerViewController loggerViewController = new LoggerViewController(loggerView);
+            MainViewController controller = new MainViewController(view, loggerViewController);
             view.ShowDialog();
         }
     }

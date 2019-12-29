@@ -58,7 +58,9 @@
     <Compile Include="Business\DeclarationSnippet.cs" />
     <Compile Include="Business\InsertEnterSnippet.cs" />
     <Compile Include="Business\InsertSpaceSnippet.cs" />
+    <Compile Include="Business\LoggerViewController.cs" />
     <Compile Include="Business\MainViewController.cs" />
+    <Compile Include="Interface\ILoggerView.cs" />
     <Compile Include="Interface\IMainView.cs" />
     <Compile Include="Presentation\DiffViewerForm.cs">
       <SubType>Form</SubType>
@@ -67,11 +69,11 @@
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LoggerMessageTypeEnum.cs" />
-    <Compile Include="Presentation\LoggerForm.cs">
+    <Compile Include="Presentation\LoggerView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Presentation\LoggerForm.Designer.cs">
-      <DependentUpon>LoggerForm.cs</DependentUpon>
+    <Compile Include="Presentation\LoggerView.Designer.cs">
+      <DependentUpon>LoggerView.cs</DependentUpon>
     </Compile>
     <Compile Include="Presentation\MainView.cs">
       <SubType>Form</SubType>
@@ -84,8 +86,8 @@
     <EmbeddedResource Include="Presentation\DiffViewerForm.resx">
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Presentation\LoggerForm.resx">
-      <DependentUpon>LoggerForm.cs</DependentUpon>
+    <EmbeddedResource Include="Presentation\LoggerView.resx">
+      <DependentUpon>LoggerView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Presentation\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>

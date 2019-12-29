@@ -1,4 +1,5 @@
 ﻿using Essay_Analysis_Tool.Interface;
+using Essay_Analysis_Tool.Properties;
 using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
 using System;
@@ -46,10 +47,11 @@ namespace Essay_Analysis_Tool.Business
         #endregion
 
         #region Constructor
-        public MainViewController(IMainView view)
+
+        public MainViewController(IMainView view, LoggerViewController loggerViewController)
         {
             _view = view;
-            _view.SetController(this);
+            _view.SetController(this, loggerViewController);
         }
 
         #endregion
@@ -103,12 +105,12 @@ namespace Essay_Analysis_Tool.Business
 
         public bool Save(FATabStripItem tab)
         {
-            /*if (tab == null)
+            if (tab == null)
             {
-                logger.Log(Resources.NullTabStripItem, LoggerMessageType.Error);
+                _view.Log(Resources.NullTabStripItem, LoggerMessageType.Error);
                 MessageBox.Show("Save Unsucessfull.", "Save not complete", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-            }*/
+            }
 
             FastColoredTextBox tb = tab.Controls[0] as FastColoredTextBox;
 
@@ -186,11 +188,11 @@ namespace Essay_Analysis_Tool.Business
 
         public void ChangeSyntax(FastColoredTextBox tb, Language language)
         {
-            /*if (tb == null)
+            if (tb == null)
             {
-                logger.Log(Resources.InvalidArgument, LoggerMessageType.Error);
+                _view.Log(Resources.InvalidArgument, LoggerMessageType.Error);
                 return;
-            }*/
+            }
 
             tb.Range.ClearStyle(StyleIndex.All);
             tb.Language = language;

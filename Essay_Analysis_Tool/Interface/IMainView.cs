@@ -7,7 +7,7 @@ namespace Essay_Analysis_Tool.Interface
 {
     public interface IMainView
     {
-        void SetController(MainViewController controller);
+        void SetController(MainViewController mainViewController, LoggerViewController loggerViewController);
 
         void UpdateChangedFlag(bool isChanged);
 
@@ -32,5 +32,13 @@ namespace Essay_Analysis_Tool.Interface
         FastColoredTextBox UpdateUIPropertiesForFCTB(FastColoredTextBox fctb);
 
         FATabStripItem CallSaveFileDialog(FATabStripItem tab);
+        
+        /// <summary>
+        /// Calls the <see cref="LoggerViewController"/> to log
+        /// a message to the <see cref="LoggerView"/>.
+        /// </summary>
+        /// <param name="message">Message.</param>
+        /// <param name="style">Style of the message.</param>
+        void Log(string message, LoggerMessageType style);
     }
 }
