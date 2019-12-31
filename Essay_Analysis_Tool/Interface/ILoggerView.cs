@@ -6,11 +6,22 @@ namespace Essay_Analysis_Tool.Interface
     public interface ILoggerView
     {
         /// <summary>
-        /// Appends the given text to the FastColoredTextBox instance.
+        /// Logs text to the logger using the informationStyle.
         /// </summary>
-        /// <param name="text">Message text.</param>
-        /// <param name="style">Style of message.</param>
-        void AppendText(string text, Style style);
+        /// <param name="text">Message.</param>
+        void Info(string text);
+
+        /// <summary>
+        /// Logs text to the logger using the warningStyle.
+        /// </summary>
+        /// <param name="text">Message.</param>
+        void Warn(string text);
+
+        /// <summary>
+        /// Logs text to the logger using the errorStyle.
+        /// </summary>
+        /// <param name="text">Message.</param>
+        void Error(string text);
 
         /// <summary>
         /// Sets the controller for the <see cref="LoggerView"/>.
@@ -21,6 +32,6 @@ namespace Essay_Analysis_Tool.Interface
         /// <summary>
         /// Shows the <see cref="LoggerView"/>.
         /// </summary>
-        void ShowView();
+        void Show();
     }
 }

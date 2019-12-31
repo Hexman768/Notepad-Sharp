@@ -2,6 +2,7 @@
 using Essay_Analysis_Tool.Interface;
 using FastColoredTextBoxNS;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Essay_Analysis_Tool
@@ -13,6 +14,10 @@ namespace Essay_Analysis_Tool
     {
 
         #region Variables
+
+        TextStyle infoStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
+        TextStyle warningStyle = new TextStyle(Brushes.BurlyWood, null, FontStyle.Regular);
+        TextStyle errorStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
 
         private LoggerViewController _controller;
 
@@ -34,19 +39,24 @@ namespace Essay_Analysis_Tool
 
         #region UI functionality
 
-        public void AppendText(string text, Style style)
+        public void Warn(string text)
         {
-            console.AppendText(text, style);
+            console.AppendText(DateTime.Now + ": " + text, warningStyle);
+        }
+
+        public void Info(string text)
+        {
+            console.AppendText(DateTime.Now + ": " + text, infoStyle);
+        }
+
+        public void Error(string text)
+        {
+            console.AppendText(DateTime.Now + ": " + text, errorStyle);
         }
 
         public void SetController(LoggerViewController controller)
         {
             _controller = controller;
-        }
-
-        public void ShowView()
-        {
-            Show();
         }
 
         #endregion

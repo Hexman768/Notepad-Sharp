@@ -107,7 +107,7 @@ namespace Essay_Analysis_Tool.Business
         {
             if (tab == null)
             {
-                _view.Log(Resources.NullTabStripItem, LoggerMessageType.Error);
+                _view.LogError(Resources.NullTabStripItem);
                 MessageBox.Show("Save Unsucessfull.", "Save not complete", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -190,7 +190,7 @@ namespace Essay_Analysis_Tool.Business
         {
             if (tb == null)
             {
-                _view.Log(Resources.InvalidArgument, LoggerMessageType.Error);
+                _view.LogError(Resources.InvalidArgument);
                 return;
             }
 

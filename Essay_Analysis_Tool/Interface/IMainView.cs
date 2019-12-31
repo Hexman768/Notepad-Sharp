@@ -35,10 +35,26 @@ namespace Essay_Analysis_Tool.Interface
         
         /// <summary>
         /// Calls the <see cref="LoggerViewController"/> to log
-        /// a message to the <see cref="LoggerView"/>.
+        /// an informational message to the <see cref="LoggerView"/>.
         /// </summary>
         /// <param name="message">Message.</param>
         /// <param name="style">Style of the message.</param>
-        void Log(string message, LoggerMessageType style);
+        void LogInfo(string value);
+
+        /// <summary>
+        /// Calls the <see cref="LoggerViewController"/> to log
+        /// a warning message to the <see cref="LoggerView"/>.
+        /// </summary>
+        /// <param name="message">Message.</param>
+        /// <param name="style">Style of the message.</param>
+        void LogWarning(string value);
+
+        /// <summary>
+        /// Calls the <see cref="LoggerViewController"/> to log
+        /// an error message to the <see cref="LoggerView"/>.
+        /// </summary>
+        /// <param name="message">Message.</param>
+        /// <param name="style">Style of the message.</param>
+        void LogError(string value);
     }
 }

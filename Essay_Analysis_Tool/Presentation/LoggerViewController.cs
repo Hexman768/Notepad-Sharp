@@ -36,37 +36,38 @@ namespace Essay_Analysis_Tool.Business
         #region Functionality
 
         /// <summary>
-        /// This function appends the given text to the logger form based on the specified
-        /// message type.
+        /// This function appends the given text to the logger form based on the message type.
         /// </summary>
         /// <param name="value">Text to be appended to the form.</param>
-        /// <param name="type">The logger message type.</param>
-        public void Log(string value, LoggerMessageType type)
+        public void LogInfo(string value)
         {
-            Style style;
+            _view.Info(value);
+        }
 
-            switch (type)
-            {
-                case LoggerMessageType.Warning:
-                    style = warningStyle;
-                    break;
-                case LoggerMessageType.Error:
-                    style = errorStyle;
-                    break;
-                default:
-                    style = infoStyle;
-                    break;
-            }
+        /// <summary>
+        /// This function appends the given text to the logger form based on the message type.
+        /// </summary>
+        /// <param name="value">Text to be appended to the form.</param>
+        public void LogWarning(string value)
+        {
+            _view.Warn(value);
+        }
 
-            _view.AppendText(DateTime.Now + ": " + value + "\n", style);
+        /// <summary>
+        /// This function appends the given text to the logger form based on the message type.
+        /// </summary>
+        /// <param name="value">Text to be appended to the form.</param>
+        public void LogError(string value)
+        {
+            _view.Error(value);
         }
 
         /// <summary>
         /// Shows the <see cref="LoggerView"/>.
         /// </summary>
-        public void ShowView()
+        public void Show()
         {
-            _view.ShowView();
+            _view.Show();
         }
 
         #endregion

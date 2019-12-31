@@ -447,7 +447,7 @@ namespace Essay_Analysis_Tool
 
         private void LoggerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _loggerViewController.ShowView();
+            _loggerViewController.Show();
         }
 
         private void DiffToolStripMenuItem_Click(object sender, EventArgs e)
@@ -718,9 +718,19 @@ namespace Essay_Analysis_Tool
             return tab;
         }
 
-        public void Log(string message, LoggerMessageType style)
+        public void LogInfo(string value)
         {
-            _loggerViewController.Log(message, style);
+            _loggerViewController.LogInfo(value);
+        }
+
+        public void LogWarning(string value)
+        {
+            _loggerViewController.LogWarning(value);
+        }
+
+        public void LogError(string value)
+        {
+            _loggerViewController.LogError(value);
         }
 
         public void SetController(MainViewController mainViewController, LoggerViewController loggerViewController)
@@ -730,7 +740,7 @@ namespace Essay_Analysis_Tool
 
             _mainViewController.CreateTab(null);
             _mainViewController.BuildAutocompleteMenu();
-            _loggerViewController.Log("Form Initialized!", LoggerMessageType.Info);
+            _loggerViewController.LogInfo("Form Initialized!");
         }
 
         #endregion
