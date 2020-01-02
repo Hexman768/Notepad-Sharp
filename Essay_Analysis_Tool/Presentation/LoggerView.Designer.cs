@@ -1,4 +1,4 @@
-﻿namespace Essay_Analysis_Tool
+﻿namespace Essay_Analysis_Tool.Presentation
 {
     partial class LoggerView
     {
@@ -10,7 +10,7 @@
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">True if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -99,7 +99,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoggerForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.console)).EndInit();
             this.ResumeLayout(false);
-
+            console.ReadOnly = true;
         }
 
         #endregion

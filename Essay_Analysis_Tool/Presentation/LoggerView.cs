@@ -1,16 +1,15 @@
-﻿using Essay_Analysis_Tool.Business;
-using Essay_Analysis_Tool.Interface;
-using FastColoredTextBoxNS;
+﻿using FastColoredTextBoxNS;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Essay_Analysis_Tool.Controllers;
 
-namespace Essay_Analysis_Tool
+namespace Essay_Analysis_Tool.Presentation
 {
     /// <summary>
-    /// Defines the <see cref="LoggerView" />
+    /// Defines the <see cref="LoggerView" />.
     /// </summary>
-    public partial class LoggerView : Form, ILoggerView
+    public partial class LoggerView : Form
     {
 
         #region Variables
@@ -26,13 +25,13 @@ namespace Essay_Analysis_Tool
         #region Constructor
 
         /// <summary>
-        /// Constructs the LoggerForm.
+        /// Constructs the <see cref="LoggerView"/>.
         /// </summary>
-        public LoggerView()
+        public LoggerView(LoggerViewController loggerViewController)
         {
             InitializeComponent();
 
-            console.ReadOnly = true;
+            _controller = loggerViewController;
         }
 
         #endregion
@@ -52,11 +51,6 @@ namespace Essay_Analysis_Tool
         public void Error(string text)
         {
             console.AppendText(DateTime.Now + ": " + text, errorStyle);
-        }
-
-        public void SetController(LoggerViewController controller)
-        {
-            _controller = controller;
         }
 
         #endregion

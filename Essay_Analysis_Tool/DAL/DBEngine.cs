@@ -11,7 +11,7 @@ namespace Essay_Analysis_Tool.DAL
         private string un;
 
         /// <summary>
-        /// Constructs the <see cref="DBEngine"/>
+        /// Constructs the <see cref="DBEngine"/>.
         /// </summary>
         public DBEngine()
         {

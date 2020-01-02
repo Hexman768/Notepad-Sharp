@@ -1,9 +1,6 @@
-﻿using Essay_Analysis_Tool.Interface;
-using FastColoredTextBoxNS;
-using System;
-using System.Drawing;
+﻿using Essay_Analysis_Tool.Presentation;
 
-namespace Essay_Analysis_Tool.Business
+namespace Essay_Analysis_Tool.Controllers
 {
     /// <summary>
     /// Class to hold the business logic for the <see cref="LoggerView"/>.
@@ -12,11 +9,7 @@ namespace Essay_Analysis_Tool.Business
     {
         #region Variable Declarations
 
-        TextStyle infoStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
-        TextStyle warningStyle = new TextStyle(Brushes.BurlyWood, null, FontStyle.Regular);
-        TextStyle errorStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
-
-        private ILoggerView _view;
+        private LoggerView _view;
 
         #endregion
 
@@ -26,9 +19,9 @@ namespace Essay_Analysis_Tool.Business
         /// Constructs the <see cref="LoggerViewController"/>.
         /// </summary>
         /// <param name="view">Interface to the view.</param>
-        public LoggerViewController(ILoggerView view)
+        public LoggerViewController()
         {
-            _view = view;
+            _view = new LoggerView(this);
         }
 
         #endregion
@@ -36,27 +29,27 @@ namespace Essay_Analysis_Tool.Business
         #region Functionality
 
         /// <summary>
-        /// This function appends the given text to the logger form based on the message type.
+        /// This function appends the given text to the <see cref="LoggerView"/> based on the message type.
         /// </summary>
-        /// <param name="value">Text to be appended to the form.</param>
+        /// <param name="value">Text to be appended to the view.</param>
         public void LogInfo(string value)
         {
             _view.Info(value);
         }
 
         /// <summary>
-        /// This function appends the given text to the logger form based on the message type.
+        /// This function appends the given text to the <see cref="LoggerView"/> based on the message type.
         /// </summary>
-        /// <param name="value">Text to be appended to the form.</param>
+        /// <param name="value">Text to be appended to the view.</param>
         public void LogWarning(string value)
         {
             _view.Warn(value);
         }
 
         /// <summary>
-        /// This function appends the given text to the logger form based on the message type.
+        /// This function appends the given text to the <see cref="LoggerView"/> based on the message type.
         /// </summary>
-        /// <param name="value">Text to be appended to the form.</param>
+        /// <param name="value">Text to be appended to the view.</param>
         public void LogError(string value)
         {
             _view.Error(value);

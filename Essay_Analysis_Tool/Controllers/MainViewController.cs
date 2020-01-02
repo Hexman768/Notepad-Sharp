@@ -1,5 +1,4 @@
-﻿using Essay_Analysis_Tool.Interface;
-using Essay_Analysis_Tool.Properties;
+﻿using Essay_Analysis_Tool.Business;
 using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
 using System;
@@ -8,16 +7,16 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Essay_Analysis_Tool.Business
+namespace Essay_Analysis_Tool.Controllers
 {
     public class MainViewController
     {
         #region Variables
 
-        string[] keywords = { "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "add", "alias", "ascending", "descending", "dynamic", "from", "get", "global", "group", "into", "join", "let", "orderby", "partial", "remove", "select", "set", "value", "var", "where", "yield" };
-        string[] methods = { "Equals()", "GetHashCode()", "GetType()", "ToString()" };
-        string[] snippets = { "if(^)\n{\n;\n}", "if(^)\n{\n;\n}\nelse\n{\n;\n}", "for(^;;)\n{\n;\n}", "while(^)\n{\n;\n}", "do${\n^;\n}while();", "switch(^)\n{\ncase : break;\n}" };
-        string[] declarationSnippets = {
+        readonly string[] keywords = { "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "add", "alias", "ascending", "descending", "dynamic", "from", "get", "global", "group", "into", "join", "let", "orderby", "partial", "remove", "select", "set", "value", "var", "where", "yield" };
+        readonly string[] methods = { "Equals()", "GetHashCode()", "GetType()", "ToString()" };
+        readonly string[] snippets = { "if(^)\n{\n;\n}", "if(^)\n{\n;\n}\nelse\n{\n;\n}", "for(^;;)\n{\n;\n}", "while(^)\n{\n;\n}", "do${\n^;\n}while();", "switch(^)\n{\ncase : break;\n}" };
+        readonly string[] declarationSnippets = {
                "public class ^\n{\n}", "private class ^\n{\n}", "internal class ^\n{\n}",
                "public struct ^\n{\n;\n}", "private struct ^\n{\n;\n}", "internal struct ^\n{\n;\n}",
                "public void ^()\n{\n;\n}", "private void ^()\n{\n;\n}", "internal void ^()\n{\n;\n}", "protected void ^()\n{\n;\n}",
@@ -40,18 +39,18 @@ namespace Essay_Analysis_Tool.Business
         protected static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();
 
         //Styles
-        private Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
+        private readonly Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
 
-        private IMainView _view;
+        private readonly MainView _view;
 
         #endregion
 
         #region Constructor
 
-        public MainViewController(IMainView view, LoggerViewController loggerViewController)
+        public MainViewController()
         {
-            _view = view;
-            _view.SetController(this, loggerViewController);
+            _view = new MainView(this);
+            _view.DefaultBehavior();
         }
 
         #endregion
@@ -107,7 +106,7 @@ namespace Essay_Analysis_Tool.Business
         {
             if (tab == null)
             {
-                _view.LogError(Resources.NullTabStripItem);
+                //_view.LogError(Resources.NullTabStripItem);
                 MessageBox.Show("Save Unsucessfull.", "Save not complete", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -190,7 +189,7 @@ namespace Essay_Analysis_Tool.Business
         {
             if (tb == null)
             {
-                _view.LogError(Resources.InvalidArgument);
+                //_view.LogError(Resources.InvalidArgument);
                 return;
             }
 
@@ -220,6 +219,11 @@ namespace Essay_Analysis_Tool.Business
 
             //set as autocomplete source
             _view.UpdateAutocompleteItems(items);
+        }
+
+        public void Show()
+        {
+            _view.Show();
         }
 
         #endregion

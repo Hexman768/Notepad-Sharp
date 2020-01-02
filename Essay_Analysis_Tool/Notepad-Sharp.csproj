@@ -65,10 +65,8 @@
     <Compile Include="Business\InsertSpaceSnippet.cs" />
     <Compile Include="Business\LoggingService.cs" />
     <Compile Include="DAL\DBEngine.cs" />
-    <Compile Include="Presentation\LoggerViewController.cs" />
-    <Compile Include="Presentation\MainViewController.cs" />
-    <Compile Include="Interface\ILoggerView.cs" />
-    <Compile Include="Interface\IMainView.cs" />
+    <Compile Include="Controllers\LoggerViewController.cs" />
+    <Compile Include="Controllers\MainViewController.cs" />
     <Compile Include="Presentation\DiffViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +128,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Interface\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,8 @@
 //
 //  Copyright (C) Zachary Pedigo, 2019.
 
+using Essay_Analysis_Tool.Properties;
+
 namespace Essay_Analysis_Tool
 {
     partial class MainView
@@ -679,7 +681,6 @@ namespace Essay_Analysis_Tool
             ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

@@ -10,7 +10,7 @@
 //
 //  Copyright (C) Zachary Pedigo, 2019.
 
-using Essay_Analysis_Tool.Business;
+using Essay_Analysis_Tool.Controllers;
 using System;
 using System.Windows.Forms;
 
@@ -26,11 +26,9 @@ namespace Essay_Analysis_Tool
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MainView view = new MainView();
-            LoggerView loggerView = new LoggerView();
-            LoggerViewController loggerViewController = new LoggerViewController(loggerView);
-            MainViewController controller = new MainViewController(view, loggerViewController);
-            view.ShowDialog();
+            LoggerViewController loggerViewController = new LoggerViewController();
+            MainViewController controller = new MainViewController();
+            controller.Show();
         }
     }
 }
