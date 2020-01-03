@@ -437,7 +437,7 @@ namespace Essay_Analysis_Tool
         {
             // This functionality will also have to be abstracted out to a service class
             // because we do not want to mix views/controllers together.
-            //_loggerViewController.Show();
+            _controller.ShowLogs();
         }
 
         private void DiffToolStripMenuItem_Click(object sender, EventArgs e)
