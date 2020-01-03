@@ -1,4 +1,6 @@
-﻿using Essay_Analysis_Tool.Presentation;
+﻿using Essay_Analysis_Tool.Business;
+using Essay_Analysis_Tool.Models;
+using Essay_Analysis_Tool.Presentation;
 
 namespace Essay_Analysis_Tool.Controllers
 {
@@ -9,6 +11,7 @@ namespace Essay_Analysis_Tool.Controllers
     {
         #region Variable Declarations
 
+        private readonly LoggingService _loggingService;
         private LoggerView _view;
 
         #endregion
@@ -19,41 +22,33 @@ namespace Essay_Analysis_Tool.Controllers
         /// Constructs the <see cref="LoggerViewController"/>.
         /// </summary>
         /// <param name="view">Interface to the view.</param>
-        public LoggerViewController()
+        public LoggerViewController(LoggingService loggingService)
         {
+            _loggingService = loggingService;
+            _loggingService.InfoAdded += UpdateView;
+            _loggingService.WarningAdded += UpdateView;
+            _loggingService.ErrorAdded += UpdateView;
             _view = new LoggerView(this);
+        }
+
+        private void UpdateView(object sender, InfoLogEntry entry)
+        {
+            _view.Add(entry);
+        }
+
+        private void UpdateView(object sender, WarnLogEntry entry)
+        {
+            _view.Add(entry);
+        }
+
+        private void UpdateView(object sender, ErrorLogEntry entry)
+        {
+            _view.Add(entry);
         }
 
         #endregion
 
         #region Functionality
-
-        /// <summary>
-        /// This function appends the given text to the <see cref="LoggerView"/> based on the message type.
-        /// </summary>
-        /// <param name="value">Text to be appended to the view.</param>
-        public void LogInfo(string value)
-        {
-            _view.Info(value);
-        }
-
-        /// <summary>
-        /// This function appends the given text to the <see cref="LoggerView"/> based on the message type.
-        /// </summary>
-        /// <param name="value">Text to be appended to the view.</param>
-        public void LogWarning(string value)
-        {
-            _view.Warn(value);
-        }
-
-        /// <summary>
-        /// This function appends the given text to the <see cref="LoggerView"/> based on the message type.
-        /// </summary>
-        /// <param name="value">Text to be appended to the view.</param>
-        public void LogError(string value)
-        {
-            _view.Error(value);
-        }
 
         /// <summary>
         /// Shows the <see cref="LoggerView"/>.
@@ -64,5 +59,12 @@ namespace Essay_Analysis_Tool.Controllers
         }
 
         #endregion
+
+        ~LoggerViewController()
+        {
+            _loggingService.InfoAdded -= UpdateView;
+            _loggingService.WarningAdded -= UpdateView;
+            _loggingService.ErrorAdded -= UpdateView;
+        }
     }
 }

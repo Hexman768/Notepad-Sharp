@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Essay_Analysis_Tool.Controllers;
+using Essay_Analysis_Tool.Models;
 
 namespace Essay_Analysis_Tool.Presentation
 {
@@ -38,19 +39,25 @@ namespace Essay_Analysis_Tool.Presentation
 
         #region UI functionality
 
-        public void Warn(string text)
+        public void Add(InfoLogEntry entry)
         {
-            console.AppendText(DateTime.Now + ": " + text, warningStyle);
+            Add(entry, infoStyle);
         }
 
-        public void Info(string text)
+        public void Add(WarnLogEntry entry)
         {
-            console.AppendText(DateTime.Now + ": " + text, infoStyle);
+            Add(entry, warningStyle);
         }
 
-        public void Error(string text)
+        public void Add(ErrorLogEntry entry)
         {
-            console.AppendText(DateTime.Now + ": " + text, errorStyle);
+            Add(entry, errorStyle);
+        }
+
+        private void Add(LogEntry entry, TextStyle style)
+        {
+            // console.AppendText($"{entry.AddedAt}: {entry.Message}", style);
+            console.AppendText(entry.AddedAt + ": " + entry.Message, style);
         }
 
         #endregion

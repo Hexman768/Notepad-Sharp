@@ -67,13 +67,16 @@
     <Compile Include="DAL\DBEngine.cs" />
     <Compile Include="Controllers\LoggerViewController.cs" />
     <Compile Include="Controllers\MainViewController.cs" />
+    <Compile Include="Models\ErrorLogEntry.cs" />
+    <Compile Include="Models\InfoLogEntry.cs" />
+    <Compile Include="Models\LogEntry.cs" />
+    <Compile Include="Models\WarnLogEntry.cs" />
     <Compile Include="Presentation\DiffViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Presentation\DiffViewerForm.Designer.cs">
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoggerMessageTypeEnum.cs" />
     <Compile Include="Presentation\LoggerView.cs">
       <SubType>Form</SubType>
     </Compile>

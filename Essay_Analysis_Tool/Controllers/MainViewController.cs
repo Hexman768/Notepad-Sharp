@@ -1,4 +1,6 @@
 ﻿using Essay_Analysis_Tool.Business;
+using Essay_Analysis_Tool.Models;
+using Essay_Analysis_Tool.Properties;
 using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
 using System;
@@ -40,15 +42,18 @@ namespace Essay_Analysis_Tool.Controllers
 
         //Styles
         private readonly Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
-
+        private readonly LoggerViewController _loggerController;
+        private readonly LoggingService _loggingService;
         private readonly MainView _view;
 
         #endregion
 
         #region Constructor
 
-        public MainViewController()
+        public MainViewController(LoggerViewController loggerController, LoggingService loggingService)
         {
+            _loggerController = loggerController;
+            _loggingService = loggingService;
             _view = new MainView(this);
             _view.DefaultBehavior();
         }
@@ -189,7 +194,7 @@ namespace Essay_Analysis_Tool.Controllers
         {
             if (tb == null)
             {
-                //_view.LogError(Resources.InvalidArgument);
+                _loggingService.Add(new ErrorLogEntry(Resources.InvalidArgument));
                 return;
             }
 
@@ -223,7 +228,12 @@ namespace Essay_Analysis_Tool.Controllers
 
         public void Show()
         {
-            _view.Show();
+            _view.ShowDialog();
+        }
+
+        public void ShowLogs()
+        {
+            _loggerController.Show();
         }
 
         #endregion
