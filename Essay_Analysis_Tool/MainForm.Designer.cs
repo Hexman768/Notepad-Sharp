@@ -74,6 +74,7 @@ namespace Essay_Analysis_Tool
             this.xMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.documentMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.diffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -95,14 +96,10 @@ namespace Essay_Analysis_Tool
             this.findToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.hlCurrentLineToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.tsFiles = new FarsiLibrary.Win.FATabStrip();
-            this.documentMap1 = new FastColoredTextBoxNS.DocumentMap();
-            this.documentMap = new FastColoredTextBoxNS.DocumentMap();
-            this.diffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockpanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tsMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -266,7 +263,7 @@ namespace Essay_Analysis_Tool
             // 
             this.statusBarToolStripMenuItem.CheckOnClick = true;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.statusBarToolStripMenuItem.Text = "Status Bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.StatusBarToolStripMenuItem_Click);
             // 
@@ -283,7 +280,7 @@ namespace Essay_Analysis_Tool
             this.visualBasicToolStripMenuItem,
             this.xMLToolStripMenuItem});
             this.syntaxHighlightingToolStripMenuItem.Name = "syntaxHighlightingToolStripMenuItem";
-            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.syntaxHighlightingToolStripMenuItem.Text = "Syntax Highlighting";
             // 
             // noneToolStripMenuItem
@@ -352,16 +349,23 @@ namespace Essay_Analysis_Tool
             // documentMapToolStripMenuItem
             // 
             this.documentMapToolStripMenuItem.Name = "documentMapToolStripMenuItem";
-            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.documentMapToolStripMenuItem.Text = "Document Map";
             this.documentMapToolStripMenuItem.Click += new System.EventHandler(this.DocumentMapToolStripMenuItem_Click);
             // 
             // loggerToolStripMenuItem
             // 
             this.loggerToolStripMenuItem.Name = "loggerToolStripMenuItem";
-            this.loggerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loggerToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.loggerToolStripMenuItem.Text = "Logger";
             this.loggerToolStripMenuItem.Click += new System.EventHandler(this.LoggerToolStripMenuItem_Click);
+            // 
+            // diffToolStripMenuItem
+            // 
+            this.diffToolStripMenuItem.Name = "diffToolStripMenuItem";
+            this.diffToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.diffToolStripMenuItem.Text = "Diff";
+            this.diffToolStripMenuItem.Click += new System.EventHandler(this.DiffToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -393,7 +397,7 @@ namespace Essay_Analysis_Tool
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(47, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(48, 17);
             this.toolStripStatusLabel1.Text = "Syntax: ";
             // 
             // syntaxLabel
@@ -607,51 +611,17 @@ namespace Essay_Analysis_Tool
             this.hlCurrentLineToolStripButton.ToolTipText = "Highlight Current Line";
             this.hlCurrentLineToolStripButton.Click += new System.EventHandler(this.HlCurrentLineToolStripButton_Click);
             // 
-            // tsFiles
+            // dockpanel
             // 
-            this.tsFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dockpanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.tsFiles.Location = new System.Drawing.Point(12, 60);
-            this.tsFiles.Name = "tsFiles";
-            this.tsFiles.Size = new System.Drawing.Size(915, 486);
-            this.tsFiles.TabIndex = 4;
-            this.tsFiles.Text = "faTabStrip1";
-            this.tsFiles.TabStripItemClosing += new FarsiLibrary.Win.TabStripItemClosingHandler(this.TsFiles_TabStripItemClosing);
-            this.tsFiles.TabStripItemSelectionChanged += new FarsiLibrary.Win.TabStripItemChangedHandler(this.TsFiles_TabStripItemSelectionChanged);
-            this.tsFiles.TabStripItemClosed += new System.EventHandler(this.TsFiles_TabStripItemClosed);
-            // 
-            // documentMap1
-            // 
-            this.documentMap1.ForeColor = System.Drawing.Color.Maroon;
-            this.documentMap1.Location = new System.Drawing.Point(757, 191);
-            this.documentMap1.Name = "documentMap1";
-            this.documentMap1.Size = new System.Drawing.Size(75, 23);
-            this.documentMap1.TabIndex = 0;
-            this.documentMap1.Target = null;
-            this.documentMap1.Text = "documentMap1";
-            // 
-            // documentMap
-            // 
-            this.documentMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.documentMap.BackColor = System.Drawing.SystemColors.Control;
-            this.documentMap.ForeColor = System.Drawing.Color.Maroon;
-            this.documentMap.Location = new System.Drawing.Point(787, 81);
-            this.documentMap.Name = "documentMap";
-            this.documentMap.Size = new System.Drawing.Size(140, 478);
-            this.documentMap.TabIndex = 0;
-            this.documentMap.Target = null;
-            this.documentMap.Text = "documentMap";
-            this.documentMap.Visible = false;
-            // 
-            // diffToolStripMenuItem
-            // 
-            this.diffToolStripMenuItem.Name = "diffToolStripMenuItem";
-            this.diffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.diffToolStripMenuItem.Text = "Diff";
-            this.diffToolStripMenuItem.Click += new System.EventHandler(this.DiffToolStripMenuItem_Click);
+            this.dockpanel.BackColor = System.Drawing.Color.Gray;
+            this.dockpanel.Location = new System.Drawing.Point(0, 54);
+            this.dockpanel.Name = "dockpanel";
+            this.dockpanel.Size = new System.Drawing.Size(939, 517);
+            this.dockpanel.TabIndex = 4;
+            this.dockpanel.ActiveContentChanged += new System.EventHandler(this.dockpanel_ActiveContentChanged);
             // 
             // MainForm
             // 
@@ -659,8 +629,7 @@ namespace Essay_Analysis_Tool
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(939, 571);
-            this.Controls.Add(this.documentMap);
-            this.Controls.Add(this.tsFiles);
+            this.Controls.Add(this.dockpanel);
             this.Controls.Add(this.tsMain);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -676,7 +645,6 @@ namespace Essay_Analysis_Tool
             this.statusStrip1.PerformLayout();
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -721,7 +689,6 @@ namespace Essay_Analysis_Tool
         private System.Windows.Forms.ToolStrip tsMain;
         private System.Windows.Forms.ToolStripButton newToolStripButton;
         private System.Windows.Forms.ToolStripButton openToolStripButton;
-        private FarsiLibrary.Win.FATabStrip tsFiles;
         private System.Windows.Forms.ToolStripButton saveToolStripButton;
         private System.Windows.Forms.ToolStripButton closeToolStripButton;
         private System.Windows.Forms.ToolStripButton closeAllToolStripButton;
@@ -733,14 +700,13 @@ namespace Essay_Analysis_Tool
         private System.Windows.Forms.ToolStripButton zoomInToolStripButton;
         private System.Windows.Forms.ToolStripButton zoomOutToolStripButton;
         private System.Windows.Forms.ToolStripButton findToolStripButton;
-        private FastColoredTextBoxNS.DocumentMap documentMap1;
-        private FastColoredTextBoxNS.DocumentMap documentMap;
         private System.Windows.Forms.ToolStripMenuItem documentMapToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripButton hlCurrentLineToolStripButton;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ToolStripMenuItem loggerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem diffToolStripMenuItem;
+        private WeifenLuo.WinFormsUI.Docking.DockPanel dockpanel;
     }
 }
 
