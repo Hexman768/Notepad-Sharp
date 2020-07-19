@@ -70,7 +70,7 @@ namespace Essay_Analysis_Tool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to v1.0.0.SNAPSHOT.
+        ///   Looks up a localized string similar to v2.0.0.SNAPSHOT.
         /// </summary>
         internal static string ApplicationVersion {
             get {

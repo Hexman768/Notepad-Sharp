@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Changes>
   <body>
-    <release date="${buildTimestamp}" description="" version="1.0.0">
+    <release date="${buildTimestamp}" description="" version="2.0.0">
       <action dev="" issue="" date="" type=""></action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0100" date="07-19-2020" type="add">Implement DockPanel Suite</action>
+    </release>
+    <release date="06-03-2020" description="First Release" version="1.0.0">
       <action dev="Tom PoLáKoSz" issue="ISSUE-0065" date="19-09-2019" type="add">Implement diffmerge feature.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0084" date="09-09-2019" type="fix">Changing language causes CurrentTB changed flag to be set to true.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0082" date="09-09-2019" type="fix">Editor does not recognize .vbs extension.</action>

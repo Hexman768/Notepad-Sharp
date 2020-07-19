@@ -5,7 +5,7 @@ ___
 Notepad# can be cloned into visual studio.
 Once inside visual studio, you can just click the run button and everything shoud build correctly.
 
-![Demo](https://user-images.githubusercontent.com/41409007/62675782-ed109d00-b997-11e9-89e4-c952f77eeb48.png)
+![Demo](https://user-images.githubusercontent.com/41409007/87869785-f2c48000-c967-11ea-83cf-bf988ef5665f.png)
 ___
 # Troubleshooting
 If you are having trouble building Notepad# then try the following:
