@@ -68,6 +68,11 @@ namespace Essay_Analysis_Tool.Windows
 
         public void SetCurrentEditorSyntaxHighlight(string fName)
         {
+            if (!fName.Contains("."))
+            {
+                DetectSyntax("");
+                return;
+            }
             char[] name = fName.ToCharArray();
             string ext = "";
             int token = fName.Length - 1;
@@ -77,6 +82,7 @@ namespace Essay_Analysis_Tool.Windows
                 ext += name[token].ToString();
                 token -= 1;
             }
+
             name = ext.ToCharArray();
             Array.Reverse(name);
             token = 0;
@@ -86,7 +92,26 @@ namespace Essay_Analysis_Tool.Windows
                 ext += name[token].ToString();
                 token += 1;
             }
+            DetectSyntax(ext);
+        }
 
+        /// <summary>
+        /// Changes the language of the given FastColoredTextBox instance
+        /// and clears all styles.
+        /// </summary>
+        /// <param name="tb">FastColoredTextBox</param>
+        /// <param name="language">Language</param>
+        public void ChangeSyntax(Language language)
+        {
+            mainEditor.Range.ClearStyle(StyleIndex.All);
+            mainEditor.Language = language;
+            Range r = new Range(mainEditor);
+            r.SelectAll();
+            mainEditor.OnSyntaxHighlight(new TextChangedEventArgs(r));
+        }
+
+        private void DetectSyntax(string ext)
+        {
             switch (ext)
             {
                 case _html:
@@ -117,21 +142,6 @@ namespace Essay_Analysis_Tool.Windows
                     mainEditor.Language = Language.Custom;
                     break;
             }
-        }
-
-        /// <summary>
-        /// Changes the language of the given FastColoredTextBox instance
-        /// and clears all styles.
-        /// </summary>
-        /// <param name="tb">FastColoredTextBox</param>
-        /// <param name="language">Language</param>
-        public void ChangeSyntax(Language language)
-        {
-            mainEditor.Range.ClearStyle(StyleIndex.All);
-            mainEditor.Language = language;
-            Range r = new Range(mainEditor);
-            r.SelectAll();
-            mainEditor.OnSyntaxHighlight(new TextChangedEventArgs(r));
         }
 
         private SaveFileDialog CreateSaveDialog()

@@ -184,11 +184,7 @@ namespace Essay_Analysis_Tool
         {
             if (tab.Save())
             {
-                string filePath = (string) tab.Tag;
-
-                tab.SetCurrentEditorSyntaxHighlight(filePath);
                 UpdateChangedFlag(false);
-
                 return true;
             }
             return false;
