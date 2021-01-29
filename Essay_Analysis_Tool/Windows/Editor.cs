@@ -18,6 +18,8 @@ namespace Essay_Analysis_Tool.Windows
         private const string _vb = "vb";
         private const string _vbs = "vbs";
 
+        private MainForm _parent;
+
         /// <summary>
         /// Public variable to allow other classes to modify
         /// the title of the <see cref="Editor"/>.
@@ -37,8 +39,9 @@ namespace Essay_Analysis_Tool.Windows
         /// <summary>
         /// Constructs the <see cref="Editor"/>.
         /// </summary>
-        public Editor()
+        public Editor(MainForm parent)
         {
+            _parent = parent;
             InitializeComponent();
         }
 
@@ -159,6 +162,11 @@ namespace Essay_Analysis_Tool.Windows
             + "VBScript file (*.vbs)" + "|*.vbs|"
             + "All files (*.*)" + "|*.*";
             return dialog;
+        }
+
+        private void Editor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _parent.CloseTab(this);
         }
     }
 }

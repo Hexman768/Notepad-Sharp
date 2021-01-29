@@ -56,7 +56,6 @@
             this.mainEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.mainEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.mainEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainEditor.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.mainEditor.IsReplaceMode = false;
             this.mainEditor.Location = new System.Drawing.Point(0, 0);
             this.mainEditor.Name = "mainEditor";
@@ -75,6 +74,7 @@
             this.Controls.Add(this.mainEditor);
             this.Name = "Editor";
             this.Text = "Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Editor_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.mainEditor)).EndInit();
             this.ResumeLayout(false);
 

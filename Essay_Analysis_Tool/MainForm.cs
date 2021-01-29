@@ -120,7 +120,7 @@ namespace Essay_Analysis_Tool
 
         private void CreateTab(string fileName)
         {
-            var tab = new Editor();
+            var tab = new Editor(this);
             tab.mainEditor.Font = font;
             tab.mainEditor.Dock = DockStyle.Fill;
             tab.mainEditor.BorderStyle = BorderStyle.Fixed3D;
@@ -168,16 +168,7 @@ namespace Essay_Analysis_Tool
         private void CloseAllTabs()
         {
             foreach (Editor tab in tablist.ToArray())
-            {
-                EditorClosingEventArgs args = new EditorClosingEventArgs(tab);
-                Editor_TabClosing(args);
-                if (args.Cancel)
-                {
-                    return;
-                }
-                tablist.Remove(tab);
                 tab.Close();
-            }
         }
 
         private bool CallSave(Editor tab)
@@ -265,19 +256,22 @@ namespace Essay_Analysis_Tool
 
         private void CloseToolStripButton_Click(object sender, EventArgs e)
         {
-            //DockContentHandler activeControl = this.dockpanel.ActiveContent.DockHandler;
-            //activeControl.Close();
+            if (CurrentTB != null)
+                CurrentTB.Close();
+        }
+
+        public void CloseTab(Editor tab)
+        {
             if (CurrentTB != null)
             {
-                EditorClosingEventArgs args = new EditorClosingEventArgs(CurrentTB);
+                EditorClosingEventArgs args = new EditorClosingEventArgs(tab);
                 Editor_TabClosing(args);
                 if (args.Cancel)
                 {
                     return;
                 }
-                tablist.Remove(CurrentTB);
-                dockpanel.Controls.Remove(CurrentTB);
-                CurrentTB.Close();
+                tablist.Remove(tab);
+                dockpanel.Controls.Remove(tab);
                 UpdateDocumentMap();
             }
         }
@@ -307,7 +301,6 @@ namespace Essay_Analysis_Tool
         private void CloseAllToolStripButton_Click(object sender, EventArgs e)
         {
             CloseAllTabs();
-            UpdateDocumentMap();
         }
 
         private void CutToolStripButton_Click(object sender, EventArgs e)
