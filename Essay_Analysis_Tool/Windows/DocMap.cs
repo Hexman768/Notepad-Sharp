@@ -16,10 +16,7 @@ namespace Essay_Analysis_Tool.Windows
             }
             set
             {
-                if (value != null)
-                {
-                    documentMap1.Target = value;
-                }
+                documentMap1.Target = value;
             }
         }
 
