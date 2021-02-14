@@ -1,5 +1,6 @@
 ﻿using FastColoredTextBoxNS;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -18,6 +19,15 @@ namespace Essay_Analysis_Tool.Windows
         private const string _vb = "vb";
         private const string _vbs = "vbs";
 
+        private bool _highlightCurrentLine = true;
+
+        //Styles
+        private Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
+
+        //Line Colors
+        internal Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
+        internal Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
+
         private MainForm _parent;
 
         /// <summary>
@@ -26,23 +36,40 @@ namespace Essay_Analysis_Tool.Windows
         /// </summary>
         public string Title
         {
-            get
-            {
-                return this.Text;
-            }
+            get { return this.Text; }
+            set { this.Text = value; }
+        }
+
+        public bool CurrentLineHighlight
+        {
+            get { return _highlightCurrentLine; }
             set
             {
-                this.Text = value;
+                _highlightCurrentLine = value;
+
+                if (!value)
+                {
+                    mainEditor.CurrentLineColor = Color.Transparent;
+                }
+
+                mainEditor.CurrentLineColor = currentLineColor;
             }
         }
 
         /// <summary>
-        /// Constructs the <see cref="Editor"/>.
+        /// Constructs the <see cref="Editor"/> with default settings.
         /// </summary>
-        public Editor(MainForm parent)
+        public Editor(MainForm parent, string filename, Font font)
         {
             _parent = parent;
             InitializeComponent();
+            mainEditor.Font = font;
+            mainEditor.Dock = DockStyle.Fill;
+            mainEditor.BorderStyle = BorderStyle.Fixed3D;
+            mainEditor.LeftPadding = 17;
+            mainEditor.HighlightingRangeType = HighlightingRangeType.VisibleRange;
+            mainEditor.ChangedLineColor = changedLineColor;
+            mainEditor.AddStyle(sameWordsStyle);
         }
 
         /// <summary>
@@ -111,6 +138,20 @@ namespace Essay_Analysis_Tool.Windows
             Range r = new Range(mainEditor);
             r.SelectAll();
             mainEditor.OnSyntaxHighlight(new TextChangedEventArgs(r));
+        }
+
+        /// <summary>
+        /// Calls the open file function in the FCTB instance.
+        /// </summary>
+        /// <param name="fileName">filename</param>
+        public void OpenFile(string fileName)
+        {
+            mainEditor.OpenFile(fileName);
+        }
+
+        public void ClearCurrentLine()
+        {
+            mainEditor.ClearCurrentLine();
         }
 
         private void DetectSyntax(string ext)

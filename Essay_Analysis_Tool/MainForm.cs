@@ -25,10 +25,6 @@ namespace Essay_Analysis_Tool
         internal LoggerForm logger;
         internal DocMap documentMap;
 
-        //Line Colors
-        internal Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
-        internal Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
-
         //General variable declarations and definitions
         private readonly Range _selection;
         private bool _highlightCurrentLine = true;
@@ -120,20 +116,13 @@ namespace Essay_Analysis_Tool
 
         private void CreateTab(string fileName)
         {
-            var tab = new Editor(this);
-            tab.mainEditor.Font = font;
-            tab.mainEditor.Dock = DockStyle.Fill;
-            tab.mainEditor.BorderStyle = BorderStyle.Fixed3D;
-            tab.mainEditor.LeftPadding = 17;
-            tab.mainEditor.HighlightingRangeType = HighlightingRangeType.VisibleRange;
+            var tab = new Editor(this, fileName, font);
             tab.Tag = fileName;
-
-            tab.mainEditor.AddStyle(sameWordsStyle);
 
             if (fileName != null && !IsFileAlreadyOpen(fileName))
             {
                 tab.SetCurrentEditorSyntaxHighlight(fileName);
-                tab.mainEditor.OpenFile(fileName);
+                tab.OpenFile(fileName);
             }
             else if (fileName != null)
             {
@@ -143,7 +132,6 @@ namespace Essay_Analysis_Tool
             tab.Title = fileName != null ? Path.GetFileName(fileName) : "new " + tablist.Count;
 
             tab.mainEditor.Focus();
-            tab.mainEditor.ChangedLineColor = changedLineColor;
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             tab.Show(this.dockpanel, DockState.Document);
@@ -185,14 +173,7 @@ namespace Essay_Analysis_Tool
         {
             foreach (Editor tab in tablist.ToArray())
             {
-                if (_highlightCurrentLine)
-                {
-                    tab.mainEditor.CurrentLineColor = currentLineColor;
-                }
-                else
-                {
-                    tab.mainEditor.CurrentLineColor = Color.Transparent;
-                }
+                tab.CurrentLineHighlight = tab.CurrentLineHighlight ? false : true;
             }
             if (CurrentTB != null)
             {
@@ -203,9 +184,7 @@ namespace Essay_Analysis_Tool
         private void ChangeFont(Font font)
         {
             foreach (Editor tab in tablist)
-            {
                 tab.mainEditor.Font = font;
-            }
         }
 
         #endregion
@@ -293,9 +272,7 @@ namespace Essay_Analysis_Tool
         private void SaveToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CallSave(CurrentTB);
-            }
         }
 
         private void CloseAllToolStripButton_Click(object sender, EventArgs e)
@@ -306,65 +283,49 @@ namespace Essay_Analysis_Tool
         private void CutToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.Cut();
-            }
         }
 
         private void PasteToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.Paste();
-            }
         }
 
         private void CopyToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.Copy();
-            }
         }
 
         private void UndoToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.Undo();
-            }
         }
 
         private void RedoToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.Redo();
-            }
         }
 
         private void ZoomInToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.ChangeFontSize(2);
-            }
         }
 
         private void ZoomOutToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.ChangeFontSize(-2);
-            }
         }
 
         private void FindToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.ShowFindDialog();
-            }
         }
 
         private void DocumentMapToolStripMenuItem_Click(object sender, EventArgs e)
@@ -378,9 +339,7 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "C#";
 
             if (CurrentTB != null)
-            {
                 CurrentTB.ChangeSyntax(Language.CSharp);
-            }
         }
 
         private void NoneToolStripMenuItem_Click(object sender, EventArgs e)
@@ -388,9 +347,7 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "None";
 
             if (CurrentTB != null)
-            {
                 CurrentTB.ChangeSyntax(Language.Custom);
-            }
         }
 
         private void HTMLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -398,9 +355,7 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "HTML";
 
             if (CurrentTB != null)
-            {
                 CurrentTB.ChangeSyntax(Language.HTML);
-            }
         }
 
         private void JavaScriptToolStripMenuItem_Click(object sender, EventArgs e)
@@ -408,9 +363,7 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "JavaScript";
 
             if (CurrentTB != null)
-            {
                 CurrentTB.ChangeSyntax(Language.JS);
-            }
         }
 
         private void LuaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -418,9 +371,7 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "Lua";
 
             if (CurrentTB != null)
-            {
                 CurrentTB.ChangeSyntax(Language.Lua);
-            }
         }
 
         private void PHPToolStripMenuItem_Click(object sender, EventArgs e)
@@ -428,9 +379,7 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "PHP";
 
             if (CurrentTB != null)
-            {
                 CurrentTB.ChangeSyntax(Language.PHP);
-            }
         }
 
         private void SQLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -438,9 +387,7 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "SQL";
 
             if (CurrentTB != null)
-            {
                 CurrentTB.ChangeSyntax(Language.SQL);
-            }
         }
 
         private void VisualBasicToolStripMenuItem_Click(object sender, EventArgs e)
@@ -448,9 +395,7 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "Visual Basic";
 
             if (CurrentTB != null)
-            {
                 CurrentTB.ChangeSyntax(Language.VB);
-            }
         }
 
         private void XMLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -458,21 +403,15 @@ namespace Essay_Analysis_Tool
             syntaxLabel.Text = "XML";
 
             if (CurrentTB != null)
-            {
                 CurrentTB.ChangeSyntax(Language.XML);
-            }
         }
 
         private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (statusBarToolStripMenuItem.Checked)
-            {
                 statusStrip1.Show();
-            }
             else
-            {
                 statusStrip1.Hide();
-            }
         }
 
         private void RefreshToolStripButton_Click(object sender, EventArgs e)
@@ -496,17 +435,13 @@ namespace Essay_Analysis_Tool
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (file_open.ShowDialog() == DialogResult.OK)
-            {
                 CreateTab(file_open.FileName);
-            }
         }
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CallSave(CurrentTB);
-            }
         }
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -534,41 +469,31 @@ namespace Essay_Analysis_Tool
         private void ReplaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.ShowReplaceDialog();
-            }
         }
 
         private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.Copy();
-            }
         }
 
         private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.Redo();
-            }
         }
 
         private void CutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.Cut();
-            }
         }
 
         private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
-            {
                 CurrentTB.mainEditor.Paste();
-            }
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -595,31 +520,21 @@ namespace Essay_Analysis_Tool
                 if (e.Control && e.KeyCode == Keys.O)
                 {
                     if (file_open.ShowDialog() == DialogResult.OK)
-                    {
                         CreateTab(file_open.FileName);
-                    }
                 }
                 else if (e.KeyCode == Keys.S && e.Modifiers == Keys.Control)
                 {
                     if (CurrentTB != null)
-                    {
                         CallSave(CurrentTB);
-                    }
                 }
                 else if (e.Control && e.Shift && e.KeyCode == Keys.L)
-                {
-                    CurrentTB.mainEditor.ClearCurrentLine();
-                }
+                    CurrentTB.ClearCurrentLine();
                 else if (e.Control && e.Shift && e.KeyCode == Keys.Oem2 && CurrentTB.mainEditor.CommentPrefix != null)
                 {
                     if (!CurrentTB.mainEditor.SelectedText.Contains(CurrentTB.mainEditor.CommentPrefix))
-                    {
                         CurrentTB.mainEditor.InsertLinePrefix(CurrentTB.mainEditor.CommentPrefix);
-                    }
                     else
-                    {
                         CurrentTB.mainEditor.RemoveLinePrefix(CurrentTB.mainEditor.CommentPrefix);
-                    }
                 }
             }
         }
@@ -659,9 +574,7 @@ namespace Essay_Analysis_Tool
                 {
                     case DialogResult.Yes:
                         if (!CallSave(e.Item))
-                        {
                             e.Cancel = true;
-                        }
                         break;
                     case DialogResult.Cancel:
                         e.Cancel = true;
