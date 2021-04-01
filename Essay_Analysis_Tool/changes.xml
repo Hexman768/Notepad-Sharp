@@ -3,6 +3,7 @@
   <body>
     <release date="${buildTimestamp}" description="" version="2.0.0">
       <action dev="" issue="" date="" type=""></action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0108" date="04-01-2021" type="fix">Fixed font change crashing application.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0104" date="01-28-2021" type="fix">Fixed issues with closing tabs via x button.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0103" date="08-23-2020" type="fix">Fixed IndexOutOfRangeException when opening files with no extension.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0100" date="07-19-2020" type="add">Implement DockPanel Suite.</action>

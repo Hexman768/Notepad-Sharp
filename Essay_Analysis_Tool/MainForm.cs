@@ -202,6 +202,10 @@ namespace Essay_Analysis_Tool
 
         private void ChangeFont(Font font)
         {
+            if (font.Size <= 4)
+                return;
+
+            this.font = font;
             foreach (Editor tab in tablist)
             {
                 tab.mainEditor.Font = font;
@@ -345,18 +349,12 @@ namespace Essay_Analysis_Tool
 
         private void ZoomInToolStripButton_Click(object sender, EventArgs e)
         {
-            if (CurrentTB != null)
-            {
-                CurrentTB.mainEditor.ChangeFontSize(2);
-            }
+            ChangeFont(new Font(font.Name, font.Size + 2));
         }
 
         private void ZoomOutToolStripButton_Click(object sender, EventArgs e)
         {
-            if (CurrentTB != null)
-            {
-                CurrentTB.mainEditor.ChangeFontSize(-2);
-            }
+            ChangeFont(new Font(font.Name, font.Size - 2));
         }
 
         private void FindToolStripButton_Click(object sender, EventArgs e)
