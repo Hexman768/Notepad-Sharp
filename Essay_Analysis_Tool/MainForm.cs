@@ -146,6 +146,7 @@ namespace Essay_Analysis_Tool
             tab.mainEditor.ChangedLineColor = changedLineColor;
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
+            tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);
             tab.Show(this.dockpanel, DockState.Document);
             tablist.Add(tab);
             UpdateDocumentMap();
@@ -582,6 +583,30 @@ namespace Essay_Analysis_Tool
             logger.Show();
         }
 
+        private void CutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+                CurrentTB.mainEditor.Cut();
+        }
+
+        private void CopyToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+                CurrentTB.mainEditor.Copy();
+        }
+
+        private void PasteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+                CurrentTB.mainEditor.Paste();
+        }
+
+        private void SelectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+                CurrentTB.mainEditor.SelectAll();
+        }
+
         #endregion
 
         #region Event Handlers
@@ -702,6 +727,14 @@ namespace Essay_Analysis_Tool
                 new DiffViewerForm(filePaths[0], filePaths[1]).Show();
             else
                 new DiffViewerForm().Show();
+        }
+
+        private void MainForm_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                contextMenuStrip1.Show(this, new Point(e.X, e.Y));
+            }
         }
 
         #endregion
