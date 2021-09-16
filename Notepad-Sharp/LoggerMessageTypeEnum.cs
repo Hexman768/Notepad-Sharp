@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Essay_Analysis_Tool
+namespace NotepadSharp
 {
     public enum LoggerMessageType
     {

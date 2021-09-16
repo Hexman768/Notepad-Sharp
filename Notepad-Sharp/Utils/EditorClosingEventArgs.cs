@@ -1,7 +1,7 @@
-﻿using Essay_Analysis_Tool.Windows;
+﻿using NotepadSharp.Windows;
 using System;
 
-namespace Essay_Analysis_Tool.Utils
+namespace NotepadSharp.Utils
 {
     public class EditorClosingEventArgs : EventArgs
     {

@@ -5,10 +5,10 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using Essay_Analysis_Tool.DiffMergeStuffs;
+using NotepadSharp.DiffMergeStuffs;
 using FastColoredTextBoxNS;
 
-namespace Essay_Analysis_Tool
+namespace NotepadSharp
 {
     public partial class DiffViewerForm : Form
     {

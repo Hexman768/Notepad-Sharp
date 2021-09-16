@@ -1,6 +1,6 @@
-using Essay_Analysis_Tool.Properties;
-using Essay_Analysis_Tool.Utils;
-using Essay_Analysis_Tool.Windows;
+using NotepadSharp.Properties;
+using NotepadSharp.Utils;
+using NotepadSharp.Windows;
 using FastColoredTextBoxNS;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace Essay_Analysis_Tool
+namespace NotepadSharp
 {
     /// <summary>
     /// Defines the <see cref="MainForm" />
