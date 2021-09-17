@@ -10,7 +10,7 @@
 //
 //  Copyright (C) Zachary Pedigo, 2019.
 
-namespace Essay_Analysis_Tool
+namespace NotepadSharp
 {
     partial class MainForm
     {

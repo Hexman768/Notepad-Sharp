@@ -1,4 +1,4 @@
-﻿namespace Essay_Analysis_Tool.Windows
+﻿namespace NotepadSharp.Windows
 {
     partial class DocMap
     {

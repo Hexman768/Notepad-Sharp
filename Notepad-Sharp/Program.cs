@@ -13,7 +13,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Essay_Analysis_Tool
+namespace NotepadSharp
 {
     static class Program
     {

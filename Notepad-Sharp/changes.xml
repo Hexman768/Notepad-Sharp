@@ -3,6 +3,7 @@
   <body>
     <release date="${buildTimestamp}" description="" version="2.0.0">
       <action dev="" issue="" date="" type=""></action>
+      <action dev="Zachary Pedigo" issue="ISSUE-0111" date="09-16-2021" type="fix">Fixed file names associated with early development.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0099" date="05-24-2021" type="add">Added right click menu.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0108" date="04-01-2021" type="fix">Fixed font change crashing application.</action>
       <action dev="Zachary Pedigo" issue="ISSUE-0104" date="01-28-2021" type="fix">Fixed issues with closing tabs via x button.</action>

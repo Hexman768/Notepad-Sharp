@@ -1,4 +1,4 @@
-﻿namespace Essay_Analysis_Tool
+﻿namespace NotepadSharp
 {
     partial class DiffViewerForm
     {

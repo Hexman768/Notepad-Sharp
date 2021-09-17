@@ -1,7 +1,7 @@
 ﻿using FastColoredTextBoxNS;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace Essay_Analysis_Tool.Windows
+namespace NotepadSharp.Windows
 {
     public partial class DocMap : DockContent
     {
