@@ -8,7 +8,7 @@
         <img src="https://img.shields.io/badge/version-1.0.0-ff69b4" />
     </a>
     <a href="https://github.com/Hexman768/Notepad-Sharp/issues?q=is%3Aopen" target="_blank">
-        <img src="https://img.shields.io/badge/open%20issues-12-yellow" />
+        <img src="https://img.shields.io/badge/open%20issues-13-yellow" />
     </a>
     <a href="https://github.com/Hexman768/Notepad-Sharp/contributors" target="_blank">
         <img src="https://img.shields.io/badge/contributers-2-brightgreen" />
