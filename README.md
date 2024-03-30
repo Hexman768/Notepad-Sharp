@@ -8,13 +8,13 @@
         <img src="https://img.shields.io/badge/version-1.0.0-ff69b4" />
     </a>
     <a href="https://github.com/Hexman768/Notepad-Sharp/issues?q=is%3Aopen" target="_blank">
-        <img src="https://img.shields.io/badge/open%20issues-13-yellow" />
+        <img src="https://img.shields.io/github/issues/Hexman768/Notepad-Sharp" />
     </a>
     <a href="https://github.com/Hexman768/Notepad-Sharp/contributors" target="_blank">
-        <img src="https://img.shields.io/badge/contributers-2-brightgreen" />
+        <img src="https://img.shields.io/github/contributors/Hexman768/Notepad-Sharp?color=green" />
     </a>
     <a href="https://github.com/Hexman768/Notepad-Sharp/blob/master/LICENSE" target="_blank">
-        <img src="https://img.shields.io/badge/license-GNU--v3.0-orange" />
+        <img src="https://img.shields.io/github/license/Hexman768/Notepad-Sharp" />
     </a>
 </div>
 
