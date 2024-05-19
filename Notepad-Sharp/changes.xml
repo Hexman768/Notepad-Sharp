@@ -2,56 +2,56 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="2.0.0">
-      <action dev="" issue="" date="" type=""></action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0111" date="09-16-2021" type="fix">Fixed file names associated with early development.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0099" date="05-24-2021" type="add">Added right click menu.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0108" date="04-01-2021" type="fix">Fixed font change crashing application.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0104" date="01-28-2021" type="fix">Fixed issues with closing tabs via x button.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0103" date="08-23-2020" type="fix">Fixed IndexOutOfRangeException when opening files with no extension.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0100" date="07-19-2020" type="add">Implement DockPanel Suite.</action>
+      <action dev="Zachary Pedigo" issue="121" date="05-19-2024" type="fix">Uplifted project to .NET 4.8.</action>
+      <action dev="Zachary Pedigo" issue="111" date="09-16-2021" type="fix">Fixed file names associated with early development.</action>
+      <action dev="Zachary Pedigo" issue="99" date="05-24-2021" type="add">Added right click menu.</action>
+      <action dev="Zachary Pedigo" issue="108" date="04-01-2021" type="fix">Fixed font change crashing application.</action>
+      <action dev="Zachary Pedigo" issue="104" date="01-28-2021" type="fix">Fixed issues with closing tabs via x button.</action>
+      <action dev="Zachary Pedigo" issue="103" date="08-23-2020" type="fix">Fixed IndexOutOfRangeException when opening files with no extension.</action>
+      <action dev="Zachary Pedigo" issue="100" date="07-19-2020" type="add">Implement DockPanel Suite.</action>
     </release>
     <release date="06-03-2020" description="First Release" version="1.0.0">
-      <action dev="Tom PoLáKoSz" issue="ISSUE-0065" date="19-09-2019" type="add">Implement diffmerge feature.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0084" date="09-09-2019" type="fix">Changing language causes CurrentTB changed flag to be set to true.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0082" date="09-09-2019" type="fix">Editor does not recognize .vbs extension.</action>
-      <action dev="Tom PoLáKoSz" issue="ISSUE-0089" date="08-29-2019" type="fix">App crashes when clicking File/Open submenu after fresh start.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0087" date="08-26-2019" type="fix">Duplicate files can be opened several times.</action>
-      <action dev="Tom PoLáKoSz" issue="ISSUE-0081" date="08-21-2019" type="fix">Current editor language does not change on save.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0076" date="08-12-2019" type="add">Implement the ability to comment selected lines.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0073" date="08-11-2019" type="fix">Remove Batch file and Java support.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0063" date="08-11-2019" type="add">Save file button should be dithered while data is clean.</action>
+      <action dev="Tom PoLáKoSz" issue="65" date="19-09-2019" type="add">Implement diffmerge feature.</action>
+      <action dev="Zachary Pedigo" issue="84" date="09-09-2019" type="fix">Changing language causes CurrentTB changed flag to be set to true.</action>
+      <action dev="Zachary Pedigo" issue="82" date="09-09-2019" type="fix">Editor does not recognize .vbs extension.</action>
+      <action dev="Tom PoLáKoSz" issue="89" date="08-29-2019" type="fix">App crashes when clicking File/Open submenu after fresh start.</action>
+      <action dev="Zachary Pedigo" issue="87" date="08-26-2019" type="fix">Duplicate files can be opened several times.</action>
+      <action dev="Tom PoLáKoSz" issue="81" date="08-21-2019" type="fix">Current editor language does not change on save.</action>
+      <action dev="Zachary Pedigo" issue="76" date="08-12-2019" type="add">Implement the ability to comment selected lines.</action>
+      <action dev="Zachary Pedigo" issue="73" date="08-11-2019" type="fix">Remove Batch file and Java support.</action>
+      <action dev="Zachary Pedigo" issue="63" date="08-11-2019" type="add">Save file button should be dithered while data is clean.</action>
       <action dev="Zachary Pedigo" issue="N/A" date="08-04-2019" type="fix">Minor UI Improvements and Bug Fixes.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0064" date="08-03-2019" type="fix">Tab list should always contain at least one tab.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0067" date="08-03-2019" type="add">Added logger system to application and updated FastColoredTextBox.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0062" date="07-22-2019" type="add">Missing some Shortcuts.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0061" date="07-22-2019" type="add">Added about page.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0008" date="05-13-2019" type="fix">ISSUE-0008: Adding source code files to save file dialog.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0043" date="04-06-2019" type="add">ISSUE-0043: Enhanced Java Support.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0054" date="03-21-2019" type="fix">ISSUE-0054: Fixed editor starting with syntax highlighting set to batch.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0052" date="03-20-2019" type="fix">ISSUE-0052: Fixed DocumentMap UI Issue.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0039" date="03-20-2019" type="add">Added refresh button icon and main editor icon.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0039" date="03-17-2019" type="add">Added refresh button to tool strip.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0046" date="03-16-2019" type="fix">Fixed Using "X" button on tabstrip causes documentmap to retain image.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0044" date="03-16-2019" type="fix">Fixed files opening when changing syntax.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0038" date="03-15-2019" type="add">Added support for batch file syntax highlighting.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0036" date="03-06-2019" type="fix">Fixed: Plain text files being loaded with wrong syntax after pasting.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0031" date="03-04-2019" type="add">Added a document map.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0032" date="03-04-2019" type="add">Adding hotkeys for basic functionality.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0015" date="02-26-2019" type="add">Implemented code and removed unneeded code to implement existing features.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0028" date="02-18-2019" type="add">Added font dialog (only supports monospaced fonts).</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0022" date="02-15-2019" type="fix">Fixing automatic resizing of editor.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0011" date="02-15-2019" type="fix">Fixing syntax detection upon opening a file.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0020" date="02-07-2019" type="fix">Resolved #20.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0009" date="02-06-2019" type="fix">Resolved #9.</action>
-      <action dev="Zachary Pedigo" issue="REVERT-ISSUE-0009" date="02-06-2019" type="fix">REVERT: Resolves #11.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0009" date="02-06-2019" type="fix">Resolves #11.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0003-0013" date="02-07-2019" type="fix">Resolves #3 and #13.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0010" date="02-04-2019" type="fix">Resolves #10.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0006" date="02-03-2019" type="fix">Resolves #6 and Reformatting all some documentation.</action>
-      <action dev="Zachary Pedigo" issue="FUNCTION-0002" date="02-01-2019" type="fix">Adding syntax highlighting using FastColoredTextBox and Resolving #4.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0002" date="01-28-2019" type="fix">Resolved #2.</action>
-      <action dev="Zachary Pedigo" issue="ISSUE-0001" date="01-26-2019" type="fix">Resolved #1.</action>
-      <action dev="Zachary Pedigo" issue="FUNCTION-0001" date="01-26-2019" type="add">Adding find function and Enhancing save functions.</action>
+      <action dev="Zachary Pedigo" issue="64" date="08-03-2019" type="fix">Tab list should always contain at least one tab.</action>
+      <action dev="Zachary Pedigo" issue="67" date="08-03-2019" type="add">Added logger system to application and updated FastColoredTextBox.</action>
+      <action dev="Zachary Pedigo" issue="62" date="07-22-2019" type="add">Missing some Shortcuts.</action>
+      <action dev="Zachary Pedigo" issue="61" date="07-22-2019" type="add">Added about page.</action>
+      <action dev="Zachary Pedigo" issue="8" date="05-13-2019" type="fix">ISSUE-0008: Adding source code files to save file dialog.</action>
+      <action dev="Zachary Pedigo" issue="43" date="04-06-2019" type="add">ISSUE-0043: Enhanced Java Support.</action>
+      <action dev="Zachary Pedigo" issue="54" date="03-21-2019" type="fix">ISSUE-0054: Fixed editor starting with syntax highlighting set to batch.</action>
+      <action dev="Zachary Pedigo" issue="52" date="03-20-2019" type="fix">ISSUE-0052: Fixed DocumentMap UI Issue.</action>
+      <action dev="Zachary Pedigo" issue="39" date="03-20-2019" type="add">Added refresh button icon and main editor icon.</action>
+      <action dev="Zachary Pedigo" issue="39" date="03-17-2019" type="add">Added refresh button to tool strip.</action>
+      <action dev="Zachary Pedigo" issue="46" date="03-16-2019" type="fix">Fixed Using "X" button on tabstrip causes documentmap to retain image.</action>
+      <action dev="Zachary Pedigo" issue="44" date="03-16-2019" type="fix">Fixed files opening when changing syntax.</action>
+      <action dev="Zachary Pedigo" issue="38" date="03-15-2019" type="add">Added support for batch file syntax highlighting.</action>
+      <action dev="Zachary Pedigo" issue="36" date="03-06-2019" type="fix">Fixed: Plain text files being loaded with wrong syntax after pasting.</action>
+      <action dev="Zachary Pedigo" issue="31" date="03-04-2019" type="add">Added a document map.</action>
+      <action dev="Zachary Pedigo" issue="32" date="03-04-2019" type="add">Adding hotkeys for basic functionality.</action>
+      <action dev="Zachary Pedigo" issue="15" date="02-26-2019" type="add">Implemented code and removed unneeded code to implement existing features.</action>
+      <action dev="Zachary Pedigo" issue="28" date="02-18-2019" type="add">Added font dialog (only supports monospaced fonts).</action>
+      <action dev="Zachary Pedigo" issue="22" date="02-15-2019" type="fix">Fixing automatic resizing of editor.</action>
+      <action dev="Zachary Pedigo" issue="11" date="02-15-2019" type="fix">Fixing syntax detection upon opening a file.</action>
+      <action dev="Zachary Pedigo" issue="20" date="02-07-2019" type="fix">Resolved #20.</action>
+      <action dev="Zachary Pedigo" issue="9" date="02-06-2019" type="fix">Resolved #9.</action>
+      <action dev="Zachary Pedigo" issue="9" date="02-06-2019" type="fix">REVERT: Resolves #11.</action>
+      <action dev="Zachary Pedigo" issue="9" date="02-06-2019" type="fix">Resolves #11.</action>
+      <action dev="Zachary Pedigo" issue="3,13" date="02-07-2019" type="fix">Resolves #3 and #13.</action>
+      <action dev="Zachary Pedigo" issue="10" date="02-04-2019" type="fix">Resolves #10.</action>
+      <action dev="Zachary Pedigo" issue="6" date="02-03-2019" type="fix">Resolves #6 and Reformatting all some documentation.</action>
+      <action dev="Zachary Pedigo" issue="2" date="02-01-2019" type="fix">Adding syntax highlighting using FastColoredTextBox and Resolving #4.</action>
+      <action dev="Zachary Pedigo" issue="2" date="01-28-2019" type="fix">Resolved #2.</action>
+      <action dev="Zachary Pedigo" issue="1" date="01-26-2019" type="fix">Resolved #1.</action>
+      <action dev="Zachary Pedigo" issue="1" date="01-26-2019" type="add">Adding find function and Enhancing save functions.</action>
     </release>
   </body>
 </Changes>

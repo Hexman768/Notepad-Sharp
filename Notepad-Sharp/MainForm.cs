@@ -288,7 +288,7 @@ namespace NotepadSharp
                 fontDialog = new FontDialog();
                 fontDialog.Font = font;
             }
-            if (CurrentTB != null && fontDialog.ShowDialog() == DialogResult.OK)
+            if (fontDialog.ShowDialog() == DialogResult.OK)
             {
                 ChangeFont(fontDialog.Font);
                 font = fontDialog.Font;
