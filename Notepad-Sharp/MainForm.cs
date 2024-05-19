@@ -50,13 +50,7 @@ namespace NotepadSharp
         {
             get
             {
-                Form activeMdi = ActiveMdiChild;
-
-                if (activeMdi != null && activeMdi is Editor)
-                {
-                    return activeMdi as Editor;
-                }
-                return null;
+                return this.dockpanel.ActiveContent as Editor;
             }
         }
 
