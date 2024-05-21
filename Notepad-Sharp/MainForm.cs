@@ -471,10 +471,12 @@ namespace NotepadSharp
             if (statusBarToolStripMenuItem.Checked)
             {
                 statusStrip1.Show();
+                this.dockpanel.Height -= statusStrip1.Height;
             }
             else
             {
                 statusStrip1.Hide();
+                this.dockpanel.Height += statusStrip1.Height;
             }
         }
 
