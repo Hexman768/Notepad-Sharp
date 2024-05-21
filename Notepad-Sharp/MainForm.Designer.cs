@@ -398,13 +398,11 @@ namespace NotepadSharp
             this.statusStrip1.Size = new System.Drawing.Size(939, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
-            this.statusStrip1.Visible = false;
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(48, 17);
-            this.toolStripStatusLabel1.Text = "Syntax: ";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             // 
             // syntaxLabel
             // 
@@ -625,7 +623,7 @@ namespace NotepadSharp
             this.dockpanel.BackColor = System.Drawing.Color.Gray;
             this.dockpanel.Location = new System.Drawing.Point(0, 54);
             this.dockpanel.Name = "dockpanel";
-            this.dockpanel.Size = new System.Drawing.Size(939, 517);
+            this.dockpanel.Size = new System.Drawing.Size(939, 492);
             this.dockpanel.TabIndex = 4;
             this.dockpanel.ActiveContentChanged += new System.EventHandler(this.dockpanel_ActiveContentChanged);
             // 
