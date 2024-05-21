@@ -1,5 +1,5 @@
 ﻿using FastColoredTextBoxNS;
-using System;
+using NotepadSharp.Utils;
 using System.IO;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -8,17 +8,8 @@ namespace NotepadSharp.Windows
 {
     public partial class Editor : DockContent
     {
-        //file extensions
-        private const string _html = "html";
-        private const string _xml = "xml";
-        private const string _javascript = "js";
-        private const string _csharp = "cs";
-        private const string _lua = "lua";
-        private const string _sql = "sql";
-        private const string _vb = "vb";
-        private const string _vbs = "vbs";
-
         private MainForm _parent;
+        private string _syntaxLabelText;
 
         /// <summary>
         /// Public variable to allow other classes to modify
@@ -33,6 +24,18 @@ namespace NotepadSharp.Windows
             set
             {
                 this.Text = value;
+            }
+        }
+
+        public string SyntaxText
+        {
+            get
+            {
+                return _syntaxLabelText;
+            }
+            set
+            {
+                this._syntaxLabelText = value ?? this._syntaxLabelText;
             }
         }
 
@@ -53,7 +56,7 @@ namespace NotepadSharp.Windows
         {
             if (Tag == null)
             {
-                SaveFileDialog sfdMain = CreateSaveDialog();
+                SaveFileDialog sfdMain = Utility.CreateSaveDialog();
                 if (sfdMain.ShowDialog() != DialogResult.OK)
                 {
                     return false;
@@ -62,40 +65,11 @@ namespace NotepadSharp.Windows
                 Tag = sfdMain.FileName;
             }
 
-            string filePath = (string) Tag;
+            string filePath = (string)Tag;
 
             File.WriteAllText(filePath, mainEditor.Text);
-            
+
             return true;
-        }
-
-        public void SetCurrentEditorSyntaxHighlight(string fName)
-        {
-            if (!fName.Contains("."))
-            {
-                DetectSyntax("");
-                return;
-            }
-            char[] name = fName.ToCharArray();
-            string ext = "";
-            int token = fName.Length - 1;
-
-            while (name[token] != '.')
-            {
-                ext += name[token].ToString();
-                token -= 1;
-            }
-
-            name = ext.ToCharArray();
-            Array.Reverse(name);
-            token = 0;
-            ext = "";
-            while (token < name.Length)
-            {
-                ext += name[token].ToString();
-                token += 1;
-            }
-            DetectSyntax(ext);
         }
 
         /// <summary>
@@ -113,55 +87,67 @@ namespace NotepadSharp.Windows
             mainEditor.OnSyntaxHighlight(new TextChangedEventArgs(r));
         }
 
-        private void DetectSyntax(string ext)
+        /// <summary>
+        /// This method detects the language to be used in the given instance of <see cref="Editor"/> 
+        /// by the file extension.
+        /// </summary>
+        /// <param name="ext">File Extension</param>
+        /// <param name="tab">Tab to Update</param>
+        public void DetectSyntax(string ext, Editor tab)
         {
             switch (ext)
             {
-                case _html:
-                    ChangeSyntax(Language.HTML);
+                case GlobalConstants.HTML_EXT:
+                    tab.ChangeSyntax(Language.HTML);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_HTML;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_HTML;
                     break;
-                case _xml:
-                    ChangeSyntax(Language.XML);
+                case GlobalConstants.XML_EXT:
+                    tab.ChangeSyntax(Language.XML);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_XML;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_XML;
                     break;
-                case _javascript:
-                    ChangeSyntax(Language.JS);
+                case GlobalConstants.JS_EXT:
+                    tab.ChangeSyntax(Language.JS);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_JS;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_JS;
                     break;
-                case _lua:
-                    ChangeSyntax(Language.Lua);
+                case GlobalConstants.LUA_EXT:
+                    tab.ChangeSyntax(Language.Lua);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_LUA;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_LUA;
                     break;
-                case _csharp:
-                    ChangeSyntax(Language.CSharp);
+                case GlobalConstants.CS_EXT:
+                    tab.ChangeSyntax(Language.CSharp);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_CS;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_CS;
                     break;
-                case _sql:
-                    ChangeSyntax(Language.SQL);
+                case GlobalConstants.SQL_EXT:
+                    tab.ChangeSyntax(Language.SQL);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_SQL;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_SQL;
                     break;
-                case _vb:
-                    ChangeSyntax(Language.VB);
+                case GlobalConstants.VB_EXT:
+                    tab.ChangeSyntax(Language.VB);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_VB;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_VB;
                     break;
-                case _vbs:
-                    ChangeSyntax(Language.VB);
+                case GlobalConstants.VBS_EXT:
+                    tab.ChangeSyntax(Language.VB);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_VBS;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_VBS;
+                    break;
+                case GlobalConstants.PHP_EXT:
+                    tab.ChangeSyntax(Language.PHP);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_PHP;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_PHP;
                     break;
                 default:
-                    mainEditor.Language = Language.Custom;
+                    tab.ChangeSyntax(Language.Custom);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_TXT;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_TXT;
                     break;
             }
-        }
-
-        private SaveFileDialog CreateSaveDialog()
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "Normal text file (*.txt)|*.txt|"
-            + "C# source file (*.cs)" + "|*.cs|"
-            + "Hyper Text Markup Language File (*.html)" + "|*.html|"
-            + "Javascript source file (*.js)" + "|*.js|"
-            + "JSON file (*.json)" + "|*.json|"
-            + "Lua source file (*.lua)" + "|*.lua|"
-            + "PHP file (*.php)" + "|*.php|"
-            + "Structured Query Language file (*.sql)" + "|*.sql|"
-            + "Visual Basic file (*.vb)" + "|*.vb|"
-            + "VBScript file (*.vbs)" + "|*.vbs|"
-            + "All files (*.*)" + "|*.*";
-            return dialog;
         }
 
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)

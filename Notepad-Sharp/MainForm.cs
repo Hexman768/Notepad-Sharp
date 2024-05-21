@@ -75,6 +75,24 @@ namespace NotepadSharp
             }
         }
 
+        /// <summary>
+        /// Public variable to update the <see cref="syntaxLabel"/> text.
+        /// </summary>
+        public string SyntaxStatusBarLabelText
+        {
+            get
+            {
+                return syntaxLabel.Text;
+            }
+            set
+            {
+                if (null != value && "" != value)
+                {
+                    syntaxLabel.Text = value;
+                }
+            }
+        }
+
         AutocompleteMenu popupMenu;
         string[] keywords = { "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "add", "alias", "ascending", "descending", "dynamic", "from", "get", "global", "group", "into", "join", "let", "orderby", "partial", "remove", "select", "set", "value", "var", "where", "yield" };
         string[] methods = { "Equals()", "GetHashCode()", "GetType()", "ToString()" };
@@ -114,6 +132,11 @@ namespace NotepadSharp
 
         private void CreateTab(string fileName)
         {
+            if (IsFileAlreadyOpen(fileName))
+            {
+                return;
+            }
+
             var tab = new Editor(this);
             tab.mainEditor.Font = font;
             tab.mainEditor.Dock = DockStyle.Fill;
@@ -124,18 +147,18 @@ namespace NotepadSharp
 
             tab.mainEditor.AddStyle(sameWordsStyle);
 
-            if (fileName != null && !IsFileAlreadyOpen(fileName))
+            if (null == fileName)
             {
-                tab.SetCurrentEditorSyntaxHighlight(fileName);
-                tab.mainEditor.OpenFile(fileName);
+                tab.DetectSyntax("", tab);
             }
-            else if (fileName != null)
+            else
             {
-                return;
+                string ext = fileName != null ? Utility.GetExtension(fileName) : "";
+                tab.DetectSyntax(ext, tab);
+                tab.mainEditor.OpenFile(fileName);
             }
 
             tab.Title = fileName != null ? Path.GetFileName(fileName) : "new " + tablist.Count;
-
             tab.mainEditor.Focus();
             tab.mainEditor.ChangedLineColor = changedLineColor;
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
@@ -149,6 +172,11 @@ namespace NotepadSharp
 
         private bool IsFileAlreadyOpen(string fileName)
         {
+            if (null == fileName)
+            {
+                return false;
+            }
+
             foreach (Editor tab in tablist)
             {
                 if (tab.Tag as string == fileName)
@@ -368,91 +396,73 @@ namespace NotepadSharp
 
         private void CToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "C#";
-
             if (CurrentTB != null)
             {
-                CurrentTB.ChangeSyntax(Language.CSharp);
+                CurrentTB.DetectSyntax(GlobalConstants.CS_EXT, CurrentTB);
             }
         }
 
         private void NoneToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "None";
-
             if (CurrentTB != null)
             {
-                CurrentTB.ChangeSyntax(Language.Custom);
+                CurrentTB.DetectSyntax("txt", CurrentTB);
             }
         }
 
         private void HTMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "HTML";
-
             if (CurrentTB != null)
             {
-                CurrentTB.ChangeSyntax(Language.HTML);
+                CurrentTB.DetectSyntax(GlobalConstants.HTML_EXT, CurrentTB);
             }
         }
 
         private void JavaScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "JavaScript";
-
             if (CurrentTB != null)
             {
-                CurrentTB.ChangeSyntax(Language.JS);
+                CurrentTB.DetectSyntax(GlobalConstants.JS_EXT, CurrentTB);
             }
         }
 
         private void LuaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "Lua";
-
             if (CurrentTB != null)
             {
-                CurrentTB.ChangeSyntax(Language.Lua);
+                CurrentTB.DetectSyntax(GlobalConstants.LUA_EXT, CurrentTB);
             }
         }
 
         private void PHPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "PHP";
-
             if (CurrentTB != null)
             {
-                CurrentTB.ChangeSyntax(Language.PHP);
+                CurrentTB.DetectSyntax(GlobalConstants.PHP_EXT, CurrentTB);
             }
         }
 
         private void SQLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "SQL";
-
             if (CurrentTB != null)
             {
-                CurrentTB.ChangeSyntax(Language.SQL);
+                CurrentTB.DetectSyntax(GlobalConstants.SQL_EXT, CurrentTB);
             }
         }
 
         private void VisualBasicToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "Visual Basic";
-
             if (CurrentTB != null)
             {
-                CurrentTB.ChangeSyntax(Language.VB);
+                CurrentTB.DetectSyntax(GlobalConstants.VB_EXT, CurrentTB);
             }
         }
 
         private void XMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            syntaxLabel.Text = "XML";
-
             if (CurrentTB != null)
             {
-                CurrentTB.ChangeSyntax(Language.XML);
+                CurrentTB.DetectSyntax(GlobalConstants.XML_EXT, CurrentTB);
             }
         }
 
@@ -461,10 +471,12 @@ namespace NotepadSharp
             if (statusBarToolStripMenuItem.Checked)
             {
                 statusStrip1.Show();
+                this.dockpanel.Height -= statusStrip1.Height;
             }
             else
             {
                 statusStrip1.Hide();
+                this.dockpanel.Height += statusStrip1.Height;
             }
         }
 
@@ -693,6 +705,7 @@ namespace NotepadSharp
 
             if (CurrentTB != null)
             {
+                this.syntaxLabel.Text = CurrentTB.SyntaxText;
                 BuildAutocompleteMenu();
                 UpdateChangedFlag(CurrentTB.mainEditor.IsChanged);
             }
