@@ -25,23 +25,15 @@ namespace NotepadSharp
         internal LoggerForm logger;
         internal DocMap documentMap;
 
-        //Line Colors
-        internal Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
-        internal Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
-
         //General variable declarations and definitions
         private readonly Range _selection;
         private bool _highlightCurrentLine = true;
         private bool _enableDocumentMap = true;
-        private Font font = new Font("Consolas", 9.75f);
 
         /// <summary>
         /// Defines the Platform Type.
         /// </summary>
         protected static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();
-
-        //Styles
-        private Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
 
         /// <summary>
         /// Gets the Current instance of <see cref="Editor"/>
@@ -138,14 +130,7 @@ namespace NotepadSharp
             }
 
             var tab = new Editor(this);
-            tab.mainEditor.Font = font;
-            tab.mainEditor.Dock = DockStyle.Fill;
-            tab.mainEditor.BorderStyle = BorderStyle.Fixed3D;
-            tab.mainEditor.LeftPadding = 17;
-            tab.mainEditor.HighlightingRangeType = HighlightingRangeType.VisibleRange;
             tab.Tag = fileName;
-
-            tab.mainEditor.AddStyle(sameWordsStyle);
 
             if (null == fileName)
             {
@@ -160,7 +145,6 @@ namespace NotepadSharp
 
             tab.Title = fileName != null ? Path.GetFileName(fileName) : "new " + tablist.Count;
             tab.mainEditor.Focus();
-            tab.mainEditor.ChangedLineColor = changedLineColor;
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);
@@ -208,14 +192,7 @@ namespace NotepadSharp
         {
             foreach (Editor tab in tablist.ToArray())
             {
-                if (_highlightCurrentLine)
-                {
-                    tab.mainEditor.CurrentLineColor = currentLineColor;
-                }
-                else
-                {
-                    tab.mainEditor.CurrentLineColor = Color.Transparent;
-                }
+                tab.HighlightCurrentLine(_highlightCurrentLine);
             }
             if (CurrentTB != null)
             {
@@ -228,7 +205,6 @@ namespace NotepadSharp
             if (font.Size <= 4)
                 return;
 
-            this.font = font;
             foreach (Editor tab in tablist)
             {
                 tab.mainEditor.Font = font;
@@ -292,12 +268,12 @@ namespace NotepadSharp
             if (fontDialog == null)
             {
                 fontDialog = new FontDialog();
-                fontDialog.Font = font;
+                fontDialog.Font = EditorSettings.Font;
             }
             if (fontDialog.ShowDialog() == DialogResult.OK)
             {
                 ChangeFont(fontDialog.Font);
-                font = fontDialog.Font;
+                EditorSettings.Font = fontDialog.Font;
             }
         }
 
@@ -356,12 +332,12 @@ namespace NotepadSharp
 
         private void ZoomInToolStripButton_Click(object sender, EventArgs e)
         {
-            ChangeFont(new Font(font.Name, font.Size + 2));
+            ChangeFont(new Font(EditorSettings.Font.Name, EditorSettings.Font.Size + 2));
         }
 
         private void ZoomOutToolStripButton_Click(object sender, EventArgs e)
         {
-            ChangeFont(new Font(font.Name, font.Size - 2));
+            ChangeFont(new Font(EditorSettings.Font.Name, EditorSettings.Font.Size - 2));
         }
 
         private void FindToolStripButton_Click(object sender, EventArgs e)
