@@ -1,5 +1,6 @@
 ﻿using FastColoredTextBoxNS;
 using NotepadSharp.Utils;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -46,6 +47,7 @@ namespace NotepadSharp.Windows
         {
             _parent = parent;
             InitializeComponent();
+            ApplySettings();
         }
 
         /// <summary>
@@ -148,6 +150,22 @@ namespace NotepadSharp.Windows
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_TXT;
                     break;
             }
+        }
+
+        public void ApplySettings()
+        {
+            this.mainEditor.Font = new Font(EditorSettings.Font.FontFamily.Name, EditorSettings.Font.Size);
+            this.mainEditor.Dock = EditorSettings.DockStyle;
+            this.mainEditor.BorderStyle = EditorSettings.BorderStyle;
+            this.mainEditor.LeftPadding = EditorSettings.LeftPadding;
+            this.mainEditor.HighlightingRangeType = EditorSettings.HighlightingRangeType;
+            this.mainEditor.ChangedLineColor = EditorSettings.ChangedLineColor;
+            this.mainEditor.AddStyle(EditorSettings.SameWordsStyle);
+        }
+
+        public void HighlightCurrentLine(bool enabled)
+        {
+            this.mainEditor.CurrentLineColor = enabled ? EditorSettings.CurrentLineColor : Color.Transparent;
         }
 
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)
