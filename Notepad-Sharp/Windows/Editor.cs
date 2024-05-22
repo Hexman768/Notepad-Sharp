@@ -152,7 +152,7 @@ namespace NotepadSharp.Windows
 
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _parent.CloseTab(this);
+            _parent.Editor_TabClosing(e, this);
         }
     }
 }
