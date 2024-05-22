@@ -287,22 +287,6 @@ namespace NotepadSharp
                 CurrentTB.Close();
         }
 
-        public void CloseTab(Editor tab)
-        {
-            if (CurrentTB != null)
-            {
-                EditorClosingEventArgs args = new EditorClosingEventArgs(tab);
-                Editor_TabClosing(args);
-                if (args.Cancel)
-                {
-                    return;
-                }
-                tablist.Remove(tab);
-                dockpanel.Controls.Remove(tab);
-                UpdateDocumentMap();
-            }
-        }
-
         private void FontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (fontDialog == null)
@@ -668,34 +652,29 @@ namespace NotepadSharp
         {
             foreach (Editor tab in tablist.ToArray())
             {
-                EditorClosingEventArgs args = new EditorClosingEventArgs(tab);
-                Editor_TabClosing(args);
-                if (args.Cancel)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-                tablist.Remove(tab);
-                tab.Close();
+                Editor_TabClosing(e, tab);
             }
         }
 
-        private void Editor_TabClosing(EditorClosingEventArgs e)
+        public void Editor_TabClosing(FormClosingEventArgs e, Editor item)
         {
-            if (e.Item.mainEditor.IsChanged)
+            if (item.mainEditor.IsChanged)
             {
-                switch (MessageBox.Show("Do you want save " + e.Item.Title + " ?", "Save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information))
+                switch (MessageBox.Show("Do you want to save " + item.Title + " ?", "Save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information))
                 {
                     case DialogResult.Yes:
-                        if (!CallSave(e.Item))
+                        if (!CallSave(item))
                         {
                             e.Cancel = true;
+                            return;
                         }
                         break;
                     case DialogResult.Cancel:
                         e.Cancel = true;
-                        break;
+                        return;
                 }
+                tablist.Remove(item);
+                this.dockpanel.Controls.Remove(item);
             }
         }
 
