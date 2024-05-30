@@ -165,7 +165,7 @@ namespace NotepadSharp
             {
                 if (tab.Tag as string == fileName)
                 {
-                    this.ActivateMdiChild(tab);
+                    tab.Activate();
                     return true;
                 }
             }

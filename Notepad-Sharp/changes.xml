@@ -2,6 +2,7 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="2.0.0">
+      <action dev="Zachary Pedigo" issue="135" date="05-30-2024" type="fix">Fixed file already open not activating automatically.</action>
       <action dev="Zachary Pedigo" issue="114" date="05-22-2024" type="fix">Fixed Zooming in with Ctrl+Scroll Throws an error.</action>
       <action dev="Zachary Pedigo" issue="125" date="05-22-2024" type="fix">Fixed Application asks user twice if they want to save the current information.</action>
       <action dev="Zachary Pedigo" issue="127" date="05-21-2024" type="fix">Fixed broken status bar.</action>
