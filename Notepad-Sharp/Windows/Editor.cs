@@ -11,6 +11,7 @@ namespace NotepadSharp.Windows
     {
         private MainForm _parent;
         private string _syntaxLabelText;
+        private bool _isUntitled;
 
         /// <summary>
         /// Public variable to allow other classes to modify
@@ -40,6 +41,18 @@ namespace NotepadSharp.Windows
             }
         }
 
+        public bool IsUntitled
+        {
+            get
+            {
+                return _isUntitled;
+            }
+            set
+            {
+                _isUntitled = value;
+            }
+        }
+
         /// <summary>
         /// Constructs the <see cref="Editor"/>.
         /// </summary>
@@ -48,6 +61,27 @@ namespace NotepadSharp.Windows
             _parent = parent;
             InitializeComponent();
             ApplySettings();
+        }
+
+        /// <summary>
+        /// Constructs the <see cref="Editor"/>.
+        /// </summary>
+        /// <param name="parent">
+        /// Parent Control
+        /// </param>
+        /// <param name="fn">
+        /// File Name
+        /// </param>
+        /// <param name="title">
+        /// Title
+        /// </param>
+        public Editor(MainForm parent, string fn, string title)
+        {
+            _parent = parent;
+            InitializeComponent();
+            ApplySettings();
+            Tag = fn;
+            this.Title = title;
         }
 
         /// <summary>

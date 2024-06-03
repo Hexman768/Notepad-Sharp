@@ -129,12 +129,13 @@ namespace NotepadSharp
                 return;
             }
 
-            var tab = new Editor(this);
-            tab.Tag = fileName;
+            string title = fileName != null ? Path.GetFileName(fileName) : "new " + NextUntitledNumber();
+            Editor tab = new Editor(this, fileName, title);
 
             if (null == fileName)
             {
                 tab.DetectSyntax("", tab);
+                tab.IsUntitled = true;
             }
             else
             {
@@ -143,7 +144,6 @@ namespace NotepadSharp
                 tab.mainEditor.OpenFile(fileName);
             }
 
-            tab.Title = fileName != null ? Path.GetFileName(fileName) : "new " + tablist.Count;
             tab.mainEditor.Focus();
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
@@ -152,6 +152,53 @@ namespace NotepadSharp
             tablist.Add(tab);
             UpdateDocumentMap();
             HighlightCurrentLine();
+        }
+
+        private int NextUntitledNumber()
+        {
+            List<int> usedNumbers = new List<int>();
+            for (int i = 0; i < tablist.Count; i++)
+            {
+                if (tablist[i].IsUntitled)
+                {
+                    var result = Regex.Match(tablist[i].Title, @"\d+").Value;
+                    if ("" == result)
+                    {
+                        continue;
+                    }
+                    usedNumbers.Add(Int32.Parse(result));
+                }
+            }
+
+            int newNumber = 1;
+            bool numberAvail = true;
+            bool found = false;
+
+            do
+            {
+                for (int j = 0; j < usedNumbers.Count; j++)
+                {
+                    numberAvail = true;
+                    found = false;
+                    if (usedNumbers[j] == newNumber)
+                    {
+                        numberAvail = false;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!numberAvail)
+                {
+                    newNumber++;
+                }
+                if (!found)
+                {
+                    break;
+                }
+            }
+            while (!numberAvail);
+
+            return newNumber;
         }
 
         private bool IsFileAlreadyOpen(string fileName)
@@ -649,9 +696,9 @@ namespace NotepadSharp
                         e.Cancel = true;
                         return;
                 }
-                tablist.Remove(item);
-                this.dockpanel.Controls.Remove(item);
             }
+            tablist.Remove(item);
+            this.dockpanel.Controls.Remove(item);
         }
 
         private void dockpanel_ActiveContentChanged(object sender, EventArgs e)
