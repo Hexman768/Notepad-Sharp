@@ -31,11 +31,6 @@ namespace NotepadSharp
         private bool _enableDocumentMap = true;
 
         /// <summary>
-        /// Defines the Platform Type.
-        /// </summary>
-        protected static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();
-
-        /// <summary>
         /// Gets the Current instance of <see cref="Editor"/>
         /// </summary>
         public Editor CurrentTB
@@ -104,7 +99,6 @@ namespace NotepadSharp
         public MainForm()
         {
             InitializeComponent();
-            file_open = new OpenFileDialog();
             logger = new LoggerForm();
 
             dockpanel.Theme = new VS2015LightTheme();
@@ -156,27 +150,27 @@ namespace NotepadSharp
 
         private int NextUntitledNumber()
         {
-            List<int> usedNumbers = new List<int>();
-            for (int i = 0; i < tablist.Count; i++)
+            List<byte> usedNumbers = new List<byte>();
+            for (byte i = 0; i < tablist.Count; i++)
             {
                 if (tablist[i].IsUntitled)
                 {
-                    var result = Regex.Match(tablist[i].Title, @"\d+").Value;
+                    string result = Regex.Match(tablist[i].Title, @"\d+").Value;
                     if ("" == result)
                     {
                         continue;
                     }
-                    usedNumbers.Add(Int32.Parse(result));
+                    usedNumbers.Add(Byte.Parse(result));
                 }
             }
 
-            int newNumber = 1;
+            byte newNumber = 1;
             bool numberAvail = true;
             bool found = false;
 
             do
             {
-                for (int j = 0; j < usedNumbers.Count; j++)
+                for (byte j = 0; j < usedNumbers.Count; j++)
                 {
                     numberAvail = true;
                     found = false;
@@ -222,7 +216,9 @@ namespace NotepadSharp
         private void CloseAllTabs()
         {
             foreach (Editor tab in tablist.ToArray())
+            {
                 tab.Close();
+            }
         }
 
         private bool CallSave(Editor tab)
@@ -290,6 +286,11 @@ namespace NotepadSharp
 
         private void OpenToolStripButton_Click(object sender, EventArgs e)
         {
+            if (null == file_open)
+            {
+                file_open = new OpenFileDialog();
+            }
+
             if (file_open.ShowDialog() == DialogResult.OK)
             {
                 CreateTab(file_open.FileName);
@@ -307,7 +308,9 @@ namespace NotepadSharp
         private void CloseToolStripButton_Click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
+            {
                 CurrentTB.Close();
+            }
         }
 
         private void FontToolStripMenuItem_Click(object sender, EventArgs e)
@@ -507,6 +510,11 @@ namespace NotepadSharp
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (null == file_open)
+            {
+                file_open = new OpenFileDialog();
+            }
+
             if (file_open.ShowDialog() == DialogResult.OK)
             {
                 CreateTab(file_open.FileName);
@@ -630,6 +638,11 @@ namespace NotepadSharp
             {
                 if (e.Control && e.KeyCode == Keys.O)
                 {
+                    if (null == file_open)
+                    {
+                        file_open = new OpenFileDialog();
+                    }
+
                     if (file_open.ShowDialog() == DialogResult.OK)
                     {
                         CreateTab(file_open.FileName);
