@@ -27,6 +27,8 @@ namespace NotepadSharp
             serviceProvider = new ServiceProvider();
             EditorLoggerService editorLoggerService = new EditorLoggerService(new TraceTextWriter());
             serviceProvider.AddService(typeof(EditorLoggerService), editorLoggerService);
+
+            ServiceSingleton.ServiceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -35,6 +37,8 @@ namespace NotepadSharp
         [STAThread]
         static void Main()
         {
+            StartServices();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

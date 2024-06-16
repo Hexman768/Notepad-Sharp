@@ -6,7 +6,7 @@ namespace NotepadSharp.Core.Services
 {
     sealed class ServiceProvider : IServiceProvider
     {
-        private Dictionary<Type, object> _serviceDict = new Dictionary<Type, object>();
+        private static Dictionary<Type, object> _serviceDict = new Dictionary<Type, object>();
 
         public void AddService(Type serviceType, object instance)
         {

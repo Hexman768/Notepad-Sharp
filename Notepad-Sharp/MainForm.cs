@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using NotepadSharp.Core.Services;
 
 namespace NotepadSharp
 {
@@ -105,6 +106,7 @@ namespace NotepadSharp
             IsMdiContainer = true;
 
             logger.Log("Form Initialized!", LoggerMessageType.Info);
+            LoggingService.Info("Form Initialized");
             
             CreateTab(null);
             UpdateDocumentMap();

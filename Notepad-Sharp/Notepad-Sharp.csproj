@@ -78,6 +78,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Exceptions\ServiceNotFoundException.cs" />
+    <Compile Include="Core\Logging\EditorLoggerService.cs" />
+    <Compile Include="Core\Logging\ILoggerService.cs" />
+    <Compile Include="Core\Services\LoggingService.cs" />
+    <Compile Include="Core\Services\ServiceProvider.cs" />
+    <Compile Include="Core\Services\ServiceSingleton.cs" />
+    <Compile Include="Core\Utilities\TraceTextWriter.cs" />
     <Compile Include="DiffViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
