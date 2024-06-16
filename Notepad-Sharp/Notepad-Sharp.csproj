@@ -78,6 +78,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Exceptions\ServiceNotFoundException.cs" />
+    <Compile Include="Core\Logging\EditorLoggerService.cs" />
+    <Compile Include="Core\Logging\ILoggerService.cs" />
+    <Compile Include="Core\Services\LoggingService.cs" />
+    <Compile Include="Core\Services\ServiceProvider.cs" />
+    <Compile Include="Core\Services\ServiceSingleton.cs" />
+    <Compile Include="Core\Utilities\TraceTextWriter.cs" />
     <Compile Include="DiffViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,12 +92,6 @@
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LoggerMessageTypeEnum.cs" />
-    <Compile Include="LoggerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoggerForm.Designer.cs">
-      <DependentUpon>LoggerForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,9 +117,6 @@
     </Compile>
     <EmbeddedResource Include="DiffViewerForm.resx">
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LoggerForm.resx">
-      <DependentUpon>LoggerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

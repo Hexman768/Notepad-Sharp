@@ -10,6 +10,9 @@
 //
 //  Copyright (C) Zachary Pedigo, 2019.
 
+using NotepadSharp.Core.Logging;
+using NotepadSharp.Core.Services;
+using NotepadSharp.Core.Utilities;
 using System;
 using System.Windows.Forms;
 
@@ -17,12 +20,25 @@ namespace NotepadSharp
 {
     static class Program
     {
+        static ServiceProvider serviceProvider;
+
+        static void StartServices()
+        {
+            serviceProvider = new ServiceProvider();
+            EditorLoggerService editorLoggerService = new EditorLoggerService(new TraceTextWriter());
+            serviceProvider.AddService(typeof(EditorLoggerService), editorLoggerService);
+
+            ServiceSingleton.ServiceProvider = serviceProvider;
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            StartServices();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
