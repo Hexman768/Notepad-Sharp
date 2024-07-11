@@ -23,7 +23,6 @@ namespace NotepadSharp
         //Dialog definitions
         internal OpenFileDialog file_open;
         internal FontDialog fontDialog;
-        internal LoggerForm logger;
         internal DocMap documentMap;
 
         //General variable declarations and definitions
@@ -100,13 +99,11 @@ namespace NotepadSharp
         public MainForm()
         {
             InitializeComponent();
-            logger = new LoggerForm();
 
             dockpanel.Theme = new VS2015LightTheme();
             IsMdiContainer = true;
 
-            logger.Log("Form Initialized!", LoggerMessageType.Info);
-            LoggingService.Info("Form Initialized");
+            LoggingService.Info("MainForm Initialized");
             
             CreateTab(null);
             UpdateDocumentMap();
@@ -603,7 +600,6 @@ namespace NotepadSharp
 
         private void LoggerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            logger.Show();
         }
 
         private void CutToolStripMenuItem1_Click(object sender, EventArgs e)

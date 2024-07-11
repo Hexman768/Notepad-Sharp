@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -12,6 +13,11 @@ namespace NotepadSharp.Core.Utilities
             {
                 return Encoding.Unicode;
             }
+        }
+
+        public void Info(string message)
+        {
+            Trace.TraceInformation("\n" + DateTime.Now + ": " + message + "\n");
         }
 
         public override void Write(string text)

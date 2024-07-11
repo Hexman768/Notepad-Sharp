@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO;
+﻿using NotepadSharp.Core.Utilities;
+using System;
 
 namespace NotepadSharp.Core.Logging
 {
     public class EditorLoggerService : ILoggerService
     {
-        private TextWriter _textWriter;
+        private TraceTextWriter _textWriter;
 
-        public EditorLoggerService(TextWriter textWriter)
+        public EditorLoggerService(TraceTextWriter textWriter)
         {
             _textWriter = textWriter;
         }
@@ -36,7 +36,7 @@ namespace NotepadSharp.Core.Logging
 
         public void Info(string message)
         {
-            Write(message, null);
+            _textWriter.Info(message);
         }
     }
 }

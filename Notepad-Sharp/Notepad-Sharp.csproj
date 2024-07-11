@@ -92,12 +92,6 @@
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LoggerMessageTypeEnum.cs" />
-    <Compile Include="LoggerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoggerForm.Designer.cs">
-      <DependentUpon>LoggerForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,9 +117,6 @@
     </Compile>
     <EmbeddedResource Include="DiffViewerForm.resx">
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LoggerForm.resx">
-      <DependentUpon>LoggerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
