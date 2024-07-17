@@ -1,8 +1,4 @@
-<h1 align="center">Notepad-Sharp</h1>
-<p align="center">
-    A general purpose text editor that supports various programming languages for code editing.
-</p>
-
+<h1 align="center">🗒️Notepad-Sharp🗒️</h1>
 <div align="center">
     <a href="https://github.com/Hexman768/Notepad-Sharp/releases/latest" target="_blank">
         <img src="https://img.shields.io/badge/version-1.0.0-ff69b4" />
@@ -19,9 +15,13 @@
 </div>
 
 <div align="center">
-    <h1>Build</h1>
-    <p>Notepad# can be cloned into visual studio.</p>
-    <p>Once inside visual studio, you can just click the run button and everything should build correctly.</p>
+    <h2>💻 About:</h2>
+    <p>A general purpose text editor that supports various programming languages for code editing.</p>
+</div>
+
+<div align="center">
+    <h2>🛠️ Compilation:</h2>
+    <p>Visual Studio IDE should compile the program perfectly.</p>
 </div>
 
 <div align="center">
@@ -29,7 +29,7 @@
 </div>
 
 <div align="center">
-    <h1>Troubleshooting</h1>
+    <h2>🧰 Troubleshooting</h2>
     <p>If you are having trouble building Notepad# then try the following:</p>
     <ul>
         <li>Delete the reference to TabStrip.dll under Notepad-Sharp -> References and add it back from the Notepad-Sharp/Resources folder in the working directory.</li>
@@ -37,7 +37,7 @@
 </div>
 
 <div align="center">
-    <h1>Contributing</h1>
+    <h2>:octocat: Contributing:</h2>
     <p>If you would like to contribute, please do one of the following:</p>
     <ol>
         <li align="left">If any issues are found then please log a new issue describing the reproduction steps and expected results.</li>
