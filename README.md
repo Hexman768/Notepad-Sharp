@@ -1,4 +1,4 @@
-<h1 align="center">🗒️Notepad-Sharp🗒️</h1>
+<h1 align="center">🗒️Notepad#🗒️</h1>
 <div align="center">
     <a href="https://github.com/Hexman768/Notepad-Sharp/releases/latest" target="_blank">
         <img src="https://img.shields.io/badge/version-1.0.0-ff69b4" />
@@ -16,7 +16,7 @@
 
 <div align="center">
     <h2>💻 About:</h2>
-    <p>A general purpose text editor that supports various programming languages for code editing.</p>
+    <p>Notepad# (Short for Notepad-Sharp) is a general purpose text editor that supports various programming languages for code editing.</p>
 </div>
 
 <div align="center">
