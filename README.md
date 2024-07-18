@@ -16,10 +16,10 @@
 </div>
 
 <div align="center">
-    <a href="computer-About">About</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="hammer_and_wrench-Compilation">Compilation</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="toolbox-Troubleshooting">Troubleshooting</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="octocat-Contributing">Contributing</a>
+    <a href="#computer-About">About</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#hammer_and_wrench-Compilation">Compilation</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#toolbox-Troubleshooting">Troubleshooting</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#octocat-Contributing">Contributing</a>
 </div>
 
 ## :computer: About:
@@ -42,7 +42,5 @@ If you would like to contribute, please do one of the following:
     <li align="left">Provide feedback/tips and/or tricks. I am and will continue to be a student of software engineering.</li>
 </ol>
 
-<div align="center">
-    <h2>:gear: Dependency</h2>
-    <p>Notepad-Sharp utilizes the FastColoredTextBox as it's preferred method for syntax and custom syntax highlighting. Shoutout to PavelTorgashov for creating this amazing component!</p>
-</div>
+## :gear: Dependency
+Notepad-Sharp utilizes the FastColoredTextBox as it's preferred method for syntax and custom syntax highlighting. Shoutout to PavelTorgashov for creating this amazing component!
