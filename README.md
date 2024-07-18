@@ -28,7 +28,7 @@ Notepad# (Short for Notepad-Sharp) is a general purpose text editor that support
 ## :hammer_and_wrench: Compilation:
 Visual Studio IDE should compile the program perfectly.
 
-## :toolbox: Troubleshooting
+## :toolbox: Troubleshooting:
 If you are having trouble building Notepad# then try the following:
 <ul>
     <li>Delete the reference to TabStrip.dll under Notepad-Sharp -> References and add it back from the Notepad-Sharp/Resources folder in the working directory.</li>
@@ -42,5 +42,5 @@ If you would like to contribute, please do one of the following:
     <li align="left">Provide feedback/tips and/or tricks. I am and will continue to be a student of software engineering.</li>
 </ol>
 
-## :gear: Dependency
+## :gear: Dependency:
 Notepad-Sharp utilizes the FastColoredTextBox as it's preferred method for syntax and custom syntax highlighting. Shoutout to PavelTorgashov for creating this amazing component!
