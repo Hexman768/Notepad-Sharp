@@ -178,6 +178,11 @@ namespace NotepadSharp.Windows
                     this._syntaxLabelText = GlobalConstants.STX_TXT_PHP;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_PHP;
                     break;
+                case GlobalConstants.JSON_EXT:
+                    tab.ChangeSyntax(Language.JSON);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_JSON;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_JSON;
+                    break;
                 default:
                     tab.ChangeSyntax(Language.Custom);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_TXT;
