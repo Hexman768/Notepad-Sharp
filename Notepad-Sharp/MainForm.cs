@@ -476,6 +476,14 @@ namespace NotepadSharp
             }
         }
 
+        private void JSONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.DetectSyntax(GlobalConstants.JSON_EXT, CurrentTB);
+            }
+        }
+
         private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (statusBarToolStripMenuItem.Checked)

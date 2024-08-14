@@ -12,6 +12,7 @@
         public const string VB_EXT = "vb";
         public const string VBS_EXT = "vbs";
         public const string PHP_EXT = "php";
+        public const string JSON_EXT = "json";
 
         public const string STX_TXT_TXT = "Normal Text File";
         public const string STX_TXT_CS = "C# Source File";
@@ -23,5 +24,6 @@
         public const string STX_TXT_VB = "Visual Basic Source File";
         public const string STX_TXT_XML = "eXtensible Markup Language File";
         public const string STX_TXT_VBS = "Visual Basic Script Source File";
+        public const string STX_TXT_JSON = "JSON File";
     }
 }
