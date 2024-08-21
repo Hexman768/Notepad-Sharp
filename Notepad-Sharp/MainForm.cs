@@ -484,6 +484,14 @@ namespace NotepadSharp
             }
         }
 
+        private void batchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.DetectSyntax(GlobalConstants.BATCH_EXT, CurrentTB);
+            }
+        }
+
         private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (statusBarToolStripMenuItem.Checked)

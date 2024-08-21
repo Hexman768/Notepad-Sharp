@@ -183,6 +183,11 @@ namespace NotepadSharp.Windows
                     this._syntaxLabelText = GlobalConstants.STX_TXT_JSON;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_JSON;
                     break;
+                case GlobalConstants.BATCH_EXT:
+                    tab.ChangeSyntax(Language.Batch);
+                    this._syntaxLabelText = GlobalConstants.STX_TXT_BAT;
+                    _parent.SyntaxStatusBarLabelText= GlobalConstants.STX_TXT_BAT;
+                    break;
                 default:
                     tab.ChangeSyntax(Language.Custom);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_TXT;

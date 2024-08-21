@@ -2,6 +2,7 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="2.0.0">
+      <action dev="Zachary Pedigo" issue="141" date="08-21-2024" type="add">Added support for Batch syntax highlighting.</action>
       <action dev="Zachary Pedigo" issue="138" date="08-14-2024" type="add">Added support for JSON syntax highlighting.</action>
       <action dev="Zachary Pedigo" issue="134" date="06-04-2024" type="fix">Fixed issue with Tab Count.</action>
       <action dev="Zachary Pedigo" issue="133" date="05-31-2024" type="fix">Fixed issue with CSharp Strings.</action>
