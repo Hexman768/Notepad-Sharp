@@ -18,6 +18,8 @@ namespace NotepadSharp.Utils
             + "Structured Query Language file (*.sql)" + "|*.sql|"
             + "Visual Basic file (*.vb)" + "|*.vb|"
             + "VBScript file (*.vbs)" + "|*.vbs|"
+            + "JSON file (*.json)" + "|*.json|"
+            + "Windows Batch file (*.bat)" + "|*.bat|"
             + "All files (*.*)" + "|*.*";
             return dialog;
         }
