@@ -105,6 +105,8 @@ namespace NotepadSharp.Windows
 
             File.WriteAllText(filePath, mainEditor.Text);
 
+            DetectSyntax(Utility.GetExtension((string)Tag));
+
             return true;
         }
 
@@ -128,68 +130,67 @@ namespace NotepadSharp.Windows
         /// by the file extension.
         /// </summary>
         /// <param name="ext">File Extension</param>
-        /// <param name="tab">Tab to Update</param>
-        public void DetectSyntax(string ext, Editor tab)
+        public void DetectSyntax(string ext)
         {
             switch (ext)
             {
                 case GlobalConstants.HTML_EXT:
-                    tab.ChangeSyntax(Language.HTML);
+                    ChangeSyntax(Language.HTML);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_HTML;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_HTML;
                     break;
                 case GlobalConstants.XML_EXT:
-                    tab.ChangeSyntax(Language.XML);
+                    ChangeSyntax(Language.XML);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_XML;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_XML;
                     break;
                 case GlobalConstants.JS_EXT:
-                    tab.ChangeSyntax(Language.JS);
+                    ChangeSyntax(Language.JS);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_JS;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_JS;
                     break;
                 case GlobalConstants.LUA_EXT:
-                    tab.ChangeSyntax(Language.Lua);
+                    ChangeSyntax(Language.Lua);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_LUA;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_LUA;
                     break;
                 case GlobalConstants.CS_EXT:
-                    tab.ChangeSyntax(Language.CSharp);
+                    ChangeSyntax(Language.CSharp);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_CS;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_CS;
                     break;
                 case GlobalConstants.SQL_EXT:
-                    tab.ChangeSyntax(Language.SQL);
+                    ChangeSyntax(Language.SQL);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_SQL;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_SQL;
                     break;
                 case GlobalConstants.VB_EXT:
-                    tab.ChangeSyntax(Language.VB);
+                    ChangeSyntax(Language.VB);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_VB;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_VB;
                     break;
                 case GlobalConstants.VBS_EXT:
-                    tab.ChangeSyntax(Language.VB);
+                    ChangeSyntax(Language.VB);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_VBS;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_VBS;
                     break;
                 case GlobalConstants.PHP_EXT:
-                    tab.ChangeSyntax(Language.PHP);
+                    ChangeSyntax(Language.PHP);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_PHP;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_PHP;
                     break;
                 case GlobalConstants.JSON_EXT:
-                    tab.ChangeSyntax(Language.JSON);
+                    ChangeSyntax(Language.JSON);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_JSON;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_JSON;
                     break;
                 case GlobalConstants.BATCH_EXT:
-                    tab.ChangeSyntax(Language.Batch);
+                    ChangeSyntax(Language.Batch);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_BAT;
                     _parent.SyntaxStatusBarLabelText= GlobalConstants.STX_TXT_BAT;
                     break;
                 default:
-                    tab.ChangeSyntax(Language.Custom);
+                    ChangeSyntax(Language.Custom);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_TXT;
                     _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_TXT;
                     break;

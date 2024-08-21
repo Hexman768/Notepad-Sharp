@@ -128,13 +128,13 @@ namespace NotepadSharp
 
             if (null == fileName)
             {
-                tab.DetectSyntax("", tab);
+                tab.DetectSyntax("");
                 tab.IsUntitled = true;
             }
             else
             {
                 string ext = fileName != null ? Utility.GetExtension(fileName) : "";
-                tab.DetectSyntax(ext, tab);
+                tab.DetectSyntax(ext);
                 tab.mainEditor.OpenFile(fileName);
             }
 
@@ -408,7 +408,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.CS_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.CS_EXT);
             }
         }
 
@@ -416,7 +416,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax("txt", CurrentTB);
+                CurrentTB.DetectSyntax("txt");
             }
         }
 
@@ -424,7 +424,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.HTML_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.HTML_EXT);
             }
         }
 
@@ -432,7 +432,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.JS_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.JS_EXT);
             }
         }
 
@@ -440,7 +440,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.LUA_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.LUA_EXT);
             }
         }
 
@@ -448,7 +448,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.PHP_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.PHP_EXT);
             }
         }
 
@@ -456,7 +456,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.SQL_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.SQL_EXT);
             }
         }
 
@@ -464,7 +464,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.VB_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.VB_EXT);
             }
         }
 
@@ -472,7 +472,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.XML_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.XML_EXT);
             }
         }
 
@@ -480,7 +480,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.JSON_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.JSON_EXT);
             }
         }
 
@@ -488,7 +488,7 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
             {
-                CurrentTB.DetectSyntax(GlobalConstants.BATCH_EXT, CurrentTB);
+                CurrentTB.DetectSyntax(GlobalConstants.BATCH_EXT);
             }
         }
 
