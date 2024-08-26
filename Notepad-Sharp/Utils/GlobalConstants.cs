@@ -1,6 +1,6 @@
 ﻿namespace NotepadSharp.Utils
 {
-    public class GlobalConstants
+    class GlobalConstants
     {
         //file extensions
         public const string HTML_EXT = "html";
