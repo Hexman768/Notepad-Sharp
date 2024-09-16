@@ -24,11 +24,13 @@ namespace NotepadSharp
         internal FontDialog fontDialog;
         internal LoggerForm logger;
         internal DocMap documentMap;
+        List<string> closedFileNames;
 
         //General variable declarations and definitions
         private readonly Range _selection;
         private bool _highlightCurrentLine = true;
         private bool _enableDocumentMap = true;
+        List<Editor> tablist = new List<Editor>();
 
         /// <summary>
         /// Gets the Current instance of <see cref="Editor"/>
@@ -93,6 +95,8 @@ namespace NotepadSharp
 
         #endregion
 
+        #region Class Constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
         /// </summary>
@@ -101,7 +105,8 @@ namespace NotepadSharp
             InitializeComponent();
             logger = new LoggerForm();
 
-            dockpanel.Theme = new VS2015LightTheme();
+            dockpanel.Theme = new VS2005Theme();
+            
             IsMdiContainer = true;
 
             logger.Log("Form Initialized!", LoggerMessageType.Info);
@@ -112,11 +117,11 @@ namespace NotepadSharp
             BuildAutocompleteMenu();
         }
 
+        #endregion
+
         #region Tab Functionality
 
-        List<Editor> tablist = new List<Editor>();
-
-        private void CreateTab(string fileName)
+        void CreateTab(string fileName)
         {
             if (IsFileAlreadyOpen(fileName))
             {
@@ -138,17 +143,17 @@ namespace NotepadSharp
                 tab.mainEditor.OpenFile(fileName);
             }
 
-            tab.mainEditor.Focus();
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);
             tab.Show(this.dockpanel, DockState.Document);
             tablist.Add(tab);
+            tab.Focus();
             UpdateDocumentMap();
             HighlightCurrentLine();
         }
 
-        private int NextUntitledNumber()
+        int NextUntitledNumber()
         {
             List<byte> usedNumbers = new List<byte>();
             for (byte i = 0; i < tablist.Count; i++)
@@ -195,7 +200,7 @@ namespace NotepadSharp
             return newNumber;
         }
 
-        private bool IsFileAlreadyOpen(string fileName)
+        bool IsFileAlreadyOpen(string fileName)
         {
             if (null == fileName)
             {
@@ -213,7 +218,7 @@ namespace NotepadSharp
             return false;
         }
 
-        private void CloseAllTabs()
+        void CloseAllTabs()
         {
             foreach (Editor tab in tablist.ToArray())
             {
@@ -221,7 +226,76 @@ namespace NotepadSharp
             }
         }
 
-        private bool CallSave(Editor tab)
+        void ChangeDockPanelTheme(DockPanelThemeType type)
+        {
+            CloseAndSaveAllTabsInMemory();
+            documentMap.Close();
+            documentMap = null;
+
+            switch (type)
+            {
+                case DockPanelThemeType.VS2003Theme:
+                    dockpanel.Theme = new VS2003Theme();
+                    break;
+                case DockPanelThemeType.VS2005Theme:
+                    dockpanel.Theme = new VS2005Theme();
+                    break;
+                case DockPanelThemeType.VS2012BlueTheme:
+                    dockpanel.Theme = new VS2012BlueTheme();
+                    break;
+                case DockPanelThemeType.VS2012DarkTheme:
+                    dockpanel.Theme = new VS2012DarkTheme();
+                    break;
+                case DockPanelThemeType.VS2012LightTheme:
+                    dockpanel.Theme = new VS2012LightTheme();
+                    break;
+                case DockPanelThemeType.VS2013BlueTheme:
+                    dockpanel.Theme = new VS2013BlueTheme();
+                    break;
+                case DockPanelThemeType.VS2013DarkTheme:
+                    dockpanel.Theme = new VS2013DarkTheme();
+                    break;
+                case DockPanelThemeType.VS2013LightTheme:
+                    dockpanel.Theme = new VS2013LightTheme();
+                    break;
+                case DockPanelThemeType.VS2015BlueTheme:
+                    dockpanel.Theme = new VS2015BlueTheme();
+                    break;
+                case DockPanelThemeType.VS2015DarkTheme:
+                    dockpanel.Theme = new VS2015DarkTheme();
+                    break;
+                case DockPanelThemeType.VS2015LightTheme:
+                    dockpanel.Theme = new VS2015LightTheme();
+                    break;
+            }
+
+            OpenTabsFromMemory();
+        }
+
+        void CloseAndSaveAllTabsInMemory()
+        {
+            if (null == closedFileNames)
+            {
+                closedFileNames = new List<string>();
+            }
+            foreach (Editor tab in tablist.ToArray())
+            {
+                closedFileNames.Add(tab.Tag as string);
+                tab.Close();
+            }
+        }
+
+        void OpenTabsFromMemory()
+        {
+            foreach(string fn in closedFileNames)
+            {
+                CreateTab(fn);
+            }
+
+            closedFileNames = null;
+        }
+
+        bool CallSave(Editor tab)
         {
             if (tab.Save())
             {
@@ -231,7 +305,7 @@ namespace NotepadSharp
             return false;
         }
 
-        private void HighlightCurrentLine()
+        void HighlightCurrentLine()
         {
             foreach (Editor tab in tablist.ToArray())
             {
@@ -243,7 +317,7 @@ namespace NotepadSharp
             }
         }
 
-        private void ChangeFont(Font font)
+        void ChangeFont(Font font)
         {
             if (font.Size <= 4)
                 return;
@@ -773,6 +847,61 @@ namespace NotepadSharp
             {
                 contextMenuStrip1.Show(this, new Point(e.X, e.Y));
             }
+        }
+
+        private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2005Theme);
+        }
+
+        private void legacyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2012BlueTheme);
+        }
+
+        private void retroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2012DarkTheme);
+        }
+
+        private void vS2012LightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2012LightTheme);
+        }
+
+        private void vS2013BLueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2013BlueTheme);
+        }
+
+        private void vS2013DarkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2013DarkTheme);
+        }
+
+        private void vS2013LightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2013LightTheme);
+        }
+
+        private void vS2015BLueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2015BlueTheme);
+        }
+
+        private void vS2015DarkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2015DarkTheme);
+        }
+
+        private void vS2015LightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2015LightTheme);
+        }
+
+        private void vS2003ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2003Theme);
         }
 
         #endregion

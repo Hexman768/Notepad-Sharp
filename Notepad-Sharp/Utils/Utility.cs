@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace NotepadSharp.Utils
 {
-    public static class Utility
+    static class Utility
     {
         public static SaveFileDialog CreateSaveDialog()
         {
