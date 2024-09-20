@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notepad-Sharp", "Notepad-Sharp\Notepad-Sharp.csproj", "{2D886A7B-5A05-418E-8598-1E93D49321B5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6DD14A85-CCFC-4774-BD26-0F5772512319} = {6DD14A85-CCFC-4774-BD26-0F5772512319}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastColoredTextBox", "FastColoredTextBox\FastColoredTextBox\FastColoredTextBox.csproj", "{6DD14A85-CCFC-4774-BD26-0F5772512319}"
 EndProject
