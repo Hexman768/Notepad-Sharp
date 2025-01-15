@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace NotepadSharp.Utils
 {
@@ -20,37 +19,9 @@ namespace NotepadSharp.Utils
             + "VBScript file (*.vbs)" + "|*.vbs|"
             + "JSON file (*.json)" + "|*.json|"
             + "Windows Batch file (*.bat)" + "|*.bat|"
+            + "Assembly Program file (*.asm)" + "|*.asm|"
             + "All files (*.*)" + "|*.*";
             return dialog;
-        }
-
-        public static string GetExtension(string fName)
-        {
-            if (!fName.Contains("."))
-            {
-                return "";
-            }
-            char[] name = fName.ToCharArray();
-            string ext = "";
-            int token = fName.Length - 1;
-
-            while (name[token] != '.')
-            {
-                ext += name[token].ToString();
-                token -= 1;
-            }
-
-            name = ext.ToCharArray();
-            Array.Reverse(name);
-            token = 0;
-            ext = "";
-            while (token < name.Length)
-            {
-                ext += name[token].ToString();
-                token += 1;
-            }
-
-            return ext;
         }
     }
 }

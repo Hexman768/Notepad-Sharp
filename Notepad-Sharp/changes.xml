@@ -2,6 +2,7 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="2.0.0">
+      <action dev="Zachary Pedigo" issue="118" date="01-15-2025" type="add">Added native support for Assembly language.</action>
       <action dev="Zachary Pedigo" issue="164" date="01-13-2025" type="fix">Added missing C# preprocessor directives.</action>
       <action dev="Zachary Pedigo" issue="156" date="09-20-2024" type="add">Added FastColoredTextBox component as Git Submodule.</action>
       <action dev="Zachary Pedigo" issue="126" date="09-16-2024" type="fix">Changed default theme and added light and dark themes.</action>

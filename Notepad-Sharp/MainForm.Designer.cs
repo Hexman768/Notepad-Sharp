@@ -78,6 +78,7 @@ namespace NotepadSharp
             this.loggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.diffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vS2003ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.legacyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.retroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,7 +116,7 @@ namespace NotepadSharp
             this.copyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.vS2003ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.assemblyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tsMain.SuspendLayout();
@@ -306,7 +307,8 @@ namespace NotepadSharp
             this.visualBasicToolStripMenuItem,
             this.xMLToolStripMenuItem,
             this.jSONToolStripMenuItem,
-            this.batchToolStripMenuItem});
+            this.batchToolStripMenuItem,
+            this.assemblyToolStripMenuItem});
             this.syntaxHighlightingToolStripMenuItem.Name = "syntaxHighlightingToolStripMenuItem";
             this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.syntaxHighlightingToolStripMenuItem.Text = "Syntax Highlighting";
@@ -314,77 +316,77 @@ namespace NotepadSharp
             // noneToolStripMenuItem
             // 
             this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-            this.noneToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.noneToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.noneToolStripMenuItem.Text = "None";
             this.noneToolStripMenuItem.Click += new System.EventHandler(this.NoneToolStripMenuItem_Click);
             // 
             // cToolStripMenuItem
             // 
             this.cToolStripMenuItem.Name = "cToolStripMenuItem";
-            this.cToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.cToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cToolStripMenuItem.Text = "C#";
             this.cToolStripMenuItem.Click += new System.EventHandler(this.CToolStripMenuItem_Click);
             // 
             // hTMLToolStripMenuItem
             // 
             this.hTMLToolStripMenuItem.Name = "hTMLToolStripMenuItem";
-            this.hTMLToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.hTMLToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.hTMLToolStripMenuItem.Text = "HTML";
             this.hTMLToolStripMenuItem.Click += new System.EventHandler(this.HTMLToolStripMenuItem_Click);
             // 
             // javaScriptToolStripMenuItem
             // 
             this.javaScriptToolStripMenuItem.Name = "javaScriptToolStripMenuItem";
-            this.javaScriptToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.javaScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.javaScriptToolStripMenuItem.Text = "JavaScript";
             this.javaScriptToolStripMenuItem.Click += new System.EventHandler(this.JavaScriptToolStripMenuItem_Click);
             // 
             // luaToolStripMenuItem
             // 
             this.luaToolStripMenuItem.Name = "luaToolStripMenuItem";
-            this.luaToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.luaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.luaToolStripMenuItem.Text = "Lua";
             this.luaToolStripMenuItem.Click += new System.EventHandler(this.LuaToolStripMenuItem_Click);
             // 
             // pHPToolStripMenuItem
             // 
             this.pHPToolStripMenuItem.Name = "pHPToolStripMenuItem";
-            this.pHPToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.pHPToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pHPToolStripMenuItem.Text = "PHP";
             this.pHPToolStripMenuItem.Click += new System.EventHandler(this.PHPToolStripMenuItem_Click);
             // 
             // sQLToolStripMenuItem
             // 
             this.sQLToolStripMenuItem.Name = "sQLToolStripMenuItem";
-            this.sQLToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.sQLToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sQLToolStripMenuItem.Text = "SQL";
             this.sQLToolStripMenuItem.Click += new System.EventHandler(this.SQLToolStripMenuItem_Click);
             // 
             // visualBasicToolStripMenuItem
             // 
             this.visualBasicToolStripMenuItem.Name = "visualBasicToolStripMenuItem";
-            this.visualBasicToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.visualBasicToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.visualBasicToolStripMenuItem.Text = "Visual Basic";
             this.visualBasicToolStripMenuItem.Click += new System.EventHandler(this.VisualBasicToolStripMenuItem_Click);
             // 
             // xMLToolStripMenuItem
             // 
             this.xMLToolStripMenuItem.Name = "xMLToolStripMenuItem";
-            this.xMLToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.xMLToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.xMLToolStripMenuItem.Text = "XML";
             this.xMLToolStripMenuItem.Click += new System.EventHandler(this.XMLToolStripMenuItem_Click);
             // 
             // jSONToolStripMenuItem
             // 
             this.jSONToolStripMenuItem.Name = "jSONToolStripMenuItem";
-            this.jSONToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.jSONToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.jSONToolStripMenuItem.Text = "JSON";
             this.jSONToolStripMenuItem.Click += new System.EventHandler(this.JSONToolStripMenuItem_Click);
             // 
             // batchToolStripMenuItem
             // 
             this.batchToolStripMenuItem.Name = "batchToolStripMenuItem";
-            this.batchToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.batchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.batchToolStripMenuItem.Text = "Batch";
             this.batchToolStripMenuItem.Click += new System.EventHandler(this.batchToolStripMenuItem_Click);
             // 
@@ -427,73 +429,80 @@ namespace NotepadSharp
             this.themeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.themeToolStripMenuItem.Text = "Theme";
             // 
+            // vS2003ToolStripMenuItem
+            // 
+            this.vS2003ToolStripMenuItem.Name = "vS2003ToolStripMenuItem";
+            this.vS2003ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.vS2003ToolStripMenuItem.Text = "VS2003";
+            this.vS2003ToolStripMenuItem.Click += new System.EventHandler(this.vS2003ToolStripMenuItem_Click);
+            // 
             // defaultToolStripMenuItem
             // 
             this.defaultToolStripMenuItem.Name = "defaultToolStripMenuItem";
-            this.defaultToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.defaultToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.defaultToolStripMenuItem.Text = "Default (VS2005)";
             this.defaultToolStripMenuItem.Click += new System.EventHandler(this.defaultToolStripMenuItem_Click);
             // 
             // legacyToolStripMenuItem
             // 
             this.legacyToolStripMenuItem.Name = "legacyToolStripMenuItem";
-            this.legacyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.legacyToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.legacyToolStripMenuItem.Text = "VS2012 Blue";
             this.legacyToolStripMenuItem.Click += new System.EventHandler(this.legacyToolStripMenuItem_Click);
             // 
             // retroToolStripMenuItem
             // 
             this.retroToolStripMenuItem.Name = "retroToolStripMenuItem";
-            this.retroToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.retroToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.retroToolStripMenuItem.Text = "VS2012 Dark";
             this.retroToolStripMenuItem.Click += new System.EventHandler(this.retroToolStripMenuItem_Click);
             // 
             // vS2012LightToolStripMenuItem
             // 
             this.vS2012LightToolStripMenuItem.Name = "vS2012LightToolStripMenuItem";
-            this.vS2012LightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.vS2012LightToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.vS2012LightToolStripMenuItem.Text = "VS2012 Light";
             this.vS2012LightToolStripMenuItem.Click += new System.EventHandler(this.vS2012LightToolStripMenuItem_Click);
             // 
             // vS2013BLueToolStripMenuItem
             // 
             this.vS2013BLueToolStripMenuItem.Name = "vS2013BLueToolStripMenuItem";
-            this.vS2013BLueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.vS2013BLueToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.vS2013BLueToolStripMenuItem.Text = "VS2013 Blue";
             this.vS2013BLueToolStripMenuItem.Click += new System.EventHandler(this.vS2013BLueToolStripMenuItem_Click);
             // 
             // vS2013DarkToolStripMenuItem
             // 
             this.vS2013DarkToolStripMenuItem.Name = "vS2013DarkToolStripMenuItem";
-            this.vS2013DarkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.vS2013DarkToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.vS2013DarkToolStripMenuItem.Text = "VS2013 Dark";
             this.vS2013DarkToolStripMenuItem.Click += new System.EventHandler(this.vS2013DarkToolStripMenuItem_Click);
             // 
             // vS2013LightToolStripMenuItem
             // 
             this.vS2013LightToolStripMenuItem.Name = "vS2013LightToolStripMenuItem";
-            this.vS2013LightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.vS2013LightToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.vS2013LightToolStripMenuItem.Text = "VS2013 Light";
             this.vS2013LightToolStripMenuItem.Click += new System.EventHandler(this.vS2013LightToolStripMenuItem_Click);
             // 
             // vS2015BLueToolStripMenuItem
             // 
             this.vS2015BLueToolStripMenuItem.Name = "vS2015BLueToolStripMenuItem";
-            this.vS2015BLueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.vS2015BLueToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.vS2015BLueToolStripMenuItem.Text = "VS2015 Blue";
             this.vS2015BLueToolStripMenuItem.Click += new System.EventHandler(this.vS2015BLueToolStripMenuItem_Click);
             // 
             // vS2015DarkToolStripMenuItem
             // 
             this.vS2015DarkToolStripMenuItem.Name = "vS2015DarkToolStripMenuItem";
-            this.vS2015DarkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.vS2015DarkToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.vS2015DarkToolStripMenuItem.Text = "VS2015 Dark";
             this.vS2015DarkToolStripMenuItem.Click += new System.EventHandler(this.vS2015DarkToolStripMenuItem_Click);
             // 
             // vS2015LightToolStripMenuItem
             // 
             this.vS2015LightToolStripMenuItem.Name = "vS2015LightToolStripMenuItem";
-            this.vS2015LightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.vS2015LightToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.vS2015LightToolStripMenuItem.Text = "VS2015 Light";
             this.vS2015LightToolStripMenuItem.Click += new System.EventHandler(this.vS2015LightToolStripMenuItem_Click);
             // 
@@ -790,12 +799,12 @@ namespace NotepadSharp
             this.selectAllToolStripMenuItem.Text = "&Select All";
             this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.SelectAllToolStripMenuItem_Click);
             // 
-            // vS2003ToolStripMenuItem
+            // assemblyToolStripMenuItem
             // 
-            this.vS2003ToolStripMenuItem.Name = "vS2003ToolStripMenuItem";
-            this.vS2003ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.vS2003ToolStripMenuItem.Text = "VS2003";
-            this.vS2003ToolStripMenuItem.Click += new System.EventHandler(this.vS2003ToolStripMenuItem_Click);
+            this.assemblyToolStripMenuItem.Name = "assemblyToolStripMenuItem";
+            this.assemblyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.assemblyToolStripMenuItem.Text = "Assembly";
+            this.assemblyToolStripMenuItem.Click += new System.EventHandler(this.assemblyToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -902,6 +911,7 @@ namespace NotepadSharp
         private System.Windows.Forms.ToolStripMenuItem vS2015DarkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem vS2015LightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem vS2003ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem assemblyToolStripMenuItem;
     }
 }
 

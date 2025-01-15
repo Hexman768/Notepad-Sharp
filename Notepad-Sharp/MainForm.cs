@@ -138,7 +138,7 @@ namespace NotepadSharp
             }
             else
             {
-                string ext = fileName != null ? Utility.GetExtension(fileName) : "";
+                string ext = fileName != null ? Path.GetExtension(fileName) : "";
                 tab.DetectSyntax(ext);
                 tab.mainEditor.OpenFile(fileName);
             }
@@ -563,6 +563,14 @@ namespace NotepadSharp
             if (CurrentTB != null)
             {
                 CurrentTB.DetectSyntax(GlobalConstants.BATCH_EXT);
+            }
+        }
+
+        private void assemblyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.DetectSyntax(GlobalConstants.ASM_EXT);
             }
         }
 
