@@ -105,7 +105,7 @@ namespace NotepadSharp.Windows
 
             File.WriteAllText(filePath, mainEditor.Text);
 
-            DetectSyntax(Utility.GetExtension((string)Tag));
+            DetectSyntax(Path.GetExtension((string)Tag));
 
             return true;
         }
@@ -188,6 +188,11 @@ namespace NotepadSharp.Windows
                     ChangeSyntax(Language.Batch);
                     this._syntaxLabelText = GlobalConstants.STX_TXT_BAT;
                     _parent.SyntaxStatusBarLabelText= GlobalConstants.STX_TXT_BAT;
+                    break;
+                case GlobalConstants.ASM_EXT:
+                    ChangeSyntax(Language.Assembly);
+                    this._syntaxLabelText= GlobalConstants.STX_TXT_ASM;
+                    _parent.SyntaxStatusBarLabelText = GlobalConstants.STX_TXT_ASM;
                     break;
                 default:
                     ChangeSyntax(Language.Custom);
