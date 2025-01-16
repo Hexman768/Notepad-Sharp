@@ -79,7 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Exceptions\ServiceNotFoundException.cs" />
-    <Compile Include="Core\Logging\EditorLoggerService.cs" />
+    <Compile Include="Core\Logging\DebugLoggerService.cs" />
     <Compile Include="Core\Logging\ILoggerService.cs" />
     <Compile Include="Core\Services\LoggingService.cs" />
     <Compile Include="Core\Services\ServiceProvider.cs" />

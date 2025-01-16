@@ -27,7 +27,7 @@ namespace NotepadSharp
             serviceProvider = new ServiceProvider();
             ILoggerService loggerServiceInstance;
 #if DEBUG
-            loggerServiceInstance = new EditorLoggerService(new TraceTextWriter());
+            loggerServiceInstance = new DebugLoggerService(new TraceTextWriter());
 #endif
             serviceProvider.AddService(typeof(ILoggerService), loggerServiceInstance);
 

@@ -3,11 +3,20 @@ using System;
 
 namespace NotepadSharp.Core.Logging
 {
-    public class EditorLoggerService : ILoggerService
+    /// <summary>
+    /// This is the logger service that provides trace messages to 
+    /// the output box in the Visual Studio IDE while the application is 
+    /// running in debug mode.
+    /// </summary>
+    public class DebugLoggerService : ILoggerService
     {
         private TraceTextWriter _textWriter;
 
-        public EditorLoggerService(TraceTextWriter textWriter)
+        /// <summary>
+        /// Constructs the <see cref="DebugLoggerService"/>.
+        /// </summary>
+        /// <param name="textWriter"></param>
+        public DebugLoggerService(TraceTextWriter textWriter)
         {
             _textWriter = textWriter;
         }
