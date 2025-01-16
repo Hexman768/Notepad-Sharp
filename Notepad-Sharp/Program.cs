@@ -25,8 +25,11 @@ namespace NotepadSharp
         static void StartServices()
         {
             serviceProvider = new ServiceProvider();
-            EditorLoggerService editorLoggerService = new EditorLoggerService(new TraceTextWriter());
-            serviceProvider.AddService(typeof(EditorLoggerService), editorLoggerService);
+            ILoggerService loggerServiceInstance;
+#if DEBUG
+            loggerServiceInstance = new EditorLoggerService(new TraceTextWriter());
+#endif
+            serviceProvider.AddService(typeof(ILoggerService), loggerServiceInstance);
 
             ServiceSingleton.ServiceProvider = serviceProvider;
         }

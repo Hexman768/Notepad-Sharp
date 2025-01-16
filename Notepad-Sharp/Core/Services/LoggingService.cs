@@ -7,7 +7,7 @@ namespace NotepadSharp.Core.Services
     /// </summary>
     public static class LoggingService
     {
-        private static ILoggerService _service = ServiceSingleton.GetRequiredService<EditorLoggerService>();
+        private static ILoggerService _service = ServiceSingleton.GetRequiredService<ILoggerService>();
 
         public static void Error(string message)
         {

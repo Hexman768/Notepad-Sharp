@@ -24,7 +24,7 @@ namespace NotepadSharp.Core.Services
 
         public static T GetRequiredService<T>()
         {
-            object service = instance.GetService(typeof(T));
+            var service = instance.GetService(typeof(T));
             return (T)service;
         }
     }
