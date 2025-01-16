@@ -25,10 +25,11 @@ namespace NotepadSharp
         static void StartServices()
         {
             serviceProvider = new ServiceProvider();
-            ILoggerService loggerServiceInstance;
+            ILoggerService loggerServiceInstance = new RuntimeLoggerService();
 #if DEBUG
             loggerServiceInstance = new DebugLoggerService(new TraceTextWriter());
 #endif
+
             serviceProvider.AddService(typeof(ILoggerService), loggerServiceInstance);
 
             ServiceSingleton.ServiceProvider = serviceProvider;
