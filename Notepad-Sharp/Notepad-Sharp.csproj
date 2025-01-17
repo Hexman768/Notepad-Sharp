@@ -81,6 +81,7 @@
     <Compile Include="Core\Exceptions\ServiceNotFoundException.cs" />
     <Compile Include="Core\Logging\DebugLoggerService.cs" />
     <Compile Include="Core\Logging\ILoggerService.cs" />
+    <Compile Include="Core\Logging\RuntimeLoggerService.cs" />
     <Compile Include="Core\Services\LoggingService.cs" />
     <Compile Include="Core\Services\ServiceProvider.cs" />
     <Compile Include="Core\Services\ServiceSingleton.cs" />

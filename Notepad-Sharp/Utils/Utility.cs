@@ -3,8 +3,16 @@ using System.Windows.Forms;
 
 namespace NotepadSharp.Utils
 {
+    /// <summary>
+    /// This is a utility class that will hold useful methods that can be called
+    /// anywhere throughout the tech stack.
+    /// </summary>
     public static class Utility
     {
+        /// <summary>
+        /// Creates a save file dialog and returns it to the caller.
+        /// </summary>
+        /// <returns></returns>
         public static SaveFileDialog CreateSaveDialog()
         {
             SaveFileDialog dialog = new SaveFileDialog();
