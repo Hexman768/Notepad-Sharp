@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Windows.Forms;
 
 namespace NotepadSharp.Core.Logging
 {
@@ -11,17 +11,17 @@ namespace NotepadSharp.Core.Logging
     {
         public void Error(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message, "Error");
         }
 
         public void Info(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message, "Info");
         }
 
         public void Warn(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message, "Warning");
         }
     }
 }
