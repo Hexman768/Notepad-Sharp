@@ -1,8 +1,12 @@
 ﻿namespace NotepadSharp.Utils
 {
-    class GlobalConstants
+    /// <summary>
+    /// This class constains constant variables that can be 
+    /// consumed throughout the entire application tech stack.
+    /// </summary>
+    public class GlobalConstants
     {
-        //file extensions
+        // file extensions
         public const string HTML_EXT = ".html";
         public const string XML_EXT = ".xml";
         public const string JS_EXT = ".js";
@@ -16,6 +20,7 @@
         public const string BATCH_EXT = ".bat";
         public const string ASM_EXT = ".asm";
 
+        // Syntax description strings
         public const string STX_TXT_TXT = "Normal Text File";
         public const string STX_TXT_CS = "C# Source File";
         public const string STX_TXT_HTML = "Hyper Text Markup Language File";
