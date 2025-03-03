@@ -164,7 +164,7 @@ namespace NotepadSharp
                     {
                         continue;
                     }
-                    usedNumbers.Add(Byte.Parse(result));
+                    usedNumbers.Add(byte.Parse(result));
                 }
             }
 

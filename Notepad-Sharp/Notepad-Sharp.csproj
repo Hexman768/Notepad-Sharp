@@ -104,7 +104,6 @@
     <Compile Include="DiffViewerForm.Designer.cs">
       <DependentUpon>DiffViewerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoggerMessageTypeEnum.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
