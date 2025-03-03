@@ -7,15 +7,18 @@
     public class GlobalConstants
     {
         // file extensions
-        public const string HTML_EXT = "html";
-        public const string XML_EXT = "xml";
-        public const string JS_EXT = "js";
-        public const string CS_EXT = "cs";
-        public const string LUA_EXT = "lua";
-        public const string SQL_EXT = "sql";
-        public const string VB_EXT = "vb";
-        public const string VBS_EXT = "vbs";
-        public const string PHP_EXT = "php";
+        public const string HTML_EXT = ".html";
+        public const string XML_EXT = ".xml";
+        public const string JS_EXT = ".js";
+        public const string CS_EXT = ".cs";
+        public const string LUA_EXT = ".lua";
+        public const string SQL_EXT = ".sql";
+        public const string VB_EXT = ".vb";
+        public const string VBS_EXT = ".vbs";
+        public const string PHP_EXT = ".php";
+        public const string JSON_EXT = ".json";
+        public const string BATCH_EXT = ".bat";
+        public const string ASM_EXT = ".asm";
 
         // Syntax description strings
         public const string STX_TXT_TXT = "Normal Text File";
