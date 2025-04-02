@@ -202,6 +202,11 @@ namespace NotepadSharp.Windows
             }
         }
 
+        public void ResetModifierKeys()
+        {
+            mainEditor.ResetModifiers(null);
+        }
+
         public void ApplySettings()
         {
             this.mainEditor.Font = new Font(EditorSettings.Font.FontFamily.Name, EditorSettings.Font.Size);
