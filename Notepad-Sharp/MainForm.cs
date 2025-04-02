@@ -749,7 +749,6 @@ namespace NotepadSharp
                     if (CurrentTB != null)
                     {
                         CallSave(CurrentTB);
-                        CurrentTB.ResetModifierKeys();
                     }
                 }
                 else if (e.Control && e.Shift && e.KeyCode == Keys.L)
