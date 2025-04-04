@@ -142,7 +142,6 @@ namespace NotepadSharp
                 tab.mainEditor.OpenFile(fileName);
             }
 
-            tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);
             tab.Show(this.dockpanel, DockState.Document);
@@ -724,6 +723,61 @@ namespace NotepadSharp
                 CurrentTB.mainEditor.SelectAll();
         }
 
+        private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2005Theme);
+        }
+
+        private void legacyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2012BlueTheme);
+        }
+
+        private void retroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2012DarkTheme);
+        }
+
+        private void vS2012LightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2012LightTheme);
+        }
+
+        private void vS2013BLueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2013BlueTheme);
+        }
+
+        private void vS2013DarkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2013DarkTheme);
+        }
+
+        private void vS2013LightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2013LightTheme);
+        }
+
+        private void vS2015BLueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2015BlueTheme);
+        }
+
+        private void vS2015DarkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2015DarkTheme);
+        }
+
+        private void vS2015LightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2015LightTheme);
+        }
+
+        private void vS2003ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDockPanelTheme(DockPanelThemeType.VS2003Theme);
+        }
+
         #endregion
 
         #region Event Handlers
@@ -855,59 +909,9 @@ namespace NotepadSharp
             }
         }
 
-        private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
+        internal void MainForm_FileSaved(object sender, FileSavedEventArgs e)
         {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2005Theme);
-        }
-
-        private void legacyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2012BlueTheme);
-        }
-
-        private void retroToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2012DarkTheme);
-        }
-
-        private void vS2012LightToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2012LightTheme);
-        }
-
-        private void vS2013BLueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2013BlueTheme);
-        }
-
-        private void vS2013DarkToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2013DarkTheme);
-        }
-
-        private void vS2013LightToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2013LightTheme);
-        }
-
-        private void vS2015BLueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2015BlueTheme);
-        }
-
-        private void vS2015DarkToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2015DarkTheme);
-        }
-
-        private void vS2015LightToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2015LightTheme);
-        }
-
-        private void vS2003ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2003Theme);
+            UpdateChangedFlag(!e.IsSaveSuccessful);
         }
 
         #endregion
