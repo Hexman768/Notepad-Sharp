@@ -86,26 +86,19 @@ namespace NotepadSharp.Windows
 
         /// <summary>
         /// Attempts to save the current file.
+        /// Sets tab text to filename if save is successful.
         /// </summary>
         /// <returns>A boolean value based on whether or not a successfull save was performed.</returns>
         public bool Save()
         {
-            if (Tag == null)
+            string tag = (string) mainEditor.Tag;
+
+            if (mainEditor.Save(mainEditor.Text))
             {
-                SaveFileDialog sfdMain = Utility.CreateSaveDialog();
-                if (sfdMain.ShowDialog() != DialogResult.OK)
-                {
-                    return false;
-                }
-                Title = Path.GetFileName(sfdMain.FileName);
-                Tag = sfdMain.FileName;
+                Title = Path.GetFileName(tag);
             }
 
-            string filePath = (string)Tag;
-
-            File.WriteAllText(filePath, mainEditor.Text);
-
-            DetectSyntax(Path.GetExtension((string)Tag));
+            DetectSyntax(Path.GetExtension(tag));
 
             return true;
         }
