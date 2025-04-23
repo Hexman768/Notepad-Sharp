@@ -2,6 +2,7 @@
 <Changes>
   <body>
     <release date="${buildTimestamp}" description="" version="2.0.0">
+      <action dev="Zachary Pedigo" issue="179" date="04-23-2025" type="fix">Replaced MessageBox runtime logging with output log.</action>
       <action dev="Zachary Pedigo" issue="142" date="03-03-2025" type="add">Added frontend microservices architecture for logging.</action>
       <action dev="Zachary Pedigo" issue="118" date="01-15-2025" type="add">Added native support for Assembly language.</action>
       <action dev="Zachary Pedigo" issue="164" date="01-13-2025" type="fix">Added missing C# preprocessor directives.</action>
