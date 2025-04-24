@@ -142,6 +142,7 @@ namespace NotepadSharp
                 tab.mainEditor.OpenFile(fileName);
             }
 
+            tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);
             tab.Show(this.dockpanel, DockState.Document);
@@ -796,13 +797,6 @@ namespace NotepadSharp
                     if (file_open.ShowDialog() == DialogResult.OK)
                     {
                         CreateTab(file_open.FileName);
-                    }
-                }
-                else if (e.KeyCode == Keys.S && e.Modifiers == Keys.Control)
-                {
-                    if (CurrentTB != null)
-                    {
-                        CallSave(CurrentTB);
                     }
                 }
                 else if (e.Control && e.Shift && e.KeyCode == Keys.L)
