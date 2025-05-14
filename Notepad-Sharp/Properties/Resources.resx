@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,72 +112,72 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApplicationVersion">
-    <value>v2.0.0.SNAPSHOT</value>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>v2.0.0</value>
   </data>
-  <data name="AllFileTypes">
+  <data name="AllFileTypes" xml:space="preserve">
     <value>All files (*.*)</value>
   </data>
-  <data name="BatchFileType">
+  <data name="BatchFileType" xml:space="preserve">
     <value>Windows Batch file (*.bat)</value>
   </data>
-  <data name="CSharpFileType">
+  <data name="CSharpFileType" xml:space="preserve">
     <value>C# source file (*.cs)</value>
   </data>
-  <data name="HTMLFileType">
+  <data name="HTMLFileType" xml:space="preserve">
     <value>Hyper Text Markup Language File (*.html)</value>
   </data>
-  <data name="JavaFileType">
+  <data name="JavaFileType" xml:space="preserve">
     <value>Java source file (*.java)</value>
   </data>
-  <data name="JSFileType">
+  <data name="JSFileType" xml:space="preserve">
     <value>Javascript source file (*.js)</value>
   </data>
-  <data name="JSONFileType">
+  <data name="JSONFileType" xml:space="preserve">
     <value>JSON file (*.json)</value>
   </data>
-  <data name="LuaFileType">
+  <data name="LuaFileType" xml:space="preserve">
     <value>Lua source file (*.lua)</value>
   </data>
-  <data name="NormalTextFileType">
+  <data name="NormalTextFileType" xml:space="preserve">
     <value>Normal text file (*.txt)</value>
   </data>
-  <data name="PHPFileType">
+  <data name="PHPFileType" xml:space="preserve">
     <value>PHP file (*.php)</value>
   </data>
-  <data name="VBFileType">
+  <data name="VBFileType" xml:space="preserve">
     <value>Visual Basic file (*.vb)</value>
   </data>
-  <data name="NullFastColoredTextBox">
+  <data name="NullFastColoredTextBox" xml:space="preserve">
     <value>FastColoredTextBox is null!</value>
   </data>
-  <data name="NullTabStrip">
+  <data name="NullTabStrip" xml:space="preserve">
     <value>FATabStrip is null!</value>
   </data>
-  <data name="NullTabStripItem">
+  <data name="NullTabStripItem" xml:space="preserve">
     <value>FATabStripItem is null!</value>
   </data>
-  <data name="SQLFileType">
+  <data name="SQLFileType" xml:space="preserve">
     <value>Structured Query Language file (*.sql)</value>
   </data>
-  <data name="InvalidFilename">
+  <data name="InvalidFilename" xml:space="preserve">
     <value>Filename is null, empty, or whitespace!</value>
   </data>
-  <data name="InvalidArgument">
+  <data name="InvalidArgument" xml:space="preserve">
     <value>An invalid argument has been passed into the function!</value>
   </data>
-  <data name="Exception">
+  <data name="Exception" xml:space="preserve">
     <value>Exception</value>
   </data>
-  <data name="XMLFileType">
+  <data name="XMLFileType" xml:space="preserve">
     <value>Extensible Markup Language file (.xml)</value>
   </data>
-  <data name="VBSFileType">
+  <data name="VBSFileType" xml:space="preserve">
     <value>VBScript file (*.vbs)</value>
   </data>
 </root>

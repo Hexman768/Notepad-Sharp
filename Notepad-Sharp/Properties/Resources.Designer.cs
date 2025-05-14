@@ -70,7 +70,7 @@ namespace NotepadSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to v2.0.0.SNAPSHOT.
+        ///   Looks up a localized string similar to v2.0.0.
         /// </summary>
         internal static string ApplicationVersion {
             get {
