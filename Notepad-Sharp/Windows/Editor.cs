@@ -40,6 +40,9 @@ namespace NotepadSharp.Windows
             }
         }
 
+        /// <summary>
+        /// Returns the text of the syntax label
+        /// </summary>
         public string SyntaxText
         {
             get
@@ -52,6 +55,9 @@ namespace NotepadSharp.Windows
             }
         }
 
+        /// <summary>
+        /// Returns true if the editor is untitled
+        /// </summary>
         public bool IsUntitled
         {
             get
@@ -61,6 +67,17 @@ namespace NotepadSharp.Windows
             set
             {
                 _isUntitled = value;
+            }
+        }
+
+        /// <summary>
+        /// The current language of the editor
+        /// </summary>
+        public FastColoredTextBoxNS.Language Language
+        {
+            get
+            {
+                return mainEditor.Language;
             }
         }
 
@@ -250,6 +267,11 @@ namespace NotepadSharp.Windows
             DetectSyntax(Path.GetExtension((string)Tag));
 
             _parent.MainForm_FileSaved(sender, e);
+        }
+
+        private void mainEditor_MouseClick(object sender, MouseEventArgs e)
+        {
+            _parent.UpdateStatusBar();
         }
 
         #endregion
