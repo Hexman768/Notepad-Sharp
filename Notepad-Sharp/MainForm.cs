@@ -821,6 +821,7 @@ namespace NotepadSharp
         {
             var tb = sender as FastColoredTextBox;
             UpdateChangedFlag(tb.IsChanged);
+            UpdateStatusBar();
         }
 
         private void TsFiles_TabStripItemClosed(object sender, EventArgs e)
@@ -858,9 +859,10 @@ namespace NotepadSharp
             this.dockpanel.Controls.Remove(item);
         }
 
-        private void dockpanel_ActiveContentChanged(object sender, EventArgs e)
+        void dockpanel_ActiveContentChanged(object sender, EventArgs e)
         {
             UpdateDocumentMap();
+            UpdateStatusBar(); // TODO: move this to a better suited method call
 
             if (CurrentTB != null)
             {
@@ -870,9 +872,9 @@ namespace NotepadSharp
             }
         }
 
-        private bool IsSavedTab(string tagName) => tagName != null;
+        bool IsSavedTab(string tagName) => tagName != null;
 
-        private void DiffToolStripMenuItem_Click(object sender, EventArgs e)
+        void DiffToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> filePaths = new List<string>();
 
@@ -1099,6 +1101,15 @@ namespace NotepadSharp
                 CurrentTB.mainEditor.IsChanged = isChanged;
                 saveToolStripButton.Enabled = isChanged;
             }
+        }
+
+        public void UpdateStatusBar()
+        {
+            linesStatusLabel.Text = "lines: " + CurrentTB?.mainEditor.LinesCount;
+            string encodingText = CurrentTB?.mainEditor.Encoding?.HeaderName;
+            encodingStatusLabel.Text = encodingText == null || encodingText == string.Empty ? "None" : encodingText;
+            currentLineStatusLabel.Text = "Ln: " + CurrentTB?.mainEditor.Selection.End.iLine.ToString();
+            columnStatusLabel.Text = "Col: " + CurrentTB?.mainEditor.Selection.End.iChar.ToString();
         }
 
         #endregion

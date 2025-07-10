@@ -54,8 +54,12 @@
             this.mainEditor.CharHeight = 14;
             this.mainEditor.CharWidth = 8;
             this.mainEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.mainEditor.DefaultMarkerSize = 8;
             this.mainEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.mainEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainEditor.Encoding = null;
+            this.mainEditor.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.mainEditor.Hotkeys = resources.GetString("mainEditor.Hotkeys");
             this.mainEditor.IsReplaceMode = false;
             this.mainEditor.Location = new System.Drawing.Point(0, 0);
             this.mainEditor.Name = "mainEditor";
@@ -65,6 +69,7 @@
             this.mainEditor.Size = new System.Drawing.Size(192, 162);
             this.mainEditor.TabIndex = 0;
             this.mainEditor.Zoom = 100;
+            this.mainEditor.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mainEditor_MouseClick);
             // 
             // Editor
             // 
