@@ -24,6 +24,7 @@ namespace NotepadSharp
         // Date        Engineer         Issue     Description
         // ----------  --------------  ----   ----------------------------------------------
         // 07/14/2025  Zachary Pedigo  188    Issue with line and column count in status bar
+        // 07/14/2025  Zachary Pedigo  188    Patched issue with update status bar accessibility
         //----------------------------------------------------------------------------------
 
         #endregion
@@ -1113,7 +1114,7 @@ namespace NotepadSharp
             }
         }
 
-        void UpdateStatusBar()
+        public void UpdateStatusBar()
         {
             linesStatusLabel.Text = "lines: " + CurrentTB?.mainEditor.LinesCount;
             string encodingText = CurrentTB?.mainEditor.Encoding?.HeaderName;
