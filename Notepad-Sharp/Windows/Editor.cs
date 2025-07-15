@@ -12,6 +12,17 @@ namespace NotepadSharp.Windows
     /// </summary>
     public partial class Editor : DockContent
     {
+
+        #region Revision Log
+
+        //----------------------------------------------------------------------------------
+        // Date        Engineer         Issue     Description
+        // ----------  --------------  ----   ----------------------------------------------
+        // 07/14/2025  Zachary Pedigo  188    Added public member variables for current line and column count
+        //----------------------------------------------------------------------------------
+
+        #endregion
+
         private MainForm _parent;
         private string _syntaxLabelText;
         private bool _isUntitled;
@@ -71,13 +82,35 @@ namespace NotepadSharp.Windows
         }
 
         /// <summary>
-        /// The current language of the editor
+        /// The current language of the editor.
         /// </summary>
         public FastColoredTextBoxNS.Language Language
         {
             get
             {
                 return mainEditor.Language;
+            }
+        }
+
+        /// <summary>
+        /// The line number of the current position of the cursor.
+        /// </summary>
+        public int LineCount
+        {
+            get
+            {
+                return mainEditor.Selection.End.iLine + 1;
+            }
+        }
+
+        /// <summary>
+        /// The column of the current position of the cursor.
+        /// </summary>
+        public int ColumnCount
+        {
+            get
+            {
+                return mainEditor.Selection.End.iChar + 1;
             }
         }
 
