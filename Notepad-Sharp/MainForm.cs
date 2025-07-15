@@ -18,6 +18,16 @@ namespace NotepadSharp
     /// </summary>
     public partial class MainForm : Form
     {
+        #region Revision History
+
+        //----------------------------------------------------------------------------------
+        // Date        Engineer         Issue     Description
+        // ----------  --------------  ----   ----------------------------------------------
+        // 07/14/2025  Zachary Pedigo  188    Issue with line and column count in status bar
+        //----------------------------------------------------------------------------------
+
+        #endregion
+
         #region Variable declarations and definitions
 
         //Dialog definitions
@@ -1103,13 +1113,13 @@ namespace NotepadSharp
             }
         }
 
-        public void UpdateStatusBar()
+        void UpdateStatusBar()
         {
             linesStatusLabel.Text = "lines: " + CurrentTB?.mainEditor.LinesCount;
             string encodingText = CurrentTB?.mainEditor.Encoding?.HeaderName;
             encodingStatusLabel.Text = encodingText == null || encodingText == string.Empty ? "None" : encodingText;
-            currentLineStatusLabel.Text = "Ln: " + CurrentTB?.mainEditor.Selection.End.iLine.ToString();
-            columnStatusLabel.Text = "Col: " + CurrentTB?.mainEditor.Selection.End.iChar.ToString();
+            currentLineStatusLabel.Text = "Ln: " + CurrentTB?.LineCount.ToString();
+            columnStatusLabel.Text = "Col: " + CurrentTB?.ColumnCount.ToString();
         }
 
         #endregion
