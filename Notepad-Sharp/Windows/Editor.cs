@@ -1,4 +1,5 @@
-﻿using NotepadSharp.Utils;
+﻿using NotepadSharp.Core.Session;
+using NotepadSharp.Utils;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -26,6 +27,7 @@ namespace NotepadSharp.Windows
         private MainForm _parent;
         private string _syntaxLabelText;
         private bool _isUntitled;
+        private TabSession _tabSession;
 
         #region Event Declarations
 
@@ -121,7 +123,9 @@ namespace NotepadSharp.Windows
         /// <summary>
         /// Constructs the <see cref="Editor"/>.
         /// </summary>
-        public Editor(MainForm parent)
+        public Editor(
+            MainForm parent /* Parent Form */
+            )
         {
             _parent = parent;
             InitializeComponent();
@@ -133,10 +137,14 @@ namespace NotepadSharp.Windows
         /// <summary>
         /// Constructs the <see cref="Editor"/>.
         /// </summary>
-        /// <param name="parent">Parent Control</param>
-        /// <param name="fn">Filename</param>
-        /// <param name="title">Form Text</param>
-        public Editor(MainForm parent, string fn, string title)
+        /// <param name="parent"></param>
+        /// <param name="fn"></param>
+        /// <param name="title"></param>
+        public Editor(
+            MainForm parent, /* Parent Form */
+            string fn,       /* File Name */
+            string title     /* Form Text */
+            )
         {
             _parent = parent;
             InitializeComponent();
@@ -262,20 +270,36 @@ namespace NotepadSharp.Windows
             }
         }
 
+        /// <summary>
+        /// Applies settings to <see cref="Editor"/>.
+        /// </summary>
         public void ApplySettings()
         {
-            this.mainEditor.Font = new Font(EditorSettings.Font.FontFamily.Name, EditorSettings.Font.Size);
-            this.mainEditor.Dock = EditorSettings.DockStyle;
-            this.mainEditor.BorderStyle = EditorSettings.BorderStyle;
-            this.mainEditor.LeftPadding = EditorSettings.LeftPadding;
+            this.mainEditor.Font                  = new Font(EditorSettings.Font.FontFamily.Name, EditorSettings.Font.Size);
+            this.mainEditor.Dock                  = EditorSettings.DockStyle;
+            this.mainEditor.BorderStyle           = EditorSettings.BorderStyle;
+            this.mainEditor.LeftPadding           = EditorSettings.LeftPadding;
             this.mainEditor.HighlightingRangeType = EditorSettings.HighlightingRangeType;
-            this.mainEditor.ChangedLineColor = EditorSettings.ChangedLineColor;
+            this.mainEditor.ChangedLineColor      = EditorSettings.ChangedLineColor;
+
             this.mainEditor.AddStyle(EditorSettings.SameWordsStyle);
         }
 
         public void HighlightCurrentLine(bool enabled)
         {
             this.mainEditor.CurrentLineColor = enabled ? EditorSettings.CurrentLineColor : Color.Transparent;
+        }
+
+        /// <summary>
+        /// Creates new <see cref="TabSession"/> for current Editor Tab.
+        /// </summary>
+        public void
+            CreateSession()
+        {
+            var enc = mainEditor.Encoding;
+            var filename = "";
+            var path = "";
+            var text = mainEditor.Text;
         }
 
         #endregion

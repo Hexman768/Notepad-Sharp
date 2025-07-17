@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
 
 namespace NotepadSharp.Core.Session
 {
@@ -7,48 +7,22 @@ namespace NotepadSharp.Core.Session
     /// </summary>
     public class Session
     {
-        private Encoding encoding;
-        private string filename;
-        private string path;
-        private string text;
+        private List<TabSession> tabSessions;
 
         /// <summary>
-        /// Constructs an instance of Session, used for session snapshots.
+        /// Constructor for Session data structure.
         /// </summary>
-        /// <param name="encoding"></param>
-        /// <param name="filename"></param>
-        /// <param name="path"></param>
-        /// <param name="text"></param>
-        public Session(Encoding encoding, string filename, string path, string text)
+        /// <param name="tabSessions"></param>
+        public Session(
+            List<TabSession> tabSessions /* List of Tab Session models */
+            )
         {
-            this.encoding = encoding;
-            this.filename = filename;
-            this.path = path;
-            this.text = text;
+            this.tabSessions = tabSessions;
         }
 
-        public Encoding Encoding
-        {
-            get { return encoding; }
-            set { encoding = value; }
-        }
-
-        public string Filename
-        {
-            get {  return filename; }
-            set { filename = value; }
-        }
-
-        public string Path
-        { 
-            get { return path; } 
-            set { path = value; }
-        }
-
-        public string Text
-        {
-            get { return text; }
-            set { text = value; }
-        }
+        /// <summary>
+        /// Returns list of all <see cref="TabSession"/> models to be saved to disk.
+        /// </summary>
+        public List<TabSession> TabSessions { get {  return tabSessions; } }
     }
 }
