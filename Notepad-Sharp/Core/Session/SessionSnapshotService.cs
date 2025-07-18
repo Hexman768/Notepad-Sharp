@@ -1,4 +1,6 @@
-﻿namespace NotepadSharp.Core.Session
+﻿using System.Xml;
+
+namespace NotepadSharp.Core.Session
 {
     /// <summary>
     /// Session Snapshot Writing serivce implementation.
@@ -9,10 +11,18 @@
         /// Writes the given session object to a session.xml file in the user's local appdata directory.
         /// </summary>
         /// <param name="session"></param>
-        /// <exception cref="System.NotImplementedException"></exception>
         public void WriteSession(Session session)
         {
-            throw new System.NotImplementedException();
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+
+            XmlWriter writer = XmlWriter.Create("settings.xml", settings);
+
+            writer.WriteStartDocument();
+
+            writer.WriteComment("Auto-Generated settings file.");
+
+            writer.WriteStartElement("");
         }
 
         private void Write(Session session)

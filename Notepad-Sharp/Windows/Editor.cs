@@ -20,6 +20,7 @@ namespace NotepadSharp.Windows
         // Date        Engineer         Issue     Description
         // ----------  --------------  ----   ----------------------------------------------
         // 07/14/2025  Zachary Pedigo  188    Added public member variables for current line and column count
+        // 07/17/2025  Zachary Pedigo  XXX    Added session snapshot behavior
         //----------------------------------------------------------------------------------
 
         #endregion
@@ -165,7 +166,9 @@ namespace NotepadSharp.Windows
         /// Sets tab text to filename if save is successful.
         /// </summary>
         /// <returns>A boolean value based on whether or not a successfull save was performed.</returns>
-        public bool Save()
+        public bool
+            Save
+            ()
         {
             if (mainEditor.Save(mainEditor.Text))
             {
@@ -184,11 +187,16 @@ namespace NotepadSharp.Windows
         /// </summary>
         /// <param name="tb">FastColoredTextBox</param>
         /// <param name="language">Language</param>
-        public void ChangeSyntax(FastColoredTextBoxNS.Language language)
+        public void
+            ChangeSyntax(
+            FastColoredTextBoxNS.Language language /* File language */
+            )
         {
             mainEditor.Range.ClearStyle(FastColoredTextBoxNS.StyleIndex.All);
-            mainEditor.Language = language;
+
+            mainEditor.Language          = language;
             FastColoredTextBoxNS.Range r = new FastColoredTextBoxNS.Range(mainEditor);
+
             r.SelectAll();
             mainEditor.OnSyntaxHighlight(new FastColoredTextBoxNS.TextChangedEventArgs(r));
         }
@@ -198,7 +206,10 @@ namespace NotepadSharp.Windows
         /// by the file extension.
         /// </summary>
         /// <param name="ext">File Extension</param>
-        public void DetectSyntax(string ext)
+        public void
+            DetectSyntax(
+            string ext /* File extension */
+            )
         {
             switch (ext)
             {
@@ -273,7 +284,8 @@ namespace NotepadSharp.Windows
         /// <summary>
         /// Applies settings to <see cref="Editor"/>.
         /// </summary>
-        public void ApplySettings()
+        public void
+            ApplySettings()
         {
             this.mainEditor.Font                  = new Font(EditorSettings.Font.FontFamily.Name, EditorSettings.Font.Size);
             this.mainEditor.Dock                  = EditorSettings.DockStyle;
@@ -285,7 +297,11 @@ namespace NotepadSharp.Windows
             this.mainEditor.AddStyle(EditorSettings.SameWordsStyle);
         }
 
-        public void HighlightCurrentLine(bool enabled)
+        public void
+            HighlightCurrentLine
+            (
+            bool enabled /* Flag for highlighting current line */
+            )
         {
             this.mainEditor.CurrentLineColor = enabled ? EditorSettings.CurrentLineColor : Color.Transparent;
         }
@@ -294,7 +310,8 @@ namespace NotepadSharp.Windows
         /// Creates new <see cref="TabSession"/> for current Editor Tab.
         /// </summary>
         public void
-            CreateSession()
+            CreateSession
+            ()
         {
             var enc = mainEditor.Encoding;
             var filename = "";
