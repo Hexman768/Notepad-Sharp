@@ -18,6 +18,7 @@
 <div align="center">
     <a href="#computer-About">About</a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <a href="#hammer_and_wrench-Compilation">Compilation</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="desktop_computer-System Requirements>System Requirements</a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <a href="#toolbox-Troubleshooting">Troubleshooting</a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <a href="#octocat-Contributing">Contributing</a>
 </div>
@@ -28,9 +29,15 @@ Notepad# (Short for Notepad-Sharp) is a general purpose text editor that support
 ## :hammer_and_wrench: Compilation:
 Visual Studio IDE should compile the program perfectly.
 
+## :desktop_computer: System Requirements:
+Notepad# is only compatible with Windows machines (XP and up) due to a heavy reliance on the Win32 API. There are currently no plans to make the app cross-platform as it is intended to be a Notepad++ clone, and thus, has very similar requirements. 
+.NET 4.8.2 is required to launch. 
+
 ## :toolbox: Troubleshooting:
 If you are having trouble building Notepad# then try the following:
 <ul>
+    <li>Make sure to run the init.bat script in the project directory.</li>
+    <li>Open the Nuget package manager and update/install all required packages.</li>
     <li>Delete the reference to TabStrip.dll under Notepad-Sharp -> References and add it back from the Notepad-Sharp/Resources folder in the working directory.</li>
 </ul>
 
