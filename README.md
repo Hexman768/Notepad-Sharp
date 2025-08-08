@@ -27,7 +27,10 @@
 Notepad# (Short for Notepad-Sharp) is a general purpose text editor that supports various programming languages for code editing.
 
 ## :hammer_and_wrench: Compilation:
-Visual Studio IDE should compile the program perfectly.
+<ol>
+    <li>Execute the init.bat script in the project root directory.</li>
+    <li>Build the project in Visual Studio IDE, or with the dotnet CLI tool.</li>
+</ol>
 
 ## :desktop_computer: System Requirements:
 Notepad# is only compatible with Windows machines (XP and up) due to a heavy reliance on the Win32 API. There are currently no plans to make the app cross-platform as it is intended to be a Notepad++ clone, and thus, has very similar requirements. 
@@ -50,4 +53,9 @@ If you would like to contribute, please do one of the following:
 </ol>
 
 ## :gear: Dependency:
-Notepad-Sharp utilizes the FastColoredTextBox as it's preferred method for syntax and custom syntax highlighting. Shoutout to PavelTorgashov for creating this amazing component!
+Here is a list of the great dependencies that Notepad# consumes:
+<ol>
+    <li><a href="https://www.nuget.org/packages/FCTB/">FastColoredTextBox</a> - Shoutout to PavelTorgashov for creating this amazing component!</li>
+    <li><a href="https://www.nuget.org/packages/DockPanelSuite/">DockPanelSuite</a> - Provides docking behavior.</li>
+    <li><a href="https://www.nuget.org/packages/DockPanelSuite.ThemeVS2005">DockPanelSuite.ThemeVS2005</a> - Provides themes for DockPanelSuite.</li>
+</ol>
